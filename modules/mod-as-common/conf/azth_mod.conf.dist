@@ -1,0 +1,332 @@
+[worldserver]
+
+RealmZone = 8
+
+BirthdayTime = 1420822800
+
+StartPlayerMoney = 9000
+
+Quests.LowLevelHideDiff = -1
+
+PlayerLimit = 600
+
+HeroicCharactersPerRealm = 10
+
+DeletedCharacterTicketTrace = 1
+
+Channel.RestrictedLfg = 0
+
+Channel.SilentlyGMJoin = 1
+
+ChatLevelReq.Channel = 10
+ChatLevelReq.Whisper = 10
+
+Rate.Drop.Item.Poor             = 9
+Rate.Drop.Item.Normal           = 5
+Rate.Drop.Item.Uncommon         = 4
+Rate.Drop.Item.Rare             = 4
+Rate.Drop.Item.Epic             = 4
+Rate.Drop.Item.Legendary        = 1
+Rate.Drop.Item.Artifact         = 1
+Rate.Drop.Item.Referenced       = 1
+Rate.Drop.Money                 = 1.5
+
+Rate.XP.Quest   = 6
+Rate.XP.Explore = 1
+
+Rate.XP.BattlegroundKill = 30
+
+Rate.Auction.Deposit = 0
+Rate.Auction.Cut     = 0.1
+
+Rate.Honor = 1.5
+
+SkillGain.Defense   = 5
+SkillGain.Weapon    = 5
+
+AutoBroadcast.On = 1
+
+AutoBroadcast.Timer = 50000
+
+Battleground.QueueAnnouncer.Enable = 1
+
+Battleground.QueueAnnouncer.PlayerOnly = 1
+
+Battleground.GiveXPForKills = 1
+
+Battleground.StoreStatistics.Enable = 1
+
+Battleground.TrackDeserters.Enable = 1
+
+Arena.RatingDiscardTimer = 10000
+
+Arena.AutoDistributePoints = 1
+
+Arena.AutoDistributeInterval = 4
+
+Arena.QueueAnnouncer.Enable = 1
+
+Arena.ArenaStartRating = 1000
+
+Arena.ArenaStartPersonalRating = 1000
+
+Rate.ArenaPoints = 1
+
+
+CharDelete.Method = 1
+
+CharDelete.MinLevel = 15
+
+CharDelete.KeepDays = 30
+
+
+Guild.AllowMultipleGuildMaster = 1
+
+ShowKickInWorld = 1
+
+PlayerDump.DisallowPaths = 0
+
+PlayerDump.DisallowOverwrite = 0
+
+BattleGround.PremadeGroupWaitForMatch = 60000
+
+ChatFlood.MessageDelay = 0
+
+# enable/disable
+ExternalMail = 1
+#minutes
+ExternalMailInterval = 1
+
+#    [AZTH]
+#    Battleground.RandomCrossFaction.Enable
+#        Description: Enable random battleground crossfaction randomizing system
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.RandomCrossFaction.Enable = 1
+
+#    [AZTH]
+#    Battleground.InvitationType
+#        Description: Set Battleground invitation type.
+#        Default:     0 - (Normal, Invite as much players to battlegrounds as queued,
+#                          Don't bother with balance)
+#                     1 - (Experimental, Don't allow to invite much more players
+#                          of one faction)
+#                     [AZTH]
+#                     2 - (Experimental, start when teams are even)
+
+Battleground.InvitationType = 2
+
+
+###################################################################################################
+# PLAYER INTERACTION
+#
+#    AllowTwoSide.Accounts
+#        Description: Allow creating characters of both factions on the same account.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+AllowTwoSide.Accounts = 1
+
+#
+#    AllowTwoSide.Interaction.Calendar
+#        Description: Allow calendar invites between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Calendar = 1
+
+#
+#    AllowTwoSide.Interaction.Chat
+#        Description: Allow say chat between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Chat = 1
+
+#
+#    AllowTwoSide.Interaction.Channel
+#        Description: Allow channel chat between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Channel = 1
+
+#
+#    AllowTwoSide.Interaction.Group
+#        Description: Allow group joining between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Group = 1
+
+#
+#    AllowTwoSide.Interaction.Guild
+#        Description: Allow guild joining between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Guild = 1
+
+#
+#    AllowTwoSide.Interaction.Auction
+#        Description: Allow auctions between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Auction = 1
+
+#
+#    AllowTwoSide.Interaction.Mail
+#        Description: Allow sending mails between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Mail = 1
+
+#
+#    AllowTwoSide.WhoList
+#        Description: Show characters from both factions in the /who list.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.WhoList = 1
+
+#
+#    AllowTwoSide.AddFriend
+#        Description: Allow adding friends from other faction the friends list.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.AddFriend = 1
+
+#
+#    AllowTwoSide.Trade
+#        Description: Allow trading between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Trade = 1
+
+#
+#    TalentsInspecting
+#        Description: Allow inspecting characters from the opposing faction.
+#                     Doesn't affect characters in gamemaster mode.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+TalentsInspecting = 1
+
+#
+###################################################################################################
+
+
+
+#
+###################################################################################################
+######################
+### PVP RANK PATCH ###
+######################
+
+PvPRank.Rate.ExtraHonor = 1
+PvPRank.HKPerRank = 10,50,100,200,450,750,1300,2000,3500,6000,9500,15000,21000,30000
+
+###################################################################################################
+
+Azth.Rate.Arena1v1 = 0.2
+
+###################################################################################################
+# CUSTOM PLAYER XP CONFIGS
+###################################################################################################
+#	Player.customXP.security
+#		Description: Needed security level to run ".azth xp" command
+#		Default: 3
+#
+#	Player.customXP.maxValue
+#		Description: Maximum custom XP multiplier. Watch out: The xp gained is calculated this way: (XP * Rate.XP) * Player.customXP
+#		Default: 1 (Default XP rate)
+#
+#	Player.customXP.showOnLogin
+#		Description: Show custom xp value on login
+#		Default: 0 (Don't show message)
+
+Player.customXP.security = 0
+Player.customXP.maxValue = 12
+Player.customXP.showOnLogin = 1
+
+###################################################################################################
+
+###################################################################################################
+#
+#	AZTH - MS
+#
+#	Azth.LevelBonus.10.Enable
+#		Description: Enable/disable gift for level 10
+#		Default: 1
+#
+
+Azth.LevelBonus.10.Enable = 1
+
+#
+#	Azth.Smartstone.Teleport.Enable
+#		Description: Enable/disable teleport Smartstone
+#		Default: 1
+#
+
+Azth.Smartstone.Teleport.Enable = 1
+
+#
+#	Azth.Multiplies.Drop.Enable
+#		Description: Enable/disable multiplies drop
+#		Default: 1
+#
+
+Azth.Multiplies.Drop.Enable = 1
+
+#
+#	Azth.NPC.Dimension.AccountSec.Min.Normal
+#		Description: Min account level for show gossip DIMENSION_NORMAL
+#		Default: 3
+#
+#	Azth.NPC.Dimension.AccountSec.Min.Guild
+#		Description: Min account level for show gossip DIMENSION_GUILD
+#		Default: 3
+#
+#	Azth.NPC.Dimension.AccountSec.Min.PvP
+#		Description: Min account level for show gossip DIMENSION_PVP
+#		Default: 3
+#
+#	Azth.NPC.Dimension.AccountSec.Min.Entertainment
+#		Description: Min account level for show gossip DIMENSION_ENTERTAINMENT
+#		Default: 3
+#
+#	Azth.NPC.Dimension.AccountSec.Min.RPG
+#		Description: Min account level for show gossip DIMENSION_RPG
+#		Default: 3
+#
+#	Azth.NPC.Dimension.AccountSec.Min.60
+#		Description: Min account level for show gossip DIMENSION_60
+#		Default: 3
+#
+#	Azth.NPC.Dimension.AccountSec.Min.70
+#		Description: Min account level for show gossip DIMENSION_70
+#		Default: 3
+#
+#	Azth.NPC.Dimension.AccountSec.Min.Test
+#		Description: Min account level for show gossip DIMENSION_TEST
+#		Default: 3
+#
+#	Azth.NPC.Dimension.AccountSec.Min.GM
+#		Description: Min account level for show gossip DIMENSION_GM
+#		Default: 3
+#
+
+Azth.NPC.Dimension.AccountSec.Min.Normal        = 3
+Azth.NPC.Dimension.AccountSec.Min.Guild         = 3
+Azth.NPC.Dimension.AccountSec.Min.PvP           = 3
+Azth.NPC.Dimension.AccountSec.Min.Entertainment = 3
+Azth.NPC.Dimension.AccountSec.Min.RPG           = 3
+Azth.NPC.Dimension.AccountSec.Min.60            = 3
+Azth.NPC.Dimension.AccountSec.Min.70            = 3
+Azth.NPC.Dimension.AccountSec.Min.Test          = 3
+Azth.NPC.Dimension.AccountSec.Min.GM            = 3

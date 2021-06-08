@@ -1,0 +1,24 @@
+@@ -1 +1 @@
+@@ -1 +1 @@
++++ `azth_1_world`
++++ `azth_1_world`
+--- `azth_clean_world`
+--- `azth_clean_world`
+ADD INDEX idx_id (id),
+ADD PRIMARY KEY(`guid`),
+ADD PRIMARY KEY(`guid`),
+ADD PRIMARY KEY(`id`),
+ALTER TABLE `azth_clean_world`.`creature`
+ALTER TABLE `azth_clean_world`.`gameobject`
+ALTER TABLE `azth_clean_world`.`game_tele`
+AUTO_INCREMENT=10596313, COMMENT='Creature System';
+AUTO_INCREMENT=1635, COMMENT='Tele Command';
+AUTO_INCREMENT=7369374, COMMENT='Gameobject System';
++CREATE DATABASE `azth_1_world` /*!40100 DEFAULT CHARACTER SET latin1 */
++CREATE DATABASE `azth_1_world` /*!40100 DEFAULT CHARACTER SET latin1 */
+-CREATE DATABASE `azth_clean_world` /*!40100 DEFAULT CHARACTER SET latin1 */
+-CREATE DATABASE `azth_clean_world` /*!40100 DEFAULT CHARACTER SET latin1 */
+DROP INDEX idx_id,
+DROP PRIMARY KEY,
+DROP PRIMARY KEY,
+DROP PRIMARY KEY,

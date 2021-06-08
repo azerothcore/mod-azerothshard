@@ -1,0 +1,13 @@
+OUTPUT_DIR=$AZTHSD_PATH_WORLD_DB_DIFF
+
+# original db
+DB_1_HOST=localhost
+DB_1_USER=root
+DB_1_PASS=root
+DB_1_NAME=azerothcore_clean_world
+
+# custom db
+DB_2_HOST=localhost
+DB_2_USER=root
+DB_2_PASS=root
+DB_2_NAME=azerothcore_custom_world

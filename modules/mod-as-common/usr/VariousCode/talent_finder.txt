@@ -1,0 +1,37 @@
+// loop on all spell
+for (uint32 id = 0; id < sSpellMgr->GetSpellInfoStoreSize(); id++)
+{
+	SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(id);
+
+	if (!spellInfo)
+		continue;
+
+	// check if a spell is a talent
+	if (GetTalentSpellCost(spellInfo->Id) > 0 || sSpellMgr->IsAdditionalTalentSpell(spellInfo->Id)) {
+		sLog->outString("%d,",spellInfo->Id);
+
+		// get next rank of a talent spell
+		const SpellInfo* prev = spellInfo;
+		while (prev && prev->GetNextRankSpell()) {
+			const SpellInfo* next = prev->GetNextRankSpell();
+			sLog->outString("%d, // %d direct next rank", next->Id, prev->Id);
+			prev = next;
+		}
+
+		// check if a talent learn a spell
+		for (uint8 k = 0; k < MAX_SPELL_EFFECTS; ++k) {
+			if (spellInfo->Effects[k].Effect == SPELL_EFFECT_LEARN_SPELL)
+				if (const SpellInfo* learnSpell = sSpellMgr->GetSpellInfo(spellInfo->Effects[k].TriggerSpell)) {
+					sLog->outString("%d, // tought by %d ", learnSpell->Id, spellInfo->Id);
+
+					// loop on all spell rank
+					const SpellInfo* prev = learnSpell;
+					while (prev && prev->GetNextRankSpell()) {
+						const SpellInfo* next = prev->GetNextRankSpell();
+						sLog->outString("%d, // %d indirect next rank", next->Id, prev->Id);
+						prev = next;
+					}
+				}
+		}
+	}
+}

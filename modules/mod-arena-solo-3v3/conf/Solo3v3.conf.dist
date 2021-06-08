@@ -1,0 +1,28 @@
+#
+# Copyright (С) since 2019 Andrei Guluaev (Winfidonarleyan/Kargatum) https://github.com/Winfidonarleyan 
+#
+
+###############################
+# Custom configuration system #
+###############################
+[worldserver]
+
+###################################################################################################
+#   SOLO 3v3 ARENA
+#   
+#   Solo.3v3.Enable
+#       Description: Enable system
+#       Default: 1
+#
+
+Solo.3v3.Enable = 1
+Solo.3v3.MinLevel = 80
+Solo.3v3.Cost = 45
+Solo.3v3.ArenaPointsMulti = 0.8
+Solo.3v3.FilterTalents = 1
+Solo.3v3.VendorRating = 1
+Arena.1v1.BlockForbiddenTalents = 0
+Arena.CheckEquipAndTalents = 1
+Solo.3v3.CastDeserterOnAfk = 1
+Solo.3v3.CastDeserterOnLeave = 1
+Solo.3v3.StopGameIncomplete = 1

@@ -1,0 +1,25 @@
+{
+    "name": "mod-azerothshard",
+    "version": "2.0.0",
+    "compatibility": [
+        {
+            "version": "1.0.0",
+            "branch": "none"
+        },
+        {
+            "version": "2.0.0",
+            "branch": "none"
+        },
+        {
+            "version": "3.0.0",
+            "branch": "master"
+        }
+    ],
+    "dependencies": {
+        "mod-autobalance": {
+            "name": "mod-autobalance",
+            "url": "https://github.com/azerothcore/mod-autobalance",
+            "baseDir": ""
+        }
+    }
+}

@@ -1,0 +1,9 @@
+INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES('5166677', '5166606', '3.71345', '156.152', '0', '0', '0');
+INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES('5166677', '5166609', '3.82316', '160.003', '0', '0', '0');
+INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES('5166677', '5166612', '3.85806', '178.772', '0', '0', '0');
+INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES('5166677', '5166614', '4.15493', '184.23', '0', '0', '0');
+INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES('5166677', '5166617', '3.55039', '162.711', '0', '0', '0');
+INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES('5166677', '5166624', '2.11696', '189.447', '0', '0', '0');
+INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES('5166677', '5166628', '1.91381', '160.124', '0', '0', '0');
+INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES('5166677', '5166631', '2.03399', '141.823', '0', '0', '0');
+INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES('5166677', '5166677', '2.67931', '43.8574', '0', '0', '0');

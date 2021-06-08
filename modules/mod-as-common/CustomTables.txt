@@ -1,0 +1,26 @@
+// DB Extra
+Everything
+
+
+// DB World
+custom_npc_tele_association
+custom_npc_tele_category
+custom_npc_tele_description
+irc_autoannunce
+irc_commands
+irc_inchan
+quest_bugged
+version_db_world
+
+
+// DB Characters
+azth_achievement_stats
+character_smartstone_commands
+custom_transmogrification
+custom_transmogrification_sets
+gh_guildadd
+version_db_characters
+
+
+// DB Auth
+version_db_auth

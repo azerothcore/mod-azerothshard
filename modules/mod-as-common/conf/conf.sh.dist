@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+DATABASES+=(
+	"EXTRA"
+)
+
+#
+# CUSTOM
+#
+
+AZTHSD_PATH_WORLD_DB_DIFF=$AZTHSD_PATH_ROOT"/data/sql/db-world-diff/"
+
+DB_CHARACTERS_CUSTOM_PATHS+=(
+	$AZTHSD_PATH_ROOT"/data/sql/db-characters/"
+)
+
+DB_AUTH_CUSTOM_PATHS+=(
+	$AZTHSD_PATH_ROOT"/data/sql/db-auth/"
+)
+
+DB_WORLD_CUSTOM_PATHS+=(
+	$AZTHSD_PATH_WORLD_DB_DIFF
+)
+
+#
+# EXTRA
+#
+
+DB_EXTRA_CUSTOM_PATHS+=(
+	$AZTHSD_PATH_ROOT"/data/sql/db-extra/"
+)
+
+DB_EXTRA_CONF="MYSQL_USER='root'; \
+                    MYSQL_PASS='root'; \
+                    MYSQL_HOST='localhost';\
+                    "
+
+#
+# UPDATES
+#
+
+#DB_CHARACTERS_UPDATE_PATHS+=(
+#	$AZTHSD_PATH_ROOT"/data/sql/updates/char/"
+#)
+
+#DB_WORLD_UPDATE_PATHS+=(
+#	$AZTHSD_PATH_ROOT"/data/sql/updates/world/"
+#)
+
+
+
+
+
