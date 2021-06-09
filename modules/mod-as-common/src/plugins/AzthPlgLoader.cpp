@@ -8,6 +8,7 @@
 void AddSC_azth_commandscript();
 void AddSC_azth_player_plg();
 void AddSC_AzthWorldScript();
+void AddSC_azth_misc_plg();
 
 
 void AddAzthScripts()
@@ -17,6 +18,7 @@ void AddAzthScripts()
     AddSC_azth_commandscript();
     AddSC_azth_player_plg();
     AddSC_AzthWorldScript();
+    AddSC_azth_misc_plg();
 }
 
 

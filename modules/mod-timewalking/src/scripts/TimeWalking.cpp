@@ -852,41 +852,6 @@ public:
         }
     }
 
-    void OnItemRoll(Player const* player, LootStoreItem const *item, float &chance, Loot &loot, LootStore const& store) override
-    {
-        // this check assume that sAzthUtils->isEligibleForBonusByArea(player) has been already checked
-        if (!sAZTH->GetAZTHLoot(&loot))
-            return;
-
-        if ((loot.quest_items.size() + loot.items.size()) >= MAX_NR_LOOT_ITEMS)
-        {
-            chance = 0;
-            return;
-        }
-
-        if (chance >= 100.0f || chance <= 0)
-            return;
-
-        if (!player->GetMap()->IsDungeon() && !player->GetMap()->IsRaid())
-            return;
-
-        if (item->mincount >= 0)
-        {
-            ItemTemplate const* i = sObjectMgr->GetItemTemplate(item->itemid);
-
-            if (i && i->Quality < ITEM_QUALITY_RARE)
-                return;
-        }
-
-        if (&store != &LootTemplates_Gameobject && &store != &LootTemplates_Creature)
-            return;
-
-        if (chance < 20.f)
-            chance += 20.f;
-
-        sAZTH->DeleteAZTHLoot(&loot);
-    }
-
     void OnInitializeLockedDungeons(Player* player, uint8& /*level*/, uint32& lockData, lfg::LFGDungeonData const* dungeon) override
     {
         switch(lockData)

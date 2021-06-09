@@ -34,6 +34,12 @@ enum NxEncouters
     MAX_ENCOUNTERS,
 };
 
+AzthUtils* AzthUtils::instance()
+{
+    static AzthUtils instance;
+    return &instance;
+}
+
 
 AzthUtils::AzthUtils()
 {
@@ -761,44 +767,45 @@ int AzthUtils::getReaction(Unit const* unit, Unit const* target) {
         }
     }
 
-    if (dimUnit== DIMENSION_GUILD && dimTarget == DIMENSION_GUILD) {
-        GH_unit *su = nullptr;
-        if (!selfPlayerOwner) {
-            su = GHobj.GetUnitByGuid(unit->GetGUID().GetCounter());
+    // [AZTH-DISABLE]
+    // if (dimUnit== DIMENSION_GUILD && dimTarget == DIMENSION_GUILD) {
+    //     GH_unit *su = nullptr;
+    //     if (!selfPlayerOwner) {
+    //         su = GHobj.GetUnitByGuid(unit->GetGUID().GetCounter());
 
-            if (!su)
-                return -1;
+    //         if (!su)
+    //             return -1;
 
-            if (su->type == NPC_DUMMY)
-                return REP_HOSTILE;
-        }
+    //         if (su->type == NPC_DUMMY)
+    //             return REP_HOSTILE;
+    //     }
 
-        GH_unit *tu = nullptr;
-        if (!targetPlayerOwner) {
-            tu = GHobj.GetUnitByGuid(target->GetGUID().GetCounter());
+    //     GH_unit *tu = nullptr;
+    //     if (!targetPlayerOwner) {
+    //         tu = GHobj.GetUnitByGuid(target->GetGUID().GetCounter());
 
-            if (!tu)
-                return -1;
+    //         if (!tu)
+    //             return -1;
 
-            if (tu->type == NPC_DUMMY)
-                return REP_HOSTILE;
-        }
+    //         if (tu->type == NPC_DUMMY)
+    //             return REP_HOSTILE;
+    //     }
 
-        uint32 guildUnit=selfPlayerOwner ? selfPlayerOwner->GetGuildId() : su->guild;
-        uint32 guildTarget=targetPlayerOwner ? targetPlayerOwner->GetGuildId() : tu->guild;
+    //     uint32 guildUnit=selfPlayerOwner ? selfPlayerOwner->GetGuildId() : su->guild;
+    //     uint32 guildTarget=targetPlayerOwner ? targetPlayerOwner->GetGuildId() : tu->guild;
 
-        // it can happen only when the unit is a creature and
-        // not assigned to any guild (blackmarket NPCs for example)
-        // A player with guild = 0 shouldn't be allowed to enter
-        // this dimension and there are checks about it in other places
-        if (!guildTarget || !guildUnit) {
-            // normal creature (not assigned to any guild)
-            // get the default reaction
-            return -1;
-        }
+    //     // it can happen only when the unit is a creature and
+    //     // not assigned to any guild (blackmarket NPCs for example)
+    //     // A player with guild = 0 shouldn't be allowed to enter
+    //     // this dimension and there are checks about it in other places
+    //     if (!guildTarget || !guildUnit) {
+    //         // normal creature (not assigned to any guild)
+    //         // get the default reaction
+    //         return -1;
+    //     }
 
-        return guildUnit != guildTarget ? REP_HOSTILE : REP_FRIENDLY;
-    }
+    //     return guildUnit != guildTarget ? REP_HOSTILE : REP_FRIENDLY;
+    // }
 
     return -1;
 }

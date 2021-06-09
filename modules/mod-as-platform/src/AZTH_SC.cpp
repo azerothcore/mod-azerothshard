@@ -990,44 +990,18 @@ class Misc_SC : public MiscScript
 public:
     Misc_SC() : MiscScript("Misc_SC") { }
 
-    void OnConstructObject(Object* origin) override
+    void OnAfterLootTemplateProcess(Loot* loot, LootTemplate const* tab, LootStore const& store, Player* lootOwner, bool /* personal */, bool /* noEmptyError */, uint16 lootMode) override
     {
-        sAZTH->AddAZTHObject(origin);
-    }
+        if (!sConfigMgr->GetBoolDefault("Azth.Multiplies.Drop.Enable", false))
+            return;
 
-    void OnDestructObject(Object* origin) override
-    {
-        sAZTH->DeleteAZTHObject(origin);
-    }
-
-    void OnConstructPlayer(Player* origin) override
-    {
-        sAZTH->AddAZTHPlayer(origin);
-    }
-
-    void OnDestructPlayer(Player* origin) override
-    {
-        sAZTH->DeleteAZTHPlayer(origin);
-    }
-
-    void OnConstructGroup(Group* origin) override
-    {
-        sAZTH->AddAZTHGroup(origin);
-    }
-
-    void OnDestructGroup(Group* origin) override
-    {
-        sAZTH->DeleteAZTHGroup(origin);
-    }
-
-    void OnConstructInstanceSave(InstanceSave* origin) override
-    {
-        sAZTH->AddAZTHInstanceSave(origin);
-    }
-
-    void OnDestructInstanceSave(InstanceSave* origin) override
-    {
-        sAZTH->DeleteAZTHInstanceSave(origin);
+        //Dangerous since it can drops multiple quest items
+        //[AZTH] give another loot process if done with correct level
+        if (sAzthUtils->isEligibleForBonusByArea(lootOwner) && (&store == &LootTemplates_Gameobject || &store == &LootTemplates_Creature))
+        {
+            sAZTH->AddAZTHLoot(loot);
+            tab->Process(*loot, store, lootMode, lootOwner);
+        }
     }
 
     // For WoW Armory
@@ -1093,20 +1067,6 @@ public:
         // to avoid bad visual effect in spell bar
         if (oldSpellId != spellId)
             spell->SetSpellInfo(sSpellMgr->GetSpellInfo(oldSpellId));
-    }
-
-    void OnAfterLootTemplateProcess(Loot* loot, LootTemplate const* tab, LootStore const& store, Player* lootOwner, bool /* personal */, bool /* noEmptyError */, uint16 lootMode) override
-    {
-        if (!sConfigMgr->GetBoolDefault("Azth.Multiplies.Drop.Enable", false))
-            return;
-
-        //Dangerous since it can drops multiple quest items
-        //[AZTH] give another loot process if done with correct level
-        if (sAzthUtils->isEligibleForBonusByArea(lootOwner) && (&store == &LootTemplates_Gameobject || &store == &LootTemplates_Creature))
-        {
-            sAZTH->AddAZTHLoot(loot);
-            tab->Process(*loot, store, lootMode, lootOwner);
-        }
     }
 
     void OnInstanceSave(InstanceSave* instanceSave) override

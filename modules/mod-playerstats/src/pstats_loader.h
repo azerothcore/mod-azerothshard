@@ -4,7 +4,7 @@
 void AddSC_playerstats();
 
 void AddPlayerStatsScripts() {
-    AddSC_playerstats();
+    //AddSC_playerstats();
 }
 
 

@@ -75,7 +75,7 @@ uint32 AzthPlayer::getInstanceLevel(bool normalize /*=true*/)
         InstanceSave *is = sInstanceSaveMgr->PlayerGetInstanceSave(
             player->GetGUID(), map->GetId(),player->GetDifficulty((map->IsRaid())));
 
-        if (is)
+        if (is && sAZTH->GetAZTHInstanceSave(is))
         {
             instanceLevel = sAZTH->GetAZTHInstanceSave(is)->levelMax;
 

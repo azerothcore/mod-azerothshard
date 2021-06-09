@@ -277,11 +277,12 @@ bool AzthPlayer::canGroup(Player* with)
     return true;
 }
 
-bool AzthPlayer::canJoinQueue(AzthQueueMasks type)
+bool AzthPlayer::canJoinQueue(AzthQueueMasks /* type */)
 {
-    if ((type & AZTH_QUEUE_ARENA) == type)
-        if (!sASeasonMgr->canJoinArenaOrBg(player))
-            return false;
+    // [AZTH-DISABLED]
+    // if ((type & AZTH_QUEUE_ARENA) == type)
+    //     if (!sASeasonMgr->canJoinArenaOrBg(player))
+    //         return false;
 
     return true;
 }
@@ -497,11 +498,12 @@ bool AzthPlayer::canEquipItem(ItemTemplate const* proto)
         return true;
 
     // it is needed to avoid equip in empty slots
-    if (hasGear())
-        return false;
-
-    if (!sASeasonMgr->checkItem(proto, player))
-        return false;
+    // [AZTH-DISABLED]
+    // if (hasGear())
+    //     return false;
+    // [AZTH-DISABLED]
+    // if (!sASeasonMgr->checkItem(proto, player))
+    //     return false;
 
     if (!checkItem(proto))
         return false;
@@ -680,3 +682,24 @@ void AzthPlayer::setArena3v3Info(uint8 type, uint32 value)
 {
     arena3v3Info[type] = value;
 }
+
+bool AzthPlayer::isInBlackMarket() {
+    std::vector<float> pos = {player->GetPositionX(), player->GetPositionY(), player->GetPositionZ()};
+    // (1, 4818.27f, -1971.3f, 1069.75f, 0.174f, 0);
+    if (player->GetMapId() != 37)
+        return false;
+
+    /*if (player->GetZoneId() != 331)
+        return false;
+
+    if (pos[0] < 2650.f || pos[0] > 3100.f)
+        return false;
+
+    if (pos[1] < 2250.f || pos[1] > -2800.f)
+        return false;
+
+    if (pos[2] < 80.f || pos[2] > 180.f)
+        return false;
+    */
+    return true;
+};
