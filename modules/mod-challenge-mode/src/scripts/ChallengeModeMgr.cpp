@@ -17,6 +17,9 @@ void ChallengeModeMgr::LoadConfig(bool /* reload */)
 }
 
 bool ChallengeModeMgr::isEligibleForReward(Player const *player) {
+    if (!player->IsInWorld())
+        return true;
+
     // disable rewards only for dungeons
     if (!player->GetMap()->IsDungeon() && !player->GetMap()->IsRaid())
         return true;
