@@ -44,11 +44,25 @@ public:
 class ChallengeModePlayer : public PlayerScript
 {
 public:
-    ChallengeModePlayer() : PlayerScript("ChallengeModePlayer") { }
+    ChallengeModePlayer() : PlayerScript("ChallengeModePlayer") {
+
+    }
 
     bool OnBeforeAchiComplete(Player* player, AchievementEntry const* /* achievement */) override
     {
         return sChallengeMode->isEligibleForReward(player);
+    }
+
+    bool OnBeforeCriteriaProgress(Player* player, AchievementCriteriaEntry const* /*criteria*/) override
+    {
+        return sChallengeMode->isEligibleForReward(player);
+    }
+
+    void OnGivePlayerXP(Player* player, uint32& amount, Unit* /* victim */) override
+    {
+        if (!sChallengeMode->isEligibleForReward(player)) {
+            amount = 0
+        }
     }
 };
 

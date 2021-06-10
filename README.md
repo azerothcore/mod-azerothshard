@@ -14,10 +14,16 @@ To uninstall:
 
 `./acore.sh module uninstall mod-azerothshard`
 
+## Configure
+
+Create a copy of the `azth_mod.conf.dist` and rename it as `azth_mod.conf` under your etc folder
+Then you can change configurations as you whish
+
 ## Features
 
 List of features that will be published open-source:
 
+* Challenge Mode
 * Mythic+
 * PlayerStats
 * Timewalking (libraries only)
