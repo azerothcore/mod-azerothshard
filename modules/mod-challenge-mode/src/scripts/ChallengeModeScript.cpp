@@ -58,10 +58,10 @@ public:
         return sChallengeMode->isEligibleForReward(player);
     }
 
-    void OnGivePlayerXP(Player* player, uint32& amount, Unit* /* victim */) override
+    void OnGiveXP(Player* player, uint32& amount, Unit* /* victim */) override
     {
         if (!sChallengeMode->isEligibleForReward(player)) {
-            amount = 0
+            amount = 0;
         }
     }
 };
