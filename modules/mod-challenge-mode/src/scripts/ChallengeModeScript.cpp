@@ -7,11 +7,20 @@
 #include "Group.h"
 #include "AzthUtils.h"
 #include "AZTH.h"
+#include "ChallengeModeMgr.h"
 
 class AzthUtils;
 
-#define MAX_HIGHER_LEVEL 3
+class ChallengeModeWorld : public WorldScript
+{
+public:
+    ChallengeModeWorld() : WorldScript("ChallengeModeWorld") { }
 
+    void OnAfterConfigLoad(bool reload) override
+    {
+        sChallengeMode->LoadConfig(reload);
+    }
+};
 class ChallengeModeMisc : public MiscScript
 {
 public:
@@ -39,18 +48,7 @@ public:
 
     bool OnBeforeAchiComplete(Player* player, AchievementEntry const* /* achievement */) override
     {
-        WorldLocation pos = WorldLocation(player->GetMapId(), player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetOrientation());
-        uint32 posLvl=sAzthUtils->getPositionLevel(false, player->GetMap(), pos);
-
-        if (!player->GetMap()->IsDungeon() && !player->GetMap()->IsRaid())
-            return true;
-
-        uint32 level = player->getLevel();
-        if (posLvl > level && posLvl - level == MAX_HIGHER_LEVEL) {
-            return false;
-        }
-
-        return true;
+        return sChallengeMode->isEligibleForReward(player);
     }
 };
 
@@ -63,15 +61,7 @@ public:
 
     void OnItemRoll(Player const* player, LootStoreItem const */* item */, float &chance, Loot &/* loot */, LootStore const& /* store */) override
     {
-        WorldLocation pos = WorldLocation(player->GetMapId(), player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetOrientation());
-        uint32 posLvl=sAzthUtils->getPositionLevel(false, player->GetMap(), pos);
-
-        uint32 level = player->getLevel();
-
-        if (!player->GetMap()->IsDungeon() && !player->GetMap()->IsRaid())
-            return;
-
-        if (posLvl > level && posLvl - level == MAX_HIGHER_LEVEL) {
+        if (!sChallengeMode->isEligibleForReward(player)) {
             chance = 0;
             return;
         }
@@ -116,4 +106,5 @@ void AddSC_challengemode() {
     new ChallengeModeMisc();
     new ChallengeModeGlobal();
     new ChallengeModePlayer();
+    new ChallengeModeWorld();
 }

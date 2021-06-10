@@ -34,3 +34,7 @@ add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/modules/mod-smartstone")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/modules/mod-timewalking")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/modules/mod-tournament")
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/modules/mod-xp-rates")
+
+
+# Add config file
+AC_ADD_CONFIG_FILE("${CMAKE_CURRENT_LIST_DIR}/mod-as-common/conf/azth_mod.conf.dist")

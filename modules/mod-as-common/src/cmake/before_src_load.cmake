@@ -2,6 +2,9 @@
 AZTH_LOAD_SRC("mod-as-common/src/game")
 AZTH_LOAD_SRC("mod-as-common/src/plugins")
 AZTH_LOAD_SRC("mod-pvp-mode/src")
+AZTH_LOAD_SRC("mod-as-platform/src")
+AZTH_LOAD_SRC("mod-timewalking/src/scripts")
+AZTH_LOAD_SRC("mod-playerstats/src/scripts")
 
 if( NOT WIN32 )
   message("defined: ${_AZTH_MOD_CONFIG}")

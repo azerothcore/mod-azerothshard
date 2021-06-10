@@ -4,10 +4,10 @@
 #include "Common.h"
 #include "Define.h"
 #include "Config.h"
+#include <map>
 
 class AzthAchievement
 {
-    friend class ACE_Singleton<AzthAchievement, ACE_Null_Mutex>;
 public:
     //GETTERS
     uint32 GetAchievement() const;
@@ -55,9 +55,11 @@ private:
 
 class AzthAchievementMgr {
 public:
+    static AzthAchievementMgr* instance();
+
     std::map<uint32, AzthAchievement> achievementList;
 };
 
-#define sAzthAchievementMgr ACE_Singleton<AzthAchievementMgr, ACE_Null_Mutex>::instance()
+#define sAzthAchievementMgr AzthAchievementMgr::instance()
 
 #endif

@@ -1,5 +1,11 @@
 #include "raid.h"
 
+TwRaid* TwRaid::instance()
+{
+    static TwRaid instance;
+    return &instance;
+}
+
 TwRaid::TwRaid()
 {
 	id = uint32(0);

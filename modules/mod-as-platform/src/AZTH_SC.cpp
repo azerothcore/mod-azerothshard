@@ -14,7 +14,7 @@
 #include "GuildHouse.h"
 #include "Teleport.h"
 #include "Solo3v3.h"
-
+#include "SpellAuraEffects.h"
 #include "ScriptMgr.h"
 #include "ArenaTeamMgr.h"
 #include "BattlegroundQueue.h"
@@ -26,6 +26,8 @@
 #include "PetitionMgr.h"
 #include "MapManager.h"
 #include "ExtraDatabase.h"
+
+class AuraEffect;
 
 // SC
 class Arena_SC : public ArenaScript

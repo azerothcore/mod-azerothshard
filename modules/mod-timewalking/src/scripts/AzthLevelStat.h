@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "Define.h"
 #include "Config.h"
+#include <map>
 
 enum aura_timewalking_enum
 {
@@ -86,7 +87,6 @@ enum TWSpecialLevels
 
 class AzthLevelStat
 {
-    friend class ACE_Singleton<AzthLevelStat, ACE_Null_Mutex>;
 public:
     //GETTERS
     uint32 GetLevel() const;

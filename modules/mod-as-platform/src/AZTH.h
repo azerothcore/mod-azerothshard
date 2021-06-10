@@ -1,7 +1,3 @@
-/*
- *  Copyright (С) since 2019 Andrei Guluaev (Winfidonarleyan/Kargatum) https://github.com/Winfidonarleyan 
- */
-
 #ifndef _AZTH_MODULE_H_
 #define _AZTH_MODULE_H_
 
@@ -50,7 +46,7 @@ public:
     float GetRatePvPRankExtraHonor();
 
     //[AZTH] in-game mailer
-    void SendGameMail(Player* receiver, std::string subject, std::string body, uint32 money, uint32 itemId = 0, uint32 itemCount = 0); 
+    void SendGameMail(Player* receiver, std::string subject, std::string body, uint32 money, uint32 itemId = 0, uint32 itemCount = 0);
 
     // ExternalMail
     bool IsExternalMailEnable();
@@ -76,7 +72,7 @@ private:
     AZTHLootContainer _lootStore;
 
     // PVP Rank Patch
-    uint32 _PvP_Ranks[HKRANKMAX]; 
+    uint32 _PvP_Ranks[HKRANKMAX];
     float _RatePvPRankExtraHonor = 0.0f;
 
     // ExternalMail

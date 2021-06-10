@@ -4,11 +4,13 @@
 #include "Common.h"
 #include "Define.h"
 #include "Config.h"
+#include <map>
 
 class TwRaid
 {
-    friend class ACE_Singleton<TwRaid, ACE_Null_Mutex>;
 public:
+    static TwRaid* instance();
+
 	//GETTERS
 	uint32 GetId() const;
 	std::string GetName() const;
@@ -45,6 +47,6 @@ private:
     std::map<uint32, TwRaid> raidList;
 };
 
-#define sAzthRaid ACE_Singleton<TwRaid, ACE_Null_Mutex>::instance()
+#define sAzthRaid TwRaid::instance()
 
 #endif

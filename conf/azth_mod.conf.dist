@@ -1,0 +1,15 @@
+[worldserver]
+
+#
+# Difference between the position level and the player level to disable the reward
+# default: 0 (disabled)
+#
+ChallengeMode.noReward.deltaLevelHigher=0
+ChallengeMode.noReward.deltaLevelLower=0
+
+#
+# Position levels to start checking for the difference between the position and the player level
+# default: 0 (disabled)
+#
+ChallengeMode.noReward.startLevelHigher=0
+ChallengeMode.noReward.startLevelLower=0

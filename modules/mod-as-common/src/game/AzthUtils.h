@@ -21,7 +21,6 @@ class Group;
 
 class AzthUtils
 {
-    friend class ACE_Singleton<AzthUtils, ACE_Null_Mutex>;
 public:
     static AzthUtils* instance();
 

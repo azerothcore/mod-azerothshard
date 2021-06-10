@@ -16,5 +16,3 @@ AC_ADD_SCRIPT("${MOD_AZTH_DIR}/src/AZTH_SC.cpp")
 # Add scripts to script loader
 #AC_ADD_SCRIPT_LOADER("AZTH" "${MOD_AZTH_DIR}/src/AZTHLoad.h")
 
-# Add config file
-# AC_ADD_CONFIG_FILE("${MOD_AZTH_DIR}/conf/AZTH.conf.dist")
