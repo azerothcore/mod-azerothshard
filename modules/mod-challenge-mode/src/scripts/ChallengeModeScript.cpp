@@ -111,6 +111,8 @@ public:
         //     chance += 20.f;
 
         // sAZTH->DeleteAZTHLoot(&loot);
+
+        return true;
     }
 
 };
