@@ -73,11 +73,10 @@ public:
     ChallengeModeGlobal() : GlobalScript("ChallengeModeGlobal") {
     }
 
-    void OnItemRoll(Player const* player, LootStoreItem const */* item */, float &chance, Loot &/* loot */, LootStore const& /* store */) override
+    bool OnItemRoll(Player const* player, LootStoreItem const */* item */, float &chance, Loot &/* loot */, LootStore const& /* store */) override
     {
         if (!sChallengeMode->isEligibleForReward(player)) {
-            chance = 0;
-            return;
+            return false;
         }
 
         // [AZTH-DISABLED]
