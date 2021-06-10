@@ -73,13 +73,13 @@ public:
     ChallengeModeGlobal() : GlobalScript("ChallengeModeGlobal") {
     }
 
-    bool OnBeforeLootEqualChanced(Player const* player, LootStoreItemList EqualChanced, Loot& loot, LootStore const& store) override
+    bool OnBeforeLootEqualChanced(Player const* player, LootStoreItemList /* EqualChanced */, Loot& /* loot */, LootStore const& /* store */) override
     {
         if (!sChallengeMode->isEligibleForReward(player)) {
             return false;
         }
 
-        return true
+        return true;
     }
 
     bool OnItemRoll(Player const* player, LootStoreItem const */* item */, float &chance, Loot &/* loot */, LootStore const& /* store */) override
