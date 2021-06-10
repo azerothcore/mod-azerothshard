@@ -42,6 +42,9 @@ public:
         WorldLocation pos = WorldLocation(player->GetMapId(), player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetOrientation());
         uint32 posLvl=sAzthUtils->getPositionLevel(true, player->GetMap(), pos);
 
+        if (!player->GetMap()->IsDungeon() && !player->GetMap()->IsRaid())
+            return true;
+
         uint32 level = player->getLevel();
         if (posLvl > level && posLvl - level == MAX_HIGHER_LEVEL) {
             return false;
@@ -64,6 +67,9 @@ public:
         uint32 posLvl=sAzthUtils->getPositionLevel(true, player->GetMap(), pos);
 
         uint32 level = player->getLevel();
+
+        if (!player->GetMap()->IsDungeon() && !player->GetMap()->IsRaid())
+            return;
 
         if (posLvl > level && posLvl - level == MAX_HIGHER_LEVEL) {
             chance = 0;
