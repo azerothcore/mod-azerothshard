@@ -10,12 +10,14 @@
 
 class AzthUtils;
 
+#define MAX_HIGHER_LEVEL 3
+
 class ChallengeModeMisc : public MiscScript
 {
 public:
     ChallengeModeMisc() : MiscScript("ChallengeModeMisc") { }
 
-    void OnAfterLootTemplateProcess(Loot* loot, LootTemplate const* tab, LootStore const& store, Player* lootOwner, bool /* personal */, bool /* noEmptyError */, uint16 lootMode) override
+    void OnAfterLootTemplateProcess(Loot* /* loot */, LootTemplate const* /* tab */, LootStore const& /* store */, Player* /* lootOwner */, bool /* personal */, bool /* noEmptyError */, uint16 /* lootMode */) override
     {
         // if (!sConfigMgr->GetBoolDefault("Azth.Multiplies.Drop.Enable", false))
         //     return;
@@ -30,6 +32,25 @@ public:
     }
 };
 
+class ChallengeModePlayer : public PlayerScript
+{
+public:
+    ChallengeModePlayer() : PlayerScript("ChallengeModePlayer") { }
+
+    bool OnBeforeAchiComplete(Player* player, AchievementEntry const* /* achievement */) override
+    {
+        WorldLocation pos = WorldLocation(player->GetMapId(), player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetOrientation());
+        uint32 posLvl=sAzthUtils->getPositionLevel(true, player->GetMap(), pos);
+
+        uint32 level = player->getLevel();
+        if (posLvl > level && posLvl - level == MAX_HIGHER_LEVEL) {
+            return false;
+        }
+
+        return true;
+    }
+};
+
 class ChallengeModeGlobal : public GlobalScript
 {
 public:
@@ -37,19 +58,16 @@ public:
     ChallengeModeGlobal() : GlobalScript("ChallengeModeGlobal") {
     }
 
-    void OnItemRoll(Player const* player, LootStoreItem const *item, float &chance, Loot &loot, LootStore const& store) override
+    void OnItemRoll(Player const* player, LootStoreItem const */* item */, float &chance, Loot &/* loot */, LootStore const& /* store */) override
     {
         WorldLocation pos = WorldLocation(player->GetMapId(), player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetOrientation());
         uint32 posLvl=sAzthUtils->getPositionLevel(true, player->GetMap(), pos);
 
-        if (posLvl>0)
-        {
-            uint32 level = player->getLevel();
+        uint32 level = player->getLevel();
 
-            if (posLvl > level && posLvl - level == 9) {
-                chance = 0;
-                return;
-            }
+        if (posLvl > level && posLvl - level == MAX_HIGHER_LEVEL) {
+            chance = 0;
+            return;
         }
 
         // [AZTH-DISABLED]
@@ -91,4 +109,5 @@ public:
 void AddSC_challengemode() {
     new ChallengeModeMisc();
     new ChallengeModeGlobal();
+    new ChallengeModePlayer();
 }
