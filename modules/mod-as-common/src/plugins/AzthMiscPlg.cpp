@@ -23,35 +23,36 @@ public:
         sAZTH->DeleteAZTHPlayer(origin);
     }
 
-    void OnConstructObject(Object* origin) override
-    {
-        sAZTH->AddAZTHObject(origin);
-    }
+    // [AZTH-DISABLED]
+    // void OnConstructObject(Object* origin) override
+    // {
+    //     sAZTH->AddAZTHObject(origin);
+    // }
 
-    void OnDestructObject(Object* origin) override
-    {
-        sAZTH->DeleteAZTHObject(origin);
-    }
+    // void OnDestructObject(Object* origin) override
+    // {
+    //     sAZTH->DeleteAZTHObject(origin);
+    // }
 
-    void OnConstructGroup(Group* origin) override
-    {
-        sAZTH->AddAZTHGroup(origin);
-    }
+    // void OnConstructGroup(Group* origin) override
+    // {
+    //     sAZTH->AddAZTHGroup(origin);
+    // }
 
-    void OnDestructGroup(Group* origin) override
-    {
-        sAZTH->DeleteAZTHGroup(origin);
-    }
+    // void OnDestructGroup(Group* origin) override
+    // {
+    //     sAZTH->DeleteAZTHGroup(origin);
+    // }
 
-    void OnConstructInstanceSave(InstanceSave* origin) override
-    {
-        sAZTH->AddAZTHInstanceSave(origin);
-    }
+    // void OnConstructInstanceSave(InstanceSave* origin) override
+    // {
+    //     sAZTH->AddAZTHInstanceSave(origin);
+    // }
 
-    void OnDestructInstanceSave(InstanceSave* origin) override
-    {
-        sAZTH->DeleteAZTHInstanceSave(origin);
-    }
+    // void OnDestructInstanceSave(InstanceSave* origin) override
+    // {
+    //     sAZTH->DeleteAZTHInstanceSave(origin);
+    // }
 };
 
 void AddSC_azth_misc_plg() {
