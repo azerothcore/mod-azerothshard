@@ -41,11 +41,11 @@
      std::vector<ChatCommand> GetCommands() const override {
          // name , level, allowConsole, function
          static std::vector<ChatCommand> lookupAzthCommands = {
-            { "fixranks"       , SEC_PLAYER, false, &handleFixRanks,           ".azth fixranks : fix all previous not learned spell ranks, expecially used for portings" },
+            //{ "fixranks"       , SEC_PLAYER, false, &handleFixRanks,           ".azth fixranks : fix all previous not learned spell ranks, expecially used for portings" },
             { "arealevel"      , SEC_PLAYER, false, &handlePrintAreaLevel,     ".azth arealevel : to show calculated level for current area" },
             // { "maxskill"       , SEC_PLAYER, false, &handleAzthMaxSkill,       ".azth maxskill: if you're level 80, you can use this command to max out weapons skills"},
             // { "xp"             , SEC_PLAYER, false, &handleAzthXP,             ".azth xp <rate>: you can set an arbitrary experience rate"},
-            { "pstatinfo"      , SEC_PLAYER, false, &handleAzthCurrLevel,      ".azth pstatinfo: show info about level of selected player and size&level of its group if exists)"},
+            //{ "pstatinfo"      , SEC_PLAYER, false, &handleAzthCurrLevel,      ".azth pstatinfo: show info about level of selected player and size&level of its group if exists)"},
             // { "smartstone"     , SEC_PLAYER, false, &handleAzthSmartstone,     ".azth smartstone: create a smartstone in your bag" },
             // { "bonus"          , SEC_ADMINISTRATOR, false, &handleAzthBonus,   ".azth bonus <rate> <bracket> :  set temp a rating bonus for brackets" },
             // { "ptype"          , SEC_PLAYER, false, &handlePlayerType,         ".azth ptype : shows player tipology (normal,fullpvp)" },
