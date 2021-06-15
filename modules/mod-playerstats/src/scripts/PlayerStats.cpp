@@ -3,6 +3,7 @@
 #include "Group.h"
 #include "Player.h"
 #include "AZTH.h"
+#include "AzthGroupMgr.h"
 
 uint32 AzthPlayer::normalizeLvl(uint32 level)
 {
@@ -48,11 +49,17 @@ uint32 AzthPlayer::getGroupLevel(bool normalize /*=true*/, bool checkInstance /*
         groupLevel = getInstanceLevel(normalize);
     }
 
+
     Group *group = player->GetGroup();
-    if (group && !groupLevel)
+    if (AzthGroupMgr *azthGroup = sAZTH->GetAZTHGroup(group); azthGroup)
     {
+        if (!azthGroup)
+        {
+            return 0;
+        }
+
         // outworld party or limit case for dungeon
-        groupLevel = sAZTH->GetAZTHGroup(group)->levelMaxGroup;
+        groupLevel = azthGroup->levelMaxGroup;
 
         if (normalize)
             groupLevel = normalizeLvl(groupLevel);
@@ -130,8 +137,9 @@ uint32 AzthPlayer::getGroupSize(bool checkInstance /*=true*/)
     if (!groupSize)
     {
         Group *group = player->GetGroup();
-        if (group)
-            groupSize = sAZTH->GetAZTHGroup(group)->groupSize; // outworld party or limit case for dungeon
+        AzthGroupMgr *azthGroup = sAZTH->GetAZTHGroup(group);
+        if (azthGroup)
+            groupSize = azthGroup->groupSize; // outworld party or limit case for dungeon
     }
 
     return groupSize;

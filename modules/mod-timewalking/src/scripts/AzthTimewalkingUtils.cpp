@@ -3,6 +3,7 @@
 #include "Pet.h"
 #include "Spell.h"
 #include "AZTH.h"
+#include "AzthGroupMgr.h"
 
 class Spell;
 
@@ -197,29 +198,29 @@ bool AzthUtils::updateTwLevel(Player *player,Group *group)
 
     uint32 levelPlayer = sAZTH->GetAZTHPlayer(player)->isTimeWalking() ? sAZTH->GetAZTHPlayer(player)->GetTimeWalkingLevel() : player->getLevel();
 
-    if (group)
+    if (AzthGroupMgr *azthGroup = sAZTH->GetAZTHGroup(group); azthGroup)
     {
         bool updated = false;
-        uint32 maxLevel = sAzthUtils->maxTwLevel(levelPlayer, sAZTH->GetAZTHGroup(group)->levelMaxGroup);
+        uint32 maxLevel = sAzthUtils->maxTwLevel(levelPlayer, azthGroup->levelMaxGroup);
 
-        if (maxLevel != sAZTH->GetAZTHGroup(group)->levelMaxGroup)
+        if (maxLevel != azthGroup->levelMaxGroup)
         {
-            sAZTH->GetAZTHGroup(group)->levelMaxGroup = maxLevel;
+            azthGroup->levelMaxGroup = maxLevel;
             updated = true;
         }
 
-        if (group->GetMembersCount() > sAZTH->GetAZTHGroup(group)->groupSize)
+        if (group->GetMembersCount() > azthGroup->groupSize)
         {
-            sAZTH->GetAZTHGroup(group)->groupSize = group->GetMembersCount();
+            azthGroup->groupSize = group->GetMembersCount();
             updated = true;
         }
 
         if (updated)
         {
-            std::string _slvl=sAzthUtils->getLevelInfo(sAZTH->GetAZTHGroup(group)->levelMaxGroup);
+            std::string _slvl=sAzthUtils->getLevelInfo(azthGroup->levelMaxGroup);
             std::string msg = sAzthLang->getf(AZTH_LANG_GROUP_LEVEL_REG,player, player->GetName().c_str(),_slvl.c_str(), group->GetMembersCount());
             sAzthUtils->sendMessageToGroup(player, player->GetGroup(), msg.c_str());
-            sAZTH->GetAZTHGroup(group)->saveToDb();
+            azthGroup->saveToDb();
             result = true;
         }
     }

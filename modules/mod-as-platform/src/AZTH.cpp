@@ -159,6 +159,11 @@ AzthObject* AZTH::GetAZTHObject(Object* object)
 
 AzthGroupMgr* AZTH::GetAZTHGroup(Group* group)
 {
+    if (!group)
+    {
+        return nullptr;
+    }
+
     if (!_groupStore.count(group))
     {
         sLog->outError("AZTH::GetAZTHGroup - !_groupStore.count(group)");
