@@ -91,7 +91,7 @@ public:
             bg->SetStartDelayTime(BG_START_DELAY_15S);
     }
 
-    void CanSendMessageArenaQueue(BattlegroundQueue* /*queue*/, GroupQueueInfo* ginfo, bool IsJoin) override
+    bool CanSendMessageArenaQueue(BattlegroundQueue* /*queue*/, GroupQueueInfo* ginfo, bool IsJoin)
     {
         if (!ginfo->IsRated || !ginfo->ArenaType || ginfo->Players.empty())
             return true;
