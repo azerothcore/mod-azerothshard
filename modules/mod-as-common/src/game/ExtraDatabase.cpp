@@ -19,11 +19,6 @@
 #include "MySQLPreparedStatement.h"
 #include "DatabaseLoader.h"
 
-class DatabaseLoader;
-
-template class AC_DATABASE_API DatabaseWorkerPool<ExtraDatabaseConnection>;
-DatabaseWorkerPool<ExtraDatabaseConnection> ExtraDatabase;
-
 void ExtraDatabaseConnection::DoPrepareStatements()
 {
     if (!m_reconnecting)
@@ -36,5 +31,15 @@ void ExtraDatabaseConnection::DoPrepareStatements()
 	PrepareStatement(EXTRA_DEL_EXTERNAL_MAIL, "DELETE FROM mail_external WHERE id = ?", CONNECTION_ASYNC);
 }
 
-// template AC_DATABASE_API
-// DatabaseLoader& DatabaseLoader::AddDatabase<ExtraDatabaseConnection>(DatabaseWorkerPool<ExtraDatabaseConnection>&, std::string const&);
+ExtraDatabaseConnection::ExtraDatabaseConnection(MySQLConnectionInfo& connInfo) :
+    MySQLConnection(connInfo) { }
+
+ExtraDatabaseConnection::ExtraDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo) :
+    MySQLConnection(q, connInfo) { }
+
+ExtraDatabaseConnection::~ExtraDatabaseConnection() { }
+
+DatabaseWorkerPool<ExtraDatabaseConnection> ExtraDatabase;
+
+template AC_DATABASE_API
+DatabaseLoader& DatabaseLoader::AddDatabase<ExtraDatabaseConnection>(DatabaseWorkerPool<ExtraDatabaseConnection>&, std::string const&);
