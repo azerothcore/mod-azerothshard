@@ -29,6 +29,12 @@ enum NxEncouters
     MAX_ENCOUNTERS,
 };
 
+AzthFirstKills* AzthFirstKills::instance()
+{
+    static AzthFirstKills instance;
+    return &instance;
+}
+
 bool AzthFirstKills::canCompleteAchi(Player */* player */, uint32 /* achiId */)
 {
     return true;

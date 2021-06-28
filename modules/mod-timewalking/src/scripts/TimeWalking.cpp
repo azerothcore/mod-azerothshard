@@ -1,3 +1,4 @@
+#include "ExtraDatabase.h"
 #include "ScriptMgr.h"
 #include "Unit.h"
 #include "SharedDefines.h"
@@ -17,7 +18,6 @@
 #include "MapManager.h"
 #include "ReputationMgr.h"
 #include "AZTH.h"
-#include "ExtraDatabase.h"
 
 class ReputationMgr;
 
@@ -217,31 +217,31 @@ public:
     {
 		if (player->isUsingLfg())
 		{
-			player->SEND_GOSSIP_MENU(TIMEWALKING_GOSSIP_NPC_TEXT_ACTIVELFG, creature->GetGUID());
+			SendGossipMenuFor(player,TIMEWALKING_GOSSIP_NPC_TEXT_ACTIVELFG, creature->GetGUID());
 			return true;
 		}
 
         if (player->GetGroup())
         {
-            player->SEND_GOSSIP_MENU(TIMEWALKING_GOSSIP_NPC_TEXT_INGROUP, creature->GetGUID());
+            SendGossipMenuFor(player,TIMEWALKING_GOSSIP_NPC_TEXT_INGROUP, creature->GetGUID());
             return true;
         }
 
         if (!sAZTH->GetAZTHPlayer(player)->isTimeWalking()) {
             if (player->getLevel()>=sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL)) {
-                //player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, "Tutte le fasi", GOSSIP_SENDER_MAIN, 5);
-                player->ADD_GOSSIP_ITEM_EXTENDED(GOSSIP_ICON_INTERACT_1, "Livello specifico", GOSSIP_SENDER_MAIN, 6, "Imposta un livello", 0, true);
+                //AddGossipItemFor(player,GOSSIP_ICON_TABARD, "Tutte le fasi", GOSSIP_SENDER_MAIN, 5);
+                AddGossipItemFor(player,GOSSIP_ICON_INTERACT_1, "Livello specifico", GOSSIP_SENDER_MAIN, 6, "Imposta un livello", 0, true);
                 if (player->IsGameMaster()) {
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TRAINER, "Scaling automatico (beta)", GOSSIP_SENDER_MAIN, TIMEWALKING_LVL_AUTO+10000);
+                    AddGossipItemFor(player,GOSSIP_ICON_TRAINER, "Scaling automatico (beta)", GOSSIP_SENDER_MAIN, TIMEWALKING_LVL_AUTO+10000);
                 }
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, "TimeWalking (Wotlk)", GOSSIP_SENDER_MAIN, 4);
+                AddGossipItemFor(player,GOSSIP_ICON_TABARD, "TimeWalking (Wotlk)", GOSSIP_SENDER_MAIN, 4);
             }
-            player->ADD_GOSSIP_ITEM(0, "|TInterface/ICONS/INV_Misc_Coin_01:30|tFlex Mythic+ (Beta)", GOSSIP_SENDER_MAIN, 9); // we can't use another icon otherwise will be automatically selected on gossip hello
+            AddGossipItemFor(player,0, "|TInterface/ICONS/INV_Misc_Coin_01:30|tFlex Mythic+ (Beta)", GOSSIP_SENDER_MAIN, 9); // we can't use another icon otherwise will be automatically selected on gossip hello
         } else {
-            player->ADD_GOSSIP_ITEM(0, "Esci dalla modalità TimeWalking", GOSSIP_SENDER_MAIN, 7);
+            AddGossipItemFor(player,0, "Esci dalla modalità TimeWalking", GOSSIP_SENDER_MAIN, 7);
         }
 
-        player->SEND_GOSSIP_MENU(TIMEWALKING_GOSSIP_NPC_TEXT_MAIN, creature->GetGUID());
+        SendGossipMenuFor(player,TIMEWALKING_GOSSIP_NPC_TEXT_MAIN, creature->GetGUID());
 
         return true;
     }
@@ -292,10 +292,10 @@ public:
             {
                 if (it->second.GetBonus() == 1)
                 {
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, "|cff00ff00|TInterface/ICONS/INV_Misc_Coin_01:30|t|rBonus: " + it->second.GetName()+"|r", GOSSIP_SENDER_MAIN, 10000+it->second.GetLevel());
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, "|cff00ff00|TInterface/ICONS/INV_Misc_Coin_01:30|t|rBonus: " + it->second.GetName()+"|r", GOSSIP_SENDER_MAIN, 10000+it->second.GetLevel());
                 }
             }
-            player->SEND_GOSSIP_MENU(TIMEWALKING_GOSSIP_NPC_TEXT_BONUS, creature->GetGUID());
+            SendGossipMenuFor(player,TIMEWALKING_GOSSIP_NPC_TEXT_BONUS, creature->GetGUID());
         }
 
         if (action == 5)
@@ -320,21 +320,21 @@ public:
 
                 if (std::find(expList.begin(), expList.end(), it->second.GetExp()) == expList.end()) {
                     expList.push_back(it->second.GetExp());
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, exp, GOSSIP_SENDER_MAIN, it->second.GetExp()); // go to phase menu
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, exp, GOSSIP_SENDER_MAIN, it->second.GetExp()); // go to phase menu
                 }
             }
-            player->SEND_GOSSIP_MENU(TIMEWALKING_GOSSIP_NPC_TEXT_EXP, creature->GetGUID());
+            SendGossipMenuFor(player,TIMEWALKING_GOSSIP_NPC_TEXT_EXP, creature->GetGUID());
         }
 
         if (action == 9) {
             for (uint32 i=TIMEWALKING_LVL_VAS_START; i<=TIMEWALKING_LVL_VAS_LVL7; i++) {
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, "Flex Mythic+ "+std::to_string(i-TIMEWALKING_LVL_VAS_START+1), GOSSIP_SENDER_MAIN, i+10000);
+                AddGossipItemFor(player,GOSSIP_ICON_TABARD, "Flex Mythic+ "+std::to_string(i-TIMEWALKING_LVL_VAS_START+1), GOSSIP_SENDER_MAIN, i+10000);
             }
 
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, "Flex Mythic+ 13 Epic", GOSSIP_SENDER_MAIN, 10413);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, "Flex Mythic+ 16 Heroic", GOSSIP_SENDER_MAIN, 10416);
+            AddGossipItemFor(player,GOSSIP_ICON_TABARD, "Flex Mythic+ 13 Epic", GOSSIP_SENDER_MAIN, 10413);
+            AddGossipItemFor(player,GOSSIP_ICON_TABARD, "Flex Mythic+ 16 Heroic", GOSSIP_SENDER_MAIN, 10416);
 
-            player->SEND_GOSSIP_MENU(TIMEWALKING_GOSSIP_NPC_TEXT_MAIN, creature->GetGUID());
+            SendGossipMenuFor(player,TIMEWALKING_GOSSIP_NPC_TEXT_MAIN, creature->GetGUID());
         }
 
         if (action <= 3) //generate phase menu
@@ -349,11 +349,11 @@ public:
                         phaseList.push_back(it->second.GetPhase());
                         std::stringstream s;
                         s << "Fase " << it->second.GetPhase();
-                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, s.str().c_str(), GOSSIP_SENDER_MAIN, 1000 + it->second.GetPhase());
+                        AddGossipItemFor(player,GOSSIP_ICON_TABARD, s.str().c_str(), GOSSIP_SENDER_MAIN, 1000 + it->second.GetPhase());
                     }
                 }
             }
-            player->SEND_GOSSIP_MENU(TIMEWALKING_GOSSIP_NPC_TEXT_PHASE, creature->GetGUID());
+            SendGossipMenuFor(player,TIMEWALKING_GOSSIP_NPC_TEXT_PHASE, creature->GetGUID());
         }
         else if(action >= 1000 && action < 10000) //generate raid menu
         {
@@ -361,10 +361,10 @@ public:
             {
                 if (it->second.GetPhase() == action - 1000)
                 {
-                    player->ADD_GOSSIP_ITEM(0, it->second.GetName(), GOSSIP_SENDER_MAIN, it->second.GetLevel()+10000);
+                    AddGossipItemFor(player,0, it->second.GetName(), GOSSIP_SENDER_MAIN, it->second.GetLevel()+10000);
                 }
             }
-            player->SEND_GOSSIP_MENU(TIMEWALKING_GOSSIP_NPC_TEXT_RAID, creature->GetGUID());
+            SendGossipMenuFor(player,TIMEWALKING_GOSSIP_NPC_TEXT_RAID, creature->GetGUID());
         }
         else if (action >= 10000) //apply level
         {
@@ -377,7 +377,7 @@ public:
             }
             else
             {
-                player->SEND_GOSSIP_MENU(TIMEWALKING_GOSSIP_NPC_TEXT_ALREADYAPPLIED, creature->GetGUID());
+                SendGossipMenuFor(player,TIMEWALKING_GOSSIP_NPC_TEXT_ALREADYAPPLIED, creature->GetGUID());
             }
         }
 
@@ -537,7 +537,7 @@ public:
             {
                 uint32 mailItems=0;
 
-                SQLTransaction trans = CharacterDatabase.BeginTransaction();
+                CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
                 MailDraft* draft = new MailDraft(_proto->Name1, "");
 
                 for (uint32 i = 0; i < count; i++)

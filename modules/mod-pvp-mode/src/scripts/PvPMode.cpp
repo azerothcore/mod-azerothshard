@@ -83,7 +83,7 @@ public:
                 player->SetHonorPoints(2000);
 
                 player->InitTalentForLevel();
-                player->learnDefaultSpells();
+                player->LearnDefaultSkills();
                 player->SetUInt32Value(PLAYER_XP, 0);
                 sAzthUtils->learnClassSpells(player, false);
 
@@ -207,7 +207,7 @@ public:
                 item->SetBinding(true);
                 item->ApplyModFlag(ITEM_FIELD_FLAGS, ITEM_FIELD_FLAG_UNK1, true);
                 /* try to avoid for performances
-                SQLTransaction trans = CharacterDatabase.BeginTransaction();
+                CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();n();
                 item->SaveToDB(trans);
                 CharacterDatabase.CommitTransaction(trans);*/
         /*    }

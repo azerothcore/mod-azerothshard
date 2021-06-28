@@ -131,7 +131,7 @@ public:
         // back to main menu command
         if (action == 2001) {
             parent = 1;
-            player->CLOSE_GOSSIP_MENU();
+            CloseGossipMenuFor(player);
             OnUse(player, item, SpellCastTargets());
             return;
         }
@@ -193,14 +193,14 @@ public:
                 sAZTH->GetAZTHPlayer(player)->decreaseSmartStoneCommandCharges(
                         selectedCommand.id);
             }
-            player->CLOSE_GOSSIP_MENU();
+            CloseGossipMenuFor(player);
             // return;
         }
 
         // open child
         if (selectedCommand.type == OPEN_CHILD) {
             parent = selectedCommand.action;
-            player->CLOSE_GOSSIP_MENU();
+            CloseGossipMenuFor(player);
             OnUse(player, item, SpellCastTargets());
         }
     }
@@ -227,7 +227,7 @@ public:
             if (selectedCommand.charges > 0) {
                 sAZTH->GetAZTHPlayer(player)->decreaseSmartStoneCommandCharges(selectedCommand.id);
             }
-            player->CLOSE_GOSSIP_MENU();
+            CloseGossipMenuFor(player);
         }
     }
 
@@ -245,14 +245,14 @@ public:
                 if (!sAZTH->GetAZTHPlayer(player)->isInBlackMarket())
                 {
                     /*if (sAZTH->GetAZTHPlayer(player)->isPvP())
-                        player->ADD_GOSSIP_ITEM(teleport.icon, sAzthLang->get(AZTH_LANG_SS_TELEPORT_BACK, player), GOSSIP_SENDER_MAIN, teleport.id);*/
+                        AddGossipItemFor(player,teleport.icon, sAzthLang->get(AZTH_LANG_SS_TELEPORT_BACK, player), GOSSIP_SENDER_MAIN, teleport.id);*/
 
-                    player->ADD_GOSSIP_ITEM(teleport.icon, teleport.getText(player), GOSSIP_SENDER_MAIN, teleport.id);
+                    AddGossipItemFor(player,teleport.icon, teleport.getText(player), GOSSIP_SENDER_MAIN, teleport.id);
                 }
                 else
-                    player->ADD_GOSSIP_ITEM(teleport.icon, sAzthLang->get(AZTH_LANG_SS_TELEPORT_BACK, player), GOSSIP_SENDER_MAIN, teleport.id);
+                    AddGossipItemFor(player,teleport.icon, sAzthLang->get(AZTH_LANG_SS_TELEPORT_BACK, player), GOSSIP_SENDER_MAIN, teleport.id);
             } else {
-                player->ADD_GOSSIP_ITEM(teleport.icon, sAzthLang->get(AZTH_LANG_SS_TELEPORT_DISABLED, player), GOSSIP_SENDER_MAIN, 0);
+                AddGossipItemFor(player,teleport.icon, sAzthLang->get(AZTH_LANG_SS_TELEPORT_DISABLED, player), GOSSIP_SENDER_MAIN, 0);
             }
 
             if (!sAZTH->GetAZTHPlayer(player)->isPvP())
@@ -260,31 +260,31 @@ public:
 
             // menu character (rename, change faction, etc) id 4
             SmartStoneCommand characterMenu = sSmartStone->getCommandById(SMRTST_CHAR_MENU);
-            player->ADD_GOSSIP_ITEM(characterMenu.icon, characterMenu.getText(player), GOSSIP_SENDER_MAIN, characterMenu.id);
+            AddGossipItemFor(player,characterMenu.icon, characterMenu.getText(player), GOSSIP_SENDER_MAIN, characterMenu.id);
 
             // menu passive bonus id 9
             SmartStoneCommand passiveMenu = sSmartStone->getCommandById(SMRTST_BONUS_MENU);
-            player->ADD_GOSSIP_ITEM(passiveMenu.icon, passiveMenu.getText(player), GOSSIP_SENDER_MAIN, passiveMenu.id);
+            AddGossipItemFor(player,passiveMenu.icon, passiveMenu.getText(player), GOSSIP_SENDER_MAIN, passiveMenu.id);
         }
 
         if (parent == 2) // not-to-buy commands for the characters menu
         {
             // max skill command
             SmartStoneCommand maxSkill = sSmartStone->getCommandById(SMRTST_MAX_SKILL);
-            player->ADD_GOSSIP_ITEM(maxSkill.icon, maxSkill.getText(player), GOSSIP_SENDER_MAIN, maxSkill.id);
+            AddGossipItemFor(player,maxSkill.icon, maxSkill.getText(player), GOSSIP_SENDER_MAIN, maxSkill.id);
 
             // azth xp command
             SmartStoneCommand azthXp = sSmartStone->getCommandById(SMRTST_XP_CHANGE);
-            player->ADD_GOSSIP_ITEM_EXTENDED(azthXp.icon, azthXp.getText(player), GOSSIP_SENDER_MAIN, azthXp.id, sAzthLang->get(AZTH_LANG_SS_VALUE, player), 0, true);
+            AddGossipItemFor(player,azthXp.icon, azthXp.getText(player), GOSSIP_SENDER_MAIN, azthXp.id, sAzthLang->get(AZTH_LANG_SS_VALUE, player), 0, true);
 
             // reset auras
             SmartStoneCommand resetAuras = sSmartStone->getCommandById(SMRTST_RESET_AURAS);
-            player->ADD_GOSSIP_ITEM(resetAuras.icon, resetAuras.getText(player), GOSSIP_SENDER_MAIN, resetAuras.id);
+            AddGossipItemFor(player,resetAuras.icon, resetAuras.getText(player), GOSSIP_SENDER_MAIN, resetAuras.id);
 
             if (sAZTH->GetAZTHPlayer(player)->isPvP()) {
                 // dalaran teleport
                 SmartStoneCommand dalaranTeleport = sSmartStone->getCommandById(SMRTST_TELEPORT_DALARAN);
-                player->ADD_GOSSIP_ITEM(dalaranTeleport.icon, dalaranTeleport.getText(player), GOSSIP_SENDER_MAIN, dalaranTeleport.id);
+                AddGossipItemFor(player,dalaranTeleport.icon, dalaranTeleport.getText(player), GOSSIP_SENDER_MAIN, dalaranTeleport.id);
             }
 
             if (sAZTH->GetAZTHPlayer(player)->getCurrentDimensionByAura() == DIMENSION_RPG) {
@@ -295,7 +295,7 @@ public:
                     SmartStoneCommand homeTeleport = sSmartStone->getCommandById(SMRTST_TELEPORT_HOUSE);
                     std::string str=homeTeleport.getText(player) + " (" +owner->GetName()+")";
 
-                    player->ADD_GOSSIP_ITEM(homeTeleport.icon, str.c_str() , GOSSIP_SENDER_MAIN, homeTeleport.id);
+                    AddGossipItemFor(player,homeTeleport.icon, str.c_str() , GOSSIP_SENDER_MAIN, homeTeleport.id);
                 }
             }
         }
@@ -337,9 +337,9 @@ public:
 
             if (command.id != 0 && command.parent_menu == parent) {
                 if (command.type != DO_SCRIPTED_ACTION_WITH_CODE) {
-                    player->ADD_GOSSIP_ITEM(command.icon, text, GOSSIP_SENDER_MAIN, command.id);
+                    AddGossipItemFor(player,command.icon, text, GOSSIP_SENDER_MAIN, command.id);
                 } else {
-                    player->ADD_GOSSIP_ITEM_EXTENDED(command.icon, text, GOSSIP_SENDER_MAIN, command.id, sAzthLang->get(AZTH_LANG_SS_VALUE, player), 0, true);
+                    AddGossipItemFor(player,command.icon, text, GOSSIP_SENDER_MAIN, command.id, sAzthLang->get(AZTH_LANG_SS_VALUE, player), 0, true);
                 }
             }
         }
@@ -347,16 +347,16 @@ public:
         // acquista app
 
         /*if (parent == 1)
-          player->ADD_GOSSIP_ITEM(
+          AddGossipItemFor(player,
               0, "|TInterface/ICONS/INV_Misc_Coin_03:30|t Azeroth Store",
               GOSSIP_SENDER_MAIN, 2000);*/
 
         if (parent != 1) {
             // back to main menu command
-            player->ADD_GOSSIP_ITEM(0, sAzthLang->get(AZTH_LANG_SS_BACK, player), GOSSIP_SENDER_MAIN, 2001);
+            AddGossipItemFor(player,0, sAzthLang->get(AZTH_LANG_SS_BACK, player), GOSSIP_SENDER_MAIN, 2001);
         }
 
-        player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, item->GetGUID());
+        SendGossipMenuFor(player,DEFAULT_GOSSIP_MESSAGE, item->GetGUID());
 
         parent = 1;
         return false;
@@ -490,8 +490,8 @@ public:
     bool OnGossipHello(Player* player, Creature* creature) override {
         player->PlayerTalkClass->ClearMenus();
 
-        player->ADD_GOSSIP_ITEM(0, "Hello, I would like to buy new apps!", GOSSIP_SENDER_MAIN, 1);
-        player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+        AddGossipItemFor(player,0, "Hello, I would like to buy new apps!", GOSSIP_SENDER_MAIN, 1);
+        SendGossipMenuFor(player,DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
         return true;
     }
 

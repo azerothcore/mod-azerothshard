@@ -109,7 +109,7 @@ namespace nsNpcTel
 
             uint32   GetPageId(void) const { return m_PageId; }
             Player * GetPlayer(void) const { return m_player; }
-        
+
           private:
 
             Player *m_player;
@@ -145,7 +145,5 @@ namespace nsNpcTel
     // Loading contents of database
     void LoadNpcTele();
 }
-
-extern WorldDatabaseWorkerPool WorldDatabase;
 
 #endif

@@ -50,6 +50,12 @@ public:
 
 };
 
+BonusRating* BonusRating::instance()
+{
+    static BonusRating instance;
+    return &instance;
+}
+
 void BonusRating::addBonus(uint32 bracket, float multiplier)
 {
 	// remove an existing same-type bonus if any

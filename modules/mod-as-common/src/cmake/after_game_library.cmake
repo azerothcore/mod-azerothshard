@@ -19,6 +19,9 @@ add_library(azth_mod STATIC
 
 target_link_libraries(azth_mod
   PRIVATE
+    mysql
+    database
+    game
     modules-interface
     game-interface)
 

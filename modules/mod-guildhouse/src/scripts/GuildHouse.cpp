@@ -471,7 +471,7 @@ void GuildHouseObject::ControlGuildHouse()
             if (pGuild->GetMemberSize() < (*itr).second.min_member)
             {
                 GHobj.ChangeGuildHouse((*itr).first, 0);
-                SQLTransaction trans = CharacterDatabase.BeginTransaction();
+                CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();n();
                 if (!pGuild->ModifyBankMoney(trans, (*itr).second.price * 75000, true)) {
                     continue;
                 }

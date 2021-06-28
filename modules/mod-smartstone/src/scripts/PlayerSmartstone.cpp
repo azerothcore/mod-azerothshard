@@ -356,7 +356,7 @@ std::map<uint32,WorldLocation> AzthPlayer::getLastPositionInfoFromDB() {
 };
 
 void AzthPlayer::saveLastPositionInfoToDB(Player *pl) {
-    SQLTransaction trans = CharacterDatabase.BeginTransaction();
+    CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();n();
 
     std::map<uint32,WorldLocation>::iterator it;
     for ( it = lastPositionInfo.begin(); it != lastPositionInfo.end(); it++ ) {

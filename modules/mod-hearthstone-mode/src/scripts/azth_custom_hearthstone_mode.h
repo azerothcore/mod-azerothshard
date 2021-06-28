@@ -86,6 +86,8 @@ enum otherMiscHs
 class HearthstoneMode
 {
     public:
+        static HearthstoneMode* instance();
+
         void AzthSendListInventory(ObjectGuid vendorGuid, WorldSession * session, uint32 extendedCostStartValue);
         void sendQuestCredit(Player *player, AchievementCriteriaEntry const* criteria, std::vector<uint32>& hsCheckList);
         int returnData0(AchievementCriteriaEntry const* criteria);
@@ -114,6 +116,6 @@ class HearthstoneMode
         float CHANCES[8] = { 10.f, 30.f, 20.f, 15.f, 5.f, 1.f, 0.5f, 1.f };
 };
 
-#define sHearthstoneMode ACE_Singleton<HearthstoneMode, ACE_Null_Mutex>::instance()
+#define sHearthstoneMode HearthstoneMode::instance()
 
 #endif // !HEARTHSTONE_MODE

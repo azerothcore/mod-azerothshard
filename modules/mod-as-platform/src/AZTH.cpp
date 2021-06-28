@@ -264,7 +264,7 @@ void AZTH::SendGameMail(Player* receiver, std::string subject, std::string body,
 {
     uint32 receiver_guid = receiver->GetGUID().GetCounter();
 
-    SQLTransaction trans = CharacterDatabase.BeginTransaction();
+    CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
     MailDraft* mail = new MailDraft(subject, body);
 
     if (money)
@@ -314,7 +314,7 @@ void AZTH::SendExternalMails()
     //     return;
     // }
 
-    // SQLTransaction trans = CharacterDatabase.BeginTransaction();
+    // CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();n();
     // SQLTransaction trans2 = ExtraDatabase.BeginTransaction();
 
     // MailDraft* mail = nullptr;

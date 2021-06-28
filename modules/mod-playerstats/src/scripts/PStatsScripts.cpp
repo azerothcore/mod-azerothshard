@@ -63,11 +63,11 @@ public:
 
     // Following 2 functions save our temporary maps inside the db
 
-    void OnAchiSave(SQLTransaction& /* trans */, Player *player, uint16 achId, CompletedAchievementData achiData) override {
+    void OnAchiSave(CharacterDatabaseTransaction /* trans */, Player *player, uint16 achId, CompletedAchievementData achiData) override {
         if (sAZTH->GetAZTHPlayer(player)->m_completed_achievement_map.find(achId) != sAZTH->GetAZTHPlayer(player)->m_completed_achievement_map.end()) {
             AzthPlayer::AzthAchiData it = sAZTH->GetAZTHPlayer(player)->m_completed_achievement_map[achId];
 
-            CharacterDatabase.AsyncPQuery("INSERT INTO azth_achievement_stats (playerGuid, achievement, type, level, levelParty, specialLevel, date) VALUES (%u, %u, %u, %u, %u, %u, %u)",
+            CharacterDatabase.AsyncQuery(Acore::StringFormat("INSERT INTO azth_achievement_stats (playerGuid, achievement, type, level, levelParty, specialLevel, date) VALUES (%u, %u, %u, %u, %u, %u, %u)",
                 player->GetGUID().GetCounter(),
                 achId,
                 ACHIEVEMENT_TYPE,
@@ -75,17 +75,17 @@ public:
                 it.levelParty,
                 it.specialLevel,
                 achiData.date
-            );
+            ).c_str());
 
             sAZTH->GetAZTHPlayer(player)->m_completed_achievement_map.erase(achId);
         }
     }
 
-    void OnCriteriaSave(SQLTransaction& /* trans */, Player* player, uint16 critId, CriteriaProgress criteriaData) override {
+    void OnCriteriaSave(CharacterDatabaseTransaction /* trans */, Player* player, uint16 critId, CriteriaProgress criteriaData) override {
         if (sAZTH->GetAZTHPlayer(player)->m_completed_criteria_map.find(critId) != sAZTH->GetAZTHPlayer(player)->m_completed_criteria_map.end()) {
             AzthPlayer::AzthAchiData it = sAZTH->GetAZTHPlayer(player)->m_completed_criteria_map[critId];
 
-            CharacterDatabase.AsyncPQuery("INSERT INTO azth_achievement_stats (playerGuid, achievement, type, level, levelParty, specialLevel, date) VALUES (%u, %u, %u, %u, %u, %u, %u)",
+            CharacterDatabase.AsyncQuery(Acore::StringFormat("INSERT INTO azth_achievement_stats (playerGuid, achievement, type, level, levelParty, specialLevel, date) VALUES (%u, %u, %u, %u, %u, %u, %u)",
                 player->GetGUID().GetCounter(),
                 critId,
                 CRITERIA_TYPE,
@@ -93,7 +93,7 @@ public:
                 it.levelParty,
                 it.specialLevel,
                 criteriaData.date
-            );
+            ).c_str());
 
             sAZTH->GetAZTHPlayer(player)->m_completed_criteria_map.erase(critId);
         }

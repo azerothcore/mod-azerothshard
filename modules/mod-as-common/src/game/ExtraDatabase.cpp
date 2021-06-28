@@ -16,6 +16,13 @@
  */
 
 #include "ExtraDatabase.h"
+#include "MySQLPreparedStatement.h"
+#include "DatabaseLoader.h"
+
+class DatabaseLoader;
+
+template class AC_DATABASE_API DatabaseWorkerPool<ExtraDatabaseConnection>;
+DatabaseWorkerPool<ExtraDatabaseConnection> ExtraDatabase;
 
 void ExtraDatabaseConnection::DoPrepareStatements()
 {
@@ -28,3 +35,6 @@ void ExtraDatabaseConnection::DoPrepareStatements()
 	PrepareStatement(EXTRA_GET_EXTERNAL_MAIL, "SELECT id, receiver, subject, message, money, item, item_count FROM mail_external ORDER BY id ASC", CONNECTION_SYNCH);
 	PrepareStatement(EXTRA_DEL_EXTERNAL_MAIL, "DELETE FROM mail_external WHERE id = ?", CONNECTION_ASYNC);
 }
+
+// template AC_DATABASE_API
+// DatabaseLoader& DatabaseLoader::AddDatabase<ExtraDatabaseConnection>(DatabaseWorkerPool<ExtraDatabaseConnection>&, std::string const&);

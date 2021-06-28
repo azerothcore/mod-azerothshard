@@ -27,6 +27,12 @@
 #include "MapManager.h"
 #include "ExtraDatabase.h"
 
+enum AZTHLanguage
+{
+    LANG_AZTH_NO_INFO_ARENA_JOINED = 7000, //[AZTH]
+    LANG_AZTH_NO_INFO_ARENA_EXITED = 7001, //[AZTH]
+};
+
 class AuraEffect;
 
 // SC
@@ -91,7 +97,7 @@ public:
             bg->SetStartDelayTime(BG_START_DELAY_15S);
     }
 
-    bool CanSendMessageArenaQueue(BattlegroundQueue* /*queue*/, GroupQueueInfo* ginfo, bool IsJoin)
+    bool OnBeforeSendExitMessageArenaQueue(BattlegroundQueue* /*queue*/, GroupQueueInfo* ginfo) override
     {
         if (!ginfo->IsRated || !ginfo->ArenaType || ginfo->Players.empty())
             return true;
@@ -99,24 +105,20 @@ public:
         if (!sArenaTeamMgr->GetArenaTeamById(ginfo->ArenaTeamId))
             return false;
 
-        enum AZTHLanguage
-        {
-            LANG_AZTH_NO_INFO_ARENA_JOINED = 7000, //[AZTH]
-            LANG_AZTH_NO_INFO_ARENA_EXITED = 7001, //[AZTH]
-        };
+        sWorld->SendWorldText(LANG_AZTH_NO_INFO_ARENA_EXITED, ginfo->ArenaType, ginfo->ArenaType);
+        return false;
+    }
 
-        if (IsJoin)
-        {
-            sWorld->SendWorldText(LANG_AZTH_NO_INFO_ARENA_JOINED, ginfo->ArenaType, ginfo->ArenaType); //[AZTH]
-            return false;
-        }
-        else
-        {
-            sWorld->SendWorldText(LANG_AZTH_NO_INFO_ARENA_EXITED, ginfo->ArenaType, ginfo->ArenaType);
-            return false;
-        }
+    bool OnBeforeSendJoinMessageArenaQueue(BattlegroundQueue* /*queue*/, Player* /*leader*/, GroupQueueInfo* ginfo, PvPDifficultyEntry const* /*bracketEntry*/, bool /*isRated*/) override
+    {
+        if (!ginfo->IsRated || !ginfo->ArenaType || ginfo->Players.empty())
+            return true;
 
-        return true;
+        if (!sArenaTeamMgr->GetArenaTeamById(ginfo->ArenaTeamId))
+            return false;
+
+        sWorld->SendWorldText(LANG_AZTH_NO_INFO_ARENA_JOINED, ginfo->ArenaType, ginfo->ArenaType); //[AZTH]
+        return false;
     }
 };
 
@@ -177,7 +179,7 @@ public:
         return true;
     }
 
-    void OnDeleteFromDB(SQLTransaction& trans, uint32 guid) override
+    void OnDeleteFromDB(CharacterDatabaseTransaction trans, uint32 guid) override
     {
         if (!guid)
             return;
@@ -619,7 +621,7 @@ public:
             return;
 
         // Wowarmory feeds
-        SQLTransaction wowArmoryTrans = CharacterDatabase.BeginTransaction();
+        CharacterDatabaseTransaction wowArmoryTrans = CharacterDatabase.BeginTransaction();
 
         AzthPlayer* azthPlayer = sAZTH->GetAZTHPlayer(player);
         if (!azthPlayer)

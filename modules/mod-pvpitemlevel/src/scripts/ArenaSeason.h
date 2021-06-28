@@ -6,8 +6,9 @@
 
 class Season
 {
-    friend class ACE_Singleton<Season, ACE_Null_Mutex>;
 public:
+    static Season* instance();
+
     //GETTERS
     uint32 GetItemLevel() const;
     time_t GetStartingDate() const;
@@ -19,8 +20,8 @@ public:
     void SetStartingDate(time_t startingDate);
     void SetEndDate(time_t endDate);
     void SetEnabled(bool enable);
-    
-    
+
+
     bool checkItem(ItemTemplate const* proto);
     bool checkItem(ItemTemplate const* proto, Player const* player);
 
@@ -37,4 +38,4 @@ private:
 };
 
 
-#define sASeasonMgr ACE_Singleton<Season, ACE_Null_Mutex>::instance()
+#define sASeasonMgr Season::instance()

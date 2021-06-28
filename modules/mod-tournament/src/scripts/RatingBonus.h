@@ -14,6 +14,8 @@ struct Bonus
 class BonusRating
 {
     public:
+        static BonusRating* instance();
+
         std::vector<Bonus> & getRatingBonuses();
 		void addBonus(uint32 bracket, float multiplier);
 		void removeBonus(uint32 bracket);
@@ -25,6 +27,6 @@ class BonusRating
         std::vector<Bonus> bonuses;
 };
 
-#define sBonusRating ACE_Singleton<BonusRating, ACE_Null_Mutex>::instance()
+#define sBonusRating BonusRating::instance()
 
 #endif

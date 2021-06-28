@@ -42,6 +42,7 @@
 #include "AccountMgr.h"
 #include "AZTH.h"
 #include "ExtraDatabase.h"
+#include "ScriptedGossip.h"
 
 //[AZTH]
 #include "AzthUtils.h"
@@ -220,7 +221,7 @@ class npc_guild_master : public CreatureScript
                 //send comment as a gossip item
 
                 //transmit guildhouseId in Action variable
-                player->ADD_GOSSIP_ITEM(ICON_GOSSIP_TABARD, complete_comment.str().c_str(), GOSSIP_SENDER_MAIN,
+                AddGossipItemFor(player,ICON_GOSSIP_TABARD, complete_comment.str().c_str(), GOSSIP_SENDER_MAIN,
                     guildhouseId + OFFSET_GH_ID_TO_ACTION);
 
             } while (result->NextRow());
@@ -230,13 +231,13 @@ class npc_guild_master : public CreatureScript
                 //assume that we have additional page
 
                 //add link to next GOSSIP_COUNT_MAX items
-                player->ADD_GOSSIP_ITEM(ICON_GOSSIP_BALOONDOTS, MSG_GOSSIP_NEXTPAGE, GOSSIP_SENDER_MAIN,
+                AddGossipItemFor(player,ICON_GOSSIP_BALOONDOTS, MSG_GOSSIP_NEXTPAGE, GOSSIP_SENDER_MAIN,
                     guildhouseId + OFFSET_SHOWBUY_FROM);
             }
-            player->ADD_GOSSIP_ITEM(ICON_GOSSIP_BALOONDOTS, MSG_GOSSIP_CLOSE, GOSSIP_SENDER_MAIN,
+            AddGossipItemFor(player,ICON_GOSSIP_BALOONDOTS, MSG_GOSSIP_CLOSE, GOSSIP_SENDER_MAIN,
                 ACTION_CLOSE);
 
-            player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
+            SendGossipMenuFor(player,DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
 
             return true;
         }
@@ -246,7 +247,7 @@ class npc_guild_master : public CreatureScript
             {
                 //all guildhouses are occupied
                 _creature->MonsterWhisper(MSG_NOFREEGH, player);
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
             }
             else
             {
@@ -302,7 +303,7 @@ class npc_guild_master : public CreatureScript
 
                 //send comment as a gossip item
                 //transmit guildhouseId in Action variable
-                player->ADD_GOSSIP_ITEM(ICON_GOSSIP_TABARD, complete_comment.str().c_str(), GOSSIP_SENDER_MAIN,
+                AddGossipItemFor(player,ICON_GOSSIP_TABARD, complete_comment.str().c_str(), GOSSIP_SENDER_MAIN,
                     add_typeId + OFFSET_GH_ADD_ID_TO_ACTION);
 
             } while (result->NextRow());
@@ -311,14 +312,14 @@ class npc_guild_master : public CreatureScript
             {
                 //assume that we have additional page
                 //add link to next GOSSIP_COUNT_MAX items
-                player->ADD_GOSSIP_ITEM(ICON_GOSSIP_BALOONDOTS, MSG_GOSSIP_NEXTPAGE, GOSSIP_SENDER_MAIN,
+                AddGossipItemFor(player,ICON_GOSSIP_BALOONDOTS, MSG_GOSSIP_NEXTPAGE, GOSSIP_SENDER_MAIN,
                     add_typeId + OFFSET_SHOWBUY_FROM_ADD);
             }
 
-            player->ADD_GOSSIP_ITEM(ICON_GOSSIP_BALOONDOTS, MSG_GOSSIP_CLOSE, GOSSIP_SENDER_MAIN,
+            AddGossipItemFor(player,ICON_GOSSIP_BALOONDOTS, MSG_GOSSIP_CLOSE, GOSSIP_SENDER_MAIN,
                 ACTION_CLOSE);
 
-            player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
+            SendGossipMenuFor(player,DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
 
             return true;
         }
@@ -328,7 +329,7 @@ class npc_guild_master : public CreatureScript
             {
                 //all no GhAdd to Show
                 _creature->MonsterWhisper(MSG_NOADDGH, player);
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
             }
             else
             {
@@ -350,12 +351,12 @@ class npc_guild_master : public CreatureScript
             return false;
         }
 
-        player->ADD_GOSSIP_ITEM(ICON_GOSSIP_GOLD, MSG_CONFIRM_BUY, GOSSIP_SENDER_MAIN,
+        AddGossipItemFor(player,ICON_GOSSIP_GOLD, MSG_CONFIRM_BUY, GOSSIP_SENDER_MAIN,
             guildhouseId + OFFSET_CONFIRM_BUY_ID_TO_ACTION);
-        player->ADD_GOSSIP_ITEM(ICON_GOSSIP_BALOONDOTS, MSG_NEGATE_BUY, GOSSIP_SENDER_MAIN,
+        AddGossipItemFor(player,ICON_GOSSIP_BALOONDOTS, MSG_NEGATE_BUY, GOSSIP_SENDER_MAIN,
                     ACTION_NEGATE_BUY);
 
-        player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
+        SendGossipMenuFor(player,DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
 
         return true;
     };
@@ -404,12 +405,12 @@ class npc_guild_master : public CreatureScript
         if (!player)
             return false;
 
-        player->ADD_GOSSIP_ITEM(ICON_GOSSIP_GOLD, MSG_CONFIRM_BUY, GOSSIP_SENDER_MAIN,
+        AddGossipItemFor(player,ICON_GOSSIP_GOLD, MSG_CONFIRM_BUY, GOSSIP_SENDER_MAIN,
             gh_Add + OFFSET_CONFIRM_BUY_ADD_ID_TO_ACTION);
-        player->ADD_GOSSIP_ITEM(ICON_GOSSIP_BALOONDOTS, MSG_NEGATE_BUY, GOSSIP_SENDER_MAIN,
+        AddGossipItemFor(player,ICON_GOSSIP_BALOONDOTS, MSG_NEGATE_BUY, GOSSIP_SENDER_MAIN,
                     ACTION_NEGATE_BUY_ADD);
 
-        player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
+        SendGossipMenuFor(player,DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
 
         return true;
     };
@@ -480,24 +481,24 @@ class npc_guild_master : public CreatureScript
             return true;
 		/*
         if (isPlayerMarried(player))
-            player->ADD_GOSSIP_ITEM(ICON_GOSSIP_BALOON, MSG_GOSSIP_MARRIED,
+            AddGossipItemFor(player,ICON_GOSSIP_BALOON, MSG_GOSSIP_MARRIED,
                 GOSSIP_SENDER_MAIN, ACTION_MARRIED);
 	    */
-        player->ADD_GOSSIP_ITEM(ICON_GOSSIP_BALOON, MSG_GOSSIP_TELE,
+        AddGossipItemFor(player,ICON_GOSSIP_BALOON, MSG_GOSSIP_TELE,
             GOSSIP_SENDER_MAIN, ACTION_TELE);
 
         if (isPlayerGuildLeader(player))
         {
             //show additional menu for guild leader
-            player->ADD_GOSSIP_ITEM(ICON_GOSSIP_GOLD, MSG_GOSSIP_BUY, GOSSIP_SENDER_MAIN, ACTION_SHOW_BUYLIST);
+            AddGossipItemFor(player,ICON_GOSSIP_GOLD, MSG_GOSSIP_BUY, GOSSIP_SENDER_MAIN, ACTION_SHOW_BUYLIST);
             if (isPlayerHasGuildhouse(player, _creature))
             {
                 //and additional for guildhouse owner
-                player->ADD_GOSSIP_ITEM_EXTENDED(ICON_GOSSIP_GOLD, MSG_GOSSIP_SELL, GOSSIP_SENDER_MAIN, ACTION_SELL_GUILDHOUSE, MSG_CODEBOX_SELL, 0, true);
-                player->ADD_GOSSIP_ITEM(ICON_GOSSIP_GOLD, MSG_GOSSIP_ADD, GOSSIP_SENDER_MAIN, ACTION_SHOW_BUYADD_LIST);
+                AddGossipItemFor(player,ICON_GOSSIP_GOLD, MSG_GOSSIP_SELL, GOSSIP_SENDER_MAIN, ACTION_SELL_GUILDHOUSE, MSG_CODEBOX_SELL, 0, true);
+                AddGossipItemFor(player,ICON_GOSSIP_GOLD, MSG_GOSSIP_ADD, GOSSIP_SENDER_MAIN, ACTION_SHOW_BUYADD_LIST);
             }
         }
-        player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
+        SendGossipMenuFor(player,DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID());
         return true;
     };
 
@@ -513,7 +514,7 @@ class npc_guild_master : public CreatureScript
         {
             case ACTION_TELE:
                 //teleport player to GH
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 teleportPlayerToGuildHouse(player, _creature);
                 break;
             case ACTION_SHOW_BUYLIST:
@@ -525,13 +526,13 @@ class npc_guild_master : public CreatureScript
                 showBuyAddList(player, _creature);
                 break;
             case ACTION_CLOSE:
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 break;
             case ACTION_NEGATE_BUY:
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 break;
              case ACTION_NEGATE_BUY_ADD:
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 break;
             default:
                 if (action > OFFSET_SHOWBUY_FROM_ADD)
@@ -556,7 +557,7 @@ class npc_guild_master : public CreatureScript
                     //get guildhouseAddId from action
                     //guildhouseAddId = action - OFFSET_CONFIRM_BUY_ADD_ID_TO_ACTION
                     buyGuildhouseAdd(player, _creature, action - OFFSET_CONFIRM_BUY_ADD_ID_TO_ACTION);
-                    player->CLOSE_GOSSIP_MENU();
+                    CloseGossipMenuFor(player);
                     player->SaveToDB(false,false);
                 }
                 else if (action > OFFSET_CONFIRM_BUY_ID_TO_ACTION)
@@ -565,7 +566,7 @@ class npc_guild_master : public CreatureScript
                     //get guildhouseId from action
                     //guildhouseId = action - OFFSET_CONFIRM_BUY_ID_TO_ACTION
                     buyGuildhouse(player, _creature, action - OFFSET_CONFIRM_BUY_ID_TO_ACTION);
-                    player->CLOSE_GOSSIP_MENU();
+                    CloseGossipMenuFor(player);
                     player->SaveToDB(false, false);
                 }
                 break;
@@ -599,7 +600,7 @@ class npc_guild_master : public CreatureScript
                     sellGuildhouse(player, _creature);
                     player->SaveToDB(false,false);
                 }
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 return true;
             }
         }
@@ -648,13 +649,13 @@ class guild_guard : public CreatureScript
             if (_Creature->GetAI())
             {
                 if (_Creature->GetAI()->GetData(0))
-					player->ADD_GOSSIP_ITEM(5, "Disable Protection", GOSSIP_SENDER_MAIN, 11);
+					AddGossipItemFor(player,5, "Disable Protection", GOSSIP_SENDER_MAIN, 11);
                 else
-                    player->ADD_GOSSIP_ITEM(5, "Activate Protection", GOSSIP_SENDER_MAIN, 10);
+                    AddGossipItemFor(player,5, "Activate Protection", GOSSIP_SENDER_MAIN, 10);
             }
         }
-		player->ADD_GOSSIP_ITEM(5, "Chiudi", GOSSIP_SENDER_MAIN, 12);
-		player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, _Creature->GetGUID());
+		AddGossipItemFor(player,5, "Chiudi", GOSSIP_SENDER_MAIN, 12);
+		SendGossipMenuFor(player,DEFAULT_GOSSIP_MESSAGE, _Creature->GetGUID());
         return true;
 	};
 
@@ -683,7 +684,7 @@ class guild_guard : public CreatureScript
                  }
             }
         }
-        player->CLOSE_GOSSIP_MENU();
+        CloseGossipMenuFor(player);
         return true;
     };
 
@@ -810,52 +811,52 @@ class npc_buffnpc : public CreatureScript
         // Main Menu for Alliance
         if ( player->GetTeamId(true) == TEAM_ALLIANCE )
         {
-            player->ADD_GOSSIP_ITEM( 5, "Remove Res Sickness"                           , GOSSIP_SENDER_MAIN, 1180);
-            //player->ADD_GOSSIP_ITEM( 5, "Give me gold"                                , GOSSIP_SENDER_MAIN, 1185);
-            //player->ADD_GOSSIP_ITEM( 5, "Give me Soul Shards"                         , GOSSIP_SENDER_MAIN, 1190);
-            player->ADD_GOSSIP_ITEM( 5, "Heal me please"                                , GOSSIP_SENDER_MAIN, 1195);
-            player->ADD_GOSSIP_ITEM( 5, "Ritual of Souls please"                        , GOSSIP_SENDER_MAIN, 1200);
-            player->ADD_GOSSIP_ITEM( 5, "Table please"                                  , GOSSIP_SENDER_MAIN, 1205);
+            AddGossipItemFor(player, 5, "Remove Res Sickness"                           , GOSSIP_SENDER_MAIN, 1180);
+            //AddGossipItemFor(player, 5, "Give me gold"                                , GOSSIP_SENDER_MAIN, 1185);
+            //AddGossipItemFor(player, 5, "Give me Soul Shards"                         , GOSSIP_SENDER_MAIN, 1190);
+            AddGossipItemFor(player, 5, "Heal me please"                                , GOSSIP_SENDER_MAIN, 1195);
+            AddGossipItemFor(player, 5, "Ritual of Souls please"                        , GOSSIP_SENDER_MAIN, 1200);
+            AddGossipItemFor(player, 5, "Table please"                                  , GOSSIP_SENDER_MAIN, 1205);
             if (player->getLevel() > 69)
             {
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Arcane Intelect"                       , GOSSIP_SENDER_MAIN, 1210);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Mark of the Wild"                      , GOSSIP_SENDER_MAIN, 1215);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Thorns"                                , GOSSIP_SENDER_MAIN, 1220);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Blessing of Sanctuary"                 , GOSSIP_SENDER_MAIN, 1225);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Blessing of Might"                     , GOSSIP_SENDER_MAIN, 1230);
-                //player->ADD_GOSSIP_ITEM( 5, "Buff me Greater Blessing of Light"             , GOSSIP_SENDER_MAIN, 1235);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Blessing of Wisdom"                    , GOSSIP_SENDER_MAIN, 1240);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Blessing of Kings"                     , GOSSIP_SENDER_MAIN, 1245);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Divine Spirit"                         , GOSSIP_SENDER_MAIN, 1250);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Shadow Protection"                     , GOSSIP_SENDER_MAIN, 1251);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Power Word: Fortitude"                 , GOSSIP_SENDER_MAIN, 1252);
+                AddGossipItemFor(player, 5, "Buff me Arcane Intelect"                       , GOSSIP_SENDER_MAIN, 1210);
+                AddGossipItemFor(player, 5, "Buff me Mark of the Wild"                      , GOSSIP_SENDER_MAIN, 1215);
+                AddGossipItemFor(player, 5, "Buff me Thorns"                                , GOSSIP_SENDER_MAIN, 1220);
+                AddGossipItemFor(player, 5, "Buff me Blessing of Sanctuary"                 , GOSSIP_SENDER_MAIN, 1225);
+                AddGossipItemFor(player, 5, "Buff me Blessing of Might"                     , GOSSIP_SENDER_MAIN, 1230);
+                //AddGossipItemFor(player, 5, "Buff me Greater Blessing of Light"             , GOSSIP_SENDER_MAIN, 1235);
+                AddGossipItemFor(player, 5, "Buff me Blessing of Wisdom"                    , GOSSIP_SENDER_MAIN, 1240);
+                AddGossipItemFor(player, 5, "Buff me Blessing of Kings"                     , GOSSIP_SENDER_MAIN, 1245);
+                AddGossipItemFor(player, 5, "Buff me Divine Spirit"                         , GOSSIP_SENDER_MAIN, 1250);
+                AddGossipItemFor(player, 5, "Buff me Shadow Protection"                     , GOSSIP_SENDER_MAIN, 1251);
+                AddGossipItemFor(player, 5, "Buff me Power Word: Fortitude"                 , GOSSIP_SENDER_MAIN, 1252);
             }
         }
         else // Main Menu for Horde
         {
-            player->ADD_GOSSIP_ITEM( 5, "Remove Res Sickness"                           , GOSSIP_SENDER_MAIN, 1180);
-            //player->ADD_GOSSIP_ITEM( 5, "Give me gold"                                , GOSSIP_SENDER_MAIN, 1185);
-            //player->ADD_GOSSIP_ITEM( 5, "Give me Soul Shards"                         , GOSSIP_SENDER_MAIN, 1190);
-            player->ADD_GOSSIP_ITEM( 5, "Heal me please"                                , GOSSIP_SENDER_MAIN, 1195);
-            player->ADD_GOSSIP_ITEM( 5, "Ritual of Souls please"                        , GOSSIP_SENDER_MAIN, 1200);
-            player->ADD_GOSSIP_ITEM( 5, "Table please"                                  , GOSSIP_SENDER_MAIN, 1205);
+            AddGossipItemFor(player, 5, "Remove Res Sickness"                           , GOSSIP_SENDER_MAIN, 1180);
+            //AddGossipItemFor(player, 5, "Give me gold"                                , GOSSIP_SENDER_MAIN, 1185);
+            //AddGossipItemFor(player, 5, "Give me Soul Shards"                         , GOSSIP_SENDER_MAIN, 1190);
+            AddGossipItemFor(player, 5, "Heal me please"                                , GOSSIP_SENDER_MAIN, 1195);
+            AddGossipItemFor(player, 5, "Ritual of Souls please"                        , GOSSIP_SENDER_MAIN, 1200);
+            AddGossipItemFor(player, 5, "Table please"                                  , GOSSIP_SENDER_MAIN, 1205);
             if (player->getLevel() > 69)
             {
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Arcane Intelect"                       , GOSSIP_SENDER_MAIN, 1210);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Mark of the Wild"                      , GOSSIP_SENDER_MAIN, 1215);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Thorns"                                , GOSSIP_SENDER_MAIN, 1220);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Blessing of Sanctuary"                 , GOSSIP_SENDER_MAIN, 1225);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Blessing of Might"                     , GOSSIP_SENDER_MAIN, 1230);
-                //player->ADD_GOSSIP_ITEM( 5, "Buff me Greater Blessing of Light"             , GOSSIP_SENDER_MAIN, 1235);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Blessing of Wisdom"                    , GOSSIP_SENDER_MAIN, 1240);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Blessing of Kings"                     , GOSSIP_SENDER_MAIN, 1245);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Divine Spirit"                         , GOSSIP_SENDER_MAIN, 1250);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Shadow Protection"                     , GOSSIP_SENDER_MAIN, 1251);
-                player->ADD_GOSSIP_ITEM( 5, "Buff me Power Word: Fortitude"                 , GOSSIP_SENDER_MAIN, 1252);
+                AddGossipItemFor(player, 5, "Buff me Arcane Intelect"                       , GOSSIP_SENDER_MAIN, 1210);
+                AddGossipItemFor(player, 5, "Buff me Mark of the Wild"                      , GOSSIP_SENDER_MAIN, 1215);
+                AddGossipItemFor(player, 5, "Buff me Thorns"                                , GOSSIP_SENDER_MAIN, 1220);
+                AddGossipItemFor(player, 5, "Buff me Blessing of Sanctuary"                 , GOSSIP_SENDER_MAIN, 1225);
+                AddGossipItemFor(player, 5, "Buff me Blessing of Might"                     , GOSSIP_SENDER_MAIN, 1230);
+                //AddGossipItemFor(player, 5, "Buff me Greater Blessing of Light"             , GOSSIP_SENDER_MAIN, 1235);
+                AddGossipItemFor(player, 5, "Buff me Blessing of Wisdom"                    , GOSSIP_SENDER_MAIN, 1240);
+                AddGossipItemFor(player, 5, "Buff me Blessing of Kings"                     , GOSSIP_SENDER_MAIN, 1245);
+                AddGossipItemFor(player, 5, "Buff me Divine Spirit"                         , GOSSIP_SENDER_MAIN, 1250);
+                AddGossipItemFor(player, 5, "Buff me Shadow Protection"                     , GOSSIP_SENDER_MAIN, 1251);
+                AddGossipItemFor(player, 5, "Buff me Power Word: Fortitude"                 , GOSSIP_SENDER_MAIN, 1252);
             }
         }
 
-        player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE,_Creature->GetGUID());
+        SendGossipMenuFor(player,DEFAULT_GOSSIP_MESSAGE,_Creature->GetGUID());
 
         return true;
     };
@@ -865,7 +866,7 @@ class npc_buffnpc : public CreatureScript
         // Not allow in combat
         if(!player->getAttackers().empty())
         {
-            player->CLOSE_GOSSIP_MENU();
+            CloseGossipMenuFor(player);
             _Creature->MonsterSay(MSG_INCOMBAT, LANG_UNIVERSAL, 0);
             return;
         }
@@ -881,7 +882,7 @@ class npc_buffnpc : public CreatureScript
 
                 _Creature->CastSpell(player,38588,false); // Healing effect
                 player->RemoveAurasDueToSpell(SPELL_ID_PASSIVE_RESURRECTION_SICKNESS);
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 break;
 
             /*case 1185://Give me Gold
@@ -893,59 +894,59 @@ class npc_buffnpc : public CreatureScript
             break;*/
 
             case 1195: // Heal me please
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,/*38588*/25840,false);
                 break;
             case 1200: // Ritual of Souls please
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 player->CastSpell(player,58889,false);
                 break;
             case 1205: // Table please
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 player->CastSpell(player,58661,false);
                 break;
             case 1210: // Buff me Arcane Intelect
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,42995,false);
                 break;
             case 1215: // Buff me Mark of the Wild
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,48469,false);
                 break;
             case 1220: // Buff me Thorns
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,26992,false);
                 break;
             case 1225: // Buff me Blessing of Sanctuary
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,20911,false);
                 break;
             case 1230: // Buff me Blessing of Might
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,48932,false);
                 break;
             case 1235: // Buff me Greater Blessing of Light
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,27145,false);
                 break;
             case 1240: // Buff me Blessing of Wisdom
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,48936,false);
                 break;
             case 1245: // Buff me Blessing of Kings
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,20217,false);
                 break;
             case 1250: // Buff me Divine Spirit
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,48073,false);
                 break;
             case 1251: // Buff me Shadow Protection
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,48169,false);
                 break;
             case 1252: // Buff me Power Word: Fortitude
-                player->CLOSE_GOSSIP_MENU();
+                CloseGossipMenuFor(player);
                 _Creature->CastSpell(player,48161,false);
                 break;
         }
@@ -977,7 +978,7 @@ void Teleport(Player *player, uint16 map,
     if (sAzthUtils->isPhasedDimension(aurDim) && !sAZTH->GetAZTHPlayer(player)->changeDimension(DIMENSION_NORMAL, true))
         return;
 
-    player->CLOSE_GOSSIP_MENU();
+    CloseGossipMenuFor(player);
     player->CastSpell(player, SPELL_VISUAL_TELEPORT, true);
     if (!player->TeleportTo(map, X, Y, Z, orient) && sAzthUtils->isPhasedDimension(aurDim))
         sAZTH->GetAZTHPlayer(player)->changeDimension(aurDim); // we have to restore old dimension to avoid exploits if teleport failed
@@ -991,27 +992,27 @@ class npc_portal : public CreatureScript
 
     bool OnGossipHello(Player *player, Creature *_Creature)
     {
-        player->ADD_GOSSIP_ITEM( 5, "Teleport Dalaran"              , GOSSIP_SENDER_MAIN, 1005);
-        player->ADD_GOSSIP_ITEM( 5, "Teleport Shattrath"            , GOSSIP_SENDER_MAIN, 1010);
-        player->ADD_GOSSIP_ITEM( 5, "Teleport Wintergrasp"          , GOSSIP_SENDER_MAIN, 1100);
+        AddGossipItemFor(player, 5, "Teleport Dalaran"              , GOSSIP_SENDER_MAIN, 1005);
+        AddGossipItemFor(player, 5, "Teleport Shattrath"            , GOSSIP_SENDER_MAIN, 1010);
+        AddGossipItemFor(player, 5, "Teleport Wintergrasp"          , GOSSIP_SENDER_MAIN, 1100);
 
         // Main Menu for Alliance
         if ( player->GetTeamId(true) == TEAM_ALLIANCE )
         {
-            player->ADD_GOSSIP_ITEM( 5, "Teleport Stormwind"            , GOSSIP_SENDER_MAIN, 1015);
-            player->ADD_GOSSIP_ITEM( 5, "Teleport Ironforge"            , GOSSIP_SENDER_MAIN, 1020);
-            player->ADD_GOSSIP_ITEM( 5, "Teleport Darnassus"            , GOSSIP_SENDER_MAIN, 1025);
-            player->ADD_GOSSIP_ITEM( 5, "Teleport Exodar"               , GOSSIP_SENDER_MAIN, 1030);
+            AddGossipItemFor(player, 5, "Teleport Stormwind"            , GOSSIP_SENDER_MAIN, 1015);
+            AddGossipItemFor(player, 5, "Teleport Ironforge"            , GOSSIP_SENDER_MAIN, 1020);
+            AddGossipItemFor(player, 5, "Teleport Darnassus"            , GOSSIP_SENDER_MAIN, 1025);
+            AddGossipItemFor(player, 5, "Teleport Exodar"               , GOSSIP_SENDER_MAIN, 1030);
         }
         else // Main Menu for Horde
         {
-            player->ADD_GOSSIP_ITEM( 5, "Teleport Orgrimmar"            , GOSSIP_SENDER_MAIN, 1035);
-            player->ADD_GOSSIP_ITEM( 5, "Teleport Undercity"            , GOSSIP_SENDER_MAIN, 1040);
-            player->ADD_GOSSIP_ITEM( 5, "Teleport Thunder Bluff"        , GOSSIP_SENDER_MAIN, 1045);
-            player->ADD_GOSSIP_ITEM( 5, "Teleport Silvermoon"           , GOSSIP_SENDER_MAIN, 1050);
+            AddGossipItemFor(player, 5, "Teleport Orgrimmar"            , GOSSIP_SENDER_MAIN, 1035);
+            AddGossipItemFor(player, 5, "Teleport Undercity"            , GOSSIP_SENDER_MAIN, 1040);
+            AddGossipItemFor(player, 5, "Teleport Thunder Bluff"        , GOSSIP_SENDER_MAIN, 1045);
+            AddGossipItemFor(player, 5, "Teleport Silvermoon"           , GOSSIP_SENDER_MAIN, 1050);
         }
 
-        player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE,_Creature->GetGUID());
+        SendGossipMenuFor(player,DEFAULT_GOSSIP_MESSAGE,_Creature->GetGUID());
 
         return true;
     };
@@ -1021,7 +1022,7 @@ class npc_portal : public CreatureScript
         // Not allow in combat
         if(!player->getAttackers().empty())
         {
-            player->CLOSE_GOSSIP_MENU();
+            CloseGossipMenuFor(player);
             _Creature->MonsterSay(MSG_INCOMBAT, LANG_UNIVERSAL, 0);
             return;
         }
@@ -1130,40 +1131,40 @@ namespace
     void AffichCat(Player * const player, Creature * const creature)
     {
         if (PageC[player] > 0)
-            player->ADD_GOSSIP_ITEM(7, PREV_PAGE, GOSSIP_PREV_PAGEC, 0);
+            AddGossipItemFor(player,7, PREV_PAGE, GOSSIP_PREV_PAGEC, 0);
 
         VCatDest_t i (PageC[player] * NB_ITEM_PAGE);
         for ( ; i < TabCatDest.size() && i < (NB_ITEM_PAGE * (PageC[player] + 1)); ++i)
         {
             if (TabCatDest[i].IsAllowedToTeleport(player))
-                player->ADD_GOSSIP_ITEM(7, TabCatDest[i].GetName(player->IsGameMaster()).c_str(), GOSSIP_SHOW_DEST, i);
+                AddGossipItemFor(player,7, TabCatDest[i].GetName(player->IsGameMaster()).c_str(), GOSSIP_SHOW_DEST, i);
         }
 
         if (i < TabCatDest.size())
-            player->ADD_GOSSIP_ITEM(7, NEXT_PAGE, GOSSIP_NEXT_PAGEC, 0);
+            AddGossipItemFor(player,7, NEXT_PAGE, GOSSIP_NEXT_PAGEC, 0);
 
-        player->SEND_GOSSIP_MENU(MSG_CAT, creature->GetGUID());
+        SendGossipMenuFor(player,MSG_CAT, creature->GetGUID());
     };
 
     // Display destination categories
     void AffichDest(Player * const player, Creature * const creature)
     {
         if (PageD[player] > 0)
-            player->ADD_GOSSIP_ITEM(7, PREV_PAGE, GOSSIP_PREV_PAGED, 0);
+            AddGossipItemFor(player,7, PREV_PAGE, GOSSIP_PREV_PAGED, 0);
 
         CatDest::VDest_t i (PageD[player] * NB_ITEM_PAGE);
         for ( ; i < TabCatDest[Cat[player]].size() && i < (NB_ITEM_PAGE * (PageD[player] + 1)); ++i)
         {
-            player->ADD_GOSSIP_ITEM(5, TabCatDest[Cat[player]].GetDest(i).m_name.c_str(), GOSSIP_TELEPORT, i);
+            AddGossipItemFor(player,5, TabCatDest[Cat[player]].GetDest(i).m_name.c_str(), GOSSIP_TELEPORT, i);
         }
 
         if (i < TabCatDest[Cat[player]].size())
-            player->ADD_GOSSIP_ITEM(7, NEXT_PAGE, GOSSIP_NEXT_PAGED, 0);
+            AddGossipItemFor(player,7, NEXT_PAGE, GOSSIP_NEXT_PAGED, 0);
 
         if (CatDest::CountOfCategoryAllowedBy(player) > 1)
-            player->ADD_GOSSIP_ITEM(7, MAIN_MENU, GOSSIP_MAIN_MENU, 0);
+            AddGossipItemFor(player,7, MAIN_MENU, GOSSIP_MAIN_MENU, 0);
 
-        player->SEND_GOSSIP_MENU(MSG_DEST, creature->GetGUID());
+        SendGossipMenuFor(player,MSG_DEST, creature->GetGUID());
     };
 
     // Verification before teleportation
@@ -1203,7 +1204,7 @@ class npc_teleport : public CreatureScript
 
         if(player->IsInCombat())
         {
-            player->CLOSE_GOSSIP_MENU();
+            CloseGossipMenuFor(player);
             creature->MonsterWhisper("You are in combat. Come back later", player);
             return true;
         }
@@ -1253,7 +1254,7 @@ class npc_teleport : public CreatureScript
 
           // Teleportation
           case GOSSIP_TELEPORT:
-            player->CLOSE_GOSSIP_MENU();
+            CloseGossipMenuFor(player);
             /* what is this code? removing sickness? meh..
             if(player->HasAura(15007,0))
             {

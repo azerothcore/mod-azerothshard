@@ -102,37 +102,37 @@ class Professions_NPC : public CreatureScript
                         return true;
                 }
 
-                void LearnSkillRecipesHelper(Player *player, uint32 skill_id)
+                void LearnSkillRecipesHelper(Player *player, uint32 skillLine)
                 {
                         uint32 classmask = player->getClassMask();
 
                         for (uint32 j = 0; j < sSkillLineAbilityStore.GetNumRows(); ++j)
                         {
-                                SkillLineAbilityEntry const *skillLine = sSkillLineAbilityStore.LookupEntry(j);
-                                if (!skillLine)
+                                SkillLineAbilityEntry const *skillLineEntry = sSkillLineAbilityStore.LookupEntry(j);
+                                if (!skillLineEntry)
                                         continue;
 
                                 // wrong skill
-                                if (skillLine->skillId != skill_id)
+                                if (skillLineEntry->SkillLine != skillLine)
                                         continue;
 
                                 // not high rank
-                                if (skillLine->forward_spellid)
+                                if (skillLineEntry->SupercededBySpell)
                                         continue;
 
                                 // skip racial skills
-                                if (skillLine->racemask != 0)
+                                if (skillLineEntry->RaceMask != 0)
                                         continue;
 
                                 // skip wrong class skills
-                                if (skillLine->classmask && (skillLine->classmask & classmask) == 0)
+                                if (skillLineEntry->ClassMask && (skillLineEntry->ClassMask & classmask) == 0)
                                         continue;
 
-                                SpellInfo const * spellInfo = sSpellMgr->GetSpellInfo(skillLine->spellId);
+                                SpellInfo const * spellInfo = sSpellMgr->GetSpellInfo(skillLineEntry->Spell);
                                 if (!spellInfo || !SpellMgr::IsSpellValid(spellInfo))
                                         continue;
 
-                                player->learnSpell(skillLine->spellId);
+                                player->learnSpell(skillLineEntry->Spell);
                         }
                 }
 
@@ -175,19 +175,19 @@ class Professions_NPC : public CreatureScript
                                 switch (uiAction)
                                 {
                                         case 196:
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Alchemy (1000 AP)", GOSSIP_SENDER_MAIN, 1);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Blacksmithing (1000 AP)", GOSSIP_SENDER_MAIN, 2);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Leatherworking (1000 AP)", GOSSIP_SENDER_MAIN, 3);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Tailoring (1000 AP)", GOSSIP_SENDER_MAIN, 4);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Engineering (1000 AP)", GOSSIP_SENDER_MAIN, 5);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Enchanting (1000 AP)", GOSSIP_SENDER_MAIN, 6);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Jewelcrafting (1000 AP)", GOSSIP_SENDER_MAIN, 7);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Inscription (1000 AP)", GOSSIP_SENDER_MAIN, 8);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Herbalism (1000 AP)", GOSSIP_SENDER_MAIN, 11);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Skinning (1000 AP)", GOSSIP_SENDER_MAIN, 12);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Mining (1000 AP)", GOSSIP_SENDER_MAIN, 13);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Cooking (1000 AP)", GOSSIP_SENDER_MAIN, 9);
-                                                pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "First Aid (1000 AP)", GOSSIP_SENDER_MAIN, 10);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Alchemy (1000 AP)", GOSSIP_SENDER_MAIN, 1);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Blacksmithing (1000 AP)", GOSSIP_SENDER_MAIN, 2);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Leatherworking (1000 AP)", GOSSIP_SENDER_MAIN, 3);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Tailoring (1000 AP)", GOSSIP_SENDER_MAIN, 4);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Engineering (1000 AP)", GOSSIP_SENDER_MAIN, 5);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Enchanting (1000 AP)", GOSSIP_SENDER_MAIN, 6);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Jewelcrafting (1000 AP)", GOSSIP_SENDER_MAIN, 7);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Inscription (1000 AP)", GOSSIP_SENDER_MAIN, 8);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Herbalism (1000 AP)", GOSSIP_SENDER_MAIN, 11);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Skinning (1000 AP)", GOSSIP_SENDER_MAIN, 12);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Mining (1000 AP)", GOSSIP_SENDER_MAIN, 13);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "Cooking (1000 AP)", GOSSIP_SENDER_MAIN, 9);
+                                                AddGossipItemFor(pPlayer, GOSSIP_ICON_CHAT, "First Aid (1000 AP)", GOSSIP_SENDER_MAIN, 10);
 
                                                 pPlayer->PlayerTalkClass->SendGossipMenu(907, _creature->GetGUID());
                                                 break;

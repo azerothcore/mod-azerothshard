@@ -15,6 +15,13 @@
 #include "Solo3v3.h"
 #include "ExtraDatabase.h"
 
+HearthstoneMode* HearthstoneMode::instance()
+{
+    static HearthstoneMode instance;
+    return &instance;
+}
+
+
 // old
 void HearthstoneMode::AzthSendListInventory(ObjectGuid vendorGuid, WorldSession * session, uint32 /*extendedCostStartValue*/)
 {
@@ -555,42 +562,42 @@ public:
 //endcheck
 
         if (bitmask>0)
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_DOT, sAzthLang->get(AZTH_LANG_HS_QUESTS, player), GOSSIP_SENDER_MAIN, 0);
+            AddGossipItemFor(player,GOSSIP_ICON_DOT, sAzthLang->get(AZTH_LANG_HS_QUESTS, player), GOSSIP_SENDER_MAIN, 0);
 
         if ((bitmask & BITMASK_PVP) == BITMASK_PVP)
         {
             if (questPvp)
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, sAzthLang->getf(AZTH_LANG_HS_PVP_QUEST, player, (questPvp->GetTitle() + (pvpId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, pvpId);
+                AddGossipItemFor(player,GOSSIP_ICON_BATTLE, sAzthLang->getf(AZTH_LANG_HS_PVP_QUEST, player, (questPvp->GetTitle() + (pvpId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, pvpId);
         }
 
         if (!sAZTH->GetAZTHPlayer(player)->isPvP()) {
             if ((bitmask & BITMASK_DAILY_RANDOM) == BITMASK_DAILY_RANDOM)
             {
                 if (questPve)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_DAILY_QUEST, player, (questPve->GetTitle() + (pveId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, pveId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_DAILY_QUEST, player, (questPve->GetTitle() + (pveId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, pveId);
             }
 
 
             if ((bitmask & BITMASK_WEEKLY_RND1) == BITMASK_WEEKLY_RND1)
             {
                 if (questClassicWeekly)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, (questClassicWeekly->GetTitle() + (weeklyClassicId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyClassicId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, (questClassicWeekly->GetTitle() + (weeklyClassicId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyClassicId);
             }
 
             if ((bitmask & BITMASK_WEEKLY_RND2) == BITMASK_WEEKLY_RND2)
             {
                 if (questTBCWeekly)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, (questTBCWeekly->GetTitle() + (weeklyTBCId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyTBCId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, (questTBCWeekly->GetTitle() + (weeklyTBCId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyTBCId);
             }
 
             if ((bitmask & BITMASK_WEEKLY_RND3) == BITMASK_WEEKLY_RND3)
             {
                 if (questWotlkWeekly)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, (questWotlkWeekly->GetTitle()+ (weeklyWotlkId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player) )).c_str()), GOSSIP_SENDER_MAIN, weeklyWotlkId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, (questWotlkWeekly->GetTitle()+ (weeklyWotlkId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player) )).c_str()), GOSSIP_SENDER_MAIN, weeklyWotlkId);
             }
 
             if (bitmask>0)
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_DOT, sAzthLang->get(AZTH_LANG_HS_TW_QUESTS, player), GOSSIP_SENDER_MAIN, 0);
+                AddGossipItemFor(player,GOSSIP_ICON_DOT, sAzthLang->get(AZTH_LANG_HS_TW_QUESTS, player), GOSSIP_SENDER_MAIN, 0);
 
 
             //"TW Weekly Quest Check & gossip"
@@ -611,7 +618,7 @@ public:
                 {
                     if (quest) {
                         isEmpty = false;
-                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_WEEKLY_QUEST, player, (quest->GetTitle() + (weeklyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player) )).c_str()), GOSSIP_SENDER_MAIN, weeklyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? *it : 0);
+                        AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_WEEKLY_QUEST, player, (quest->GetTitle() + (weeklyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player) )).c_str()), GOSSIP_SENDER_MAIN, weeklyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? *it : 0);
                     }
                 }
             }
@@ -620,7 +627,7 @@ public:
             if ((bitmask & BITMASK_TW_WEEKLY_RANDOM) == BITMASK_TW_WEEKLY_RANDOM)
             {
                 if (questWeeklyRandomTw)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_WEEKLY_RANDOM_QUEST, player, (questWeeklyRandomTw->GetTitle() + (weeklyRandomTwId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyRandomTwId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_WEEKLY_RANDOM_QUEST, player, (questWeeklyRandomTw->GetTitle() + (weeklyRandomTwId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyRandomTwId);
             }
 
 //"TW Daily Quest Check & gossip"
@@ -641,7 +648,7 @@ public:
                 {
                     if (quest) {
                         isEmpty = false;
-                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_DAILY_QUEST, player, (quest->GetTitle() + (dailyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? "" :  sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, dailyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? *it : 0);
+                        AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_DAILY_QUEST, player, (quest->GetTitle() + (dailyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? "" :  sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, dailyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? *it : 0);
                     }
                 }
             }
@@ -649,7 +656,7 @@ public:
             if ((bitmask & BITMASK_TW_DAILY_RANDOM) == BITMASK_TW_DAILY_RANDOM)
             {
                 if (questDailyRandomTw)
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_DAILY_RANDOM_QUEST, player, (questDailyRandomTw->GetTitle() + (dailyRandomTwId ? "" :  sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, dailyRandomTwId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_DAILY_RANDOM_QUEST, player, (questDailyRandomTw->GetTitle() + (dailyRandomTwId ? "" :  sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, dailyRandomTwId);
             }
         }
 
@@ -665,7 +672,7 @@ public:
             gossip = 100003;
         */
 
-        player->SEND_GOSSIP_MENU(gossip, creature->GetGUID());
+        SendGossipMenuFor(player,gossip, creature->GetGUID());
         return true;
     }
 };
@@ -707,15 +714,15 @@ public:
 
         if (vendor.pvpVendor && !sAZTH->GetAZTHPlayer(player)->isPvP() && !player->IsGameMaster())
         {
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT,  "Non sei un player Full PvP! Non posso mostrarti nulla!", GOSSIP_SENDER_MAIN, 0);
-            player->SEND_GOSSIP_MENU(vendor.gossipNope, creature->GetGUID());
+            AddGossipItemFor(player,GOSSIP_ICON_CHAT,  "Non sei un player Full PvP! Non posso mostrarti nulla!", GOSSIP_SENDER_MAIN, 0);
+            SendGossipMenuFor(player,vendor.gossipNope, creature->GetGUID());
             return true;
         }
 
         // if reputation id = 0 then show the gossip as normal
         if (vendor.reputationId == 0) {
             if (vendor.gossipOk > 0) {
-                player->SEND_GOSSIP_MENU(vendor.gossipOk, creature->GetGUID());
+                SendGossipMenuFor(player,vendor.gossipOk, creature->GetGUID());
             } else {
                 // if not gossip set, then send the default
                 return false;
@@ -759,12 +766,12 @@ public:
                     break;
                 }
 
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, str, GOSSIP_SENDER_MAIN, 0);
-                player->SEND_GOSSIP_MENU(vendor.gossipNope, creature->GetGUID());
+                AddGossipItemFor(player,GOSSIP_ICON_CHAT, str, GOSSIP_SENDER_MAIN, 0);
+                SendGossipMenuFor(player,vendor.gossipNope, creature->GetGUID());
             } else {
                 if (vendor.gossipOk > 0) {
-                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, GOSSIP_ITEM_SHOW_ACCESS, GOSSIP_SENDER_MAIN, 50000);
-                    player->SEND_GOSSIP_MENU(vendor.gossipOk, creature->GetGUID());
+                    AddGossipItemFor(player,GOSSIP_ICON_VENDOR, GOSSIP_ITEM_SHOW_ACCESS, GOSSIP_SENDER_MAIN, 50000);
+                    SendGossipMenuFor(player,vendor.gossipOk, creature->GetGUID());
                 } else {
                     // if not gossip set, then send the default
                     return false;
@@ -782,14 +789,14 @@ public:
             ss << vendor.repValue;
             std::string str = "Hai bisogno di " + ss.str() + " reputazione con AzerothShard.";
 
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, str, GOSSIP_SENDER_MAIN, 0);
+            AddGossipItemFor(player,GOSSIP_ICON_CHAT, str, GOSSIP_SENDER_MAIN, 0);
 
-            player->SEND_GOSSIP_MENU(vendor.gossipNope, creature->GetGUID());
+            SendGossipMenuFor(player,vendor.gossipNope, creature->GetGUID());
         }
         else {
             if (vendor.gossipOk > 0 && creature->IsVendor()) {
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, GOSSIP_ITEM_SHOW_ACCESS, GOSSIP_SENDER_MAIN, 50000);
-                player->SEND_GOSSIP_MENU(vendor.gossipOk, creature->GetGUID());
+                AddGossipItemFor(player,GOSSIP_ICON_VENDOR, GOSSIP_ITEM_SHOW_ACCESS, GOSSIP_SENDER_MAIN, 50000);
+                SendGossipMenuFor(player,vendor.gossipOk, creature->GetGUID());
             } else {
                 // if not gossip set, then send the default
                 return false;
@@ -824,9 +831,9 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
-        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_ITEM_RESS_ME, GOSSIP_SENDER_MAIN, 50001);
+        AddGossipItemFor(player,GOSSIP_ICON_CHAT, GOSSIP_ITEM_RESS_ME, GOSSIP_SENDER_MAIN, 50001);
         // 83 spirit healer gossip
-        player->SEND_GOSSIP_MENU(310262, creature->GetGUID());
+        SendGossipMenuFor(player,310262, creature->GetGUID());
         return true;
     }
 };
@@ -839,7 +846,7 @@ public:
     bool OnUse(Player* player, Item* item, SpellCastTargets const& /*target*/)
     {
         //sHearthstoneMode->getItems();
-        SQLTransaction trans = CharacterDatabase.BeginTransaction();
+        CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();n();
         int16 deliverDelay = TIME_TO_RECEIVE_MAIL;
         MailDraft* draft = new MailDraft("Sacca Hearthstone", "");
         int i = 1;

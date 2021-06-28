@@ -3,6 +3,12 @@
 #include "AZTH.h"
 #include "Solo3v3.h"
 
+Season* Season::instance()
+{
+    static Season instance;
+    return &instance;
+}
+
 Season::Season()
 {
     itemLevel = uint32(0);
@@ -61,12 +67,12 @@ void Season::SetEnabled(bool enable)
 
 //
 // Passing player argument will check the player state and automatically shows a message
-// 
+//
 bool Season::checkItem(ItemTemplate const* proto, Player const* player)
 {
     if (!IsEnabled())
-        return true; //SYSTEM DISABLED  
-    
+        return true; //SYSTEM DISABLED
+
     if (/*player->InBattleground() ||*/ player->InArena() || /*player->InBattlegroundQueue()*/
         player->InBattlegroundQueueForBattlegroundQueueType(BATTLEGROUND_QUEUE_2v2) ||
                  player->InBattlegroundQueueForBattlegroundQueueType(BATTLEGROUND_QUEUE_3v3) ||
@@ -81,7 +87,7 @@ bool Season::checkItem(ItemTemplate const* proto, Player const* player)
             return false;
         }
     }
-    
+
     return true;
 }
 
@@ -89,10 +95,10 @@ bool Season::canJoinArenaOrBg(Player *pl)
 {
     if (!IsEnabled())
         return true; // SYSTEM DISABLED
-    
+
     if (sAZTH->GetAZTHPlayer(pl)->checkItems(GetItemLevel()))
         return true;
-            
+
     ChatHandler(pl->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TOURNAMENT_LEVEL_ACTUAL, pl, sASeasonMgr->GetItemLevel()));
     return false;
 }

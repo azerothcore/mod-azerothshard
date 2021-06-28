@@ -18,22 +18,8 @@
 #ifndef _EXTRADATABASE_H
 #define _EXTRADATABASE_H
 
-#include "DatabaseWorkerPool.h"
 #include "MySQLConnection.h"
-
-class ExtraDatabaseConnection : public MySQLConnection
-{
-    public:
-        //- Constructors for sync and async connections
-        ExtraDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
-        ExtraDatabaseConnection(ACE_Activation_Queue* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
-
-
-        //- Loads databasetype specific prepared statements
-        void DoPrepareStatements();
-};
-
-typedef DatabaseWorkerPool<ExtraDatabaseConnection> ExtraDatabaseWorkerPool;
+#include "DatabaseEnv.h"
 
 enum ExtraDatabaseStatements
 {
@@ -48,6 +34,20 @@ enum ExtraDatabaseStatements
     MAX_EXTRADATABASE_STATEMENTS,
 };
 
-ExtraDatabaseWorkerPool ExtraDatabase;                      ///< Accessor to the realm/login database
+class AC_DATABASE_API ExtraDatabaseConnection : public MySQLConnection
+{
+    public:
+        typedef ExtraDatabaseStatements Statements;
+
+        //- Constructors for sync and async connections
+        ExtraDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
+        ExtraDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
+
+
+        //- Loads databasetype specific prepared statements
+        void DoPrepareStatements();
+};
+
+AC_DATABASE_API extern DatabaseWorkerPool<ExtraDatabaseConnection> ExtraDatabase;
 
 #endif
