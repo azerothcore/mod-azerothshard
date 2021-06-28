@@ -1,5 +1,7 @@
 # AzerothShard module
 
+**⚠️ DISCLAIMER ⚠️** : this module is a **work in progress**, hence is not intended to be distributed yet.
+
 This module is a collection of custom features that have been implemented privately on AzerothShard project.
 Finally, most of them will be released open-source using an all-in-one module since they are coupled between eachother
 Although possibly in future this module will be refactorized to create standalone modules for each feature.
