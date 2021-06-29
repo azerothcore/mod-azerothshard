@@ -25,8 +25,7 @@ jobs:
           path: 'modules/mod-azerothshard'
       # TODO: remove mod-autobalance as a dependency of mod-azerothshard
       - uses: actions/checkout@v2
-        with:
-          run: git clone --depth=1 --branch=master https://github.com/azerothcore/mod-autobalance.git modules/mod-autobalance
+      - run: git clone --depth=1 --branch=master https://github.com/azerothcore/mod-autobalance.git modules/mod-autobalance
       - name: Cache
         uses: actions/cache@v1.1.2
         with:
