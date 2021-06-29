@@ -21,7 +21,7 @@
 #include "MySQLConnection.h"
 #include "DatabaseEnv.h"
 
-enum ExtraDatabaseStatements
+enum ExtraDatabaseStatements : uint32
 {
     /*  Naming standard for defines:
         {DB}_{SET/DEL/ADD/REP}_{Summary of data changed}
@@ -36,18 +36,24 @@ enum ExtraDatabaseStatements
 
 class AC_DATABASE_API ExtraDatabaseConnection : public MySQLConnection
 {
-    public:
-        typedef ExtraDatabaseStatements Statements;
+public:
+    typedef ExtraDatabaseStatements Statements;
 
-        //- Constructors for sync and async connections
-        ExtraDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
-        ExtraDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
+    //- Constructors for sync and async connections
+    ExtraDatabaseConnection(MySQLConnectionInfo& connInfo);
+    ExtraDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo);
+    ~ExtraDatabaseConnection();
 
 
-        //- Loads databasetype specific prepared statements
-        void DoPrepareStatements();
+    //- Loads databasetype specific prepared statements
+    void DoPrepareStatements() override;
 };
 
+/// Accessor to the extra database
 AC_DATABASE_API extern DatabaseWorkerPool<ExtraDatabaseConnection> ExtraDatabase;
+
+using ExtraDatabasePreparedStatement = PreparedStatement<ExtraDatabaseConnection>;
+using ExtraDatabaseTransaction = SQLTransaction<ExtraDatabaseConnection>;
+using ExtraDatabaseQueryHolder = SQLQueryHolder<ExtraDatabaseConnection>;
 
 #endif
