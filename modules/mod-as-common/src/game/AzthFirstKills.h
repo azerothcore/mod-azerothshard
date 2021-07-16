@@ -2,7 +2,6 @@
 #define AZTH_FIRST_KILL_H
 
 #include "Common.h"
-#include <ace/Singleton.h>
 #include "DatabaseEnv.h"
 #include "DBCEnums.h"
 #include "DBCStores.h"
@@ -21,8 +20,8 @@ enum FirstKills:uint32 {
     ACHI_FALL_OF_LK=4576, //-- "Fall of the Lich King",
 };
 
-class AzthFirstKills {
-    friend class ACE_Singleton<AzthFirstKills, ACE_Null_Mutex>;
+class AzthFirstKills
+{
 public:
     static AzthFirstKills* instance();
 
@@ -34,6 +33,6 @@ private:
     std::map<uint32 /*achiID*/, std::chrono::system_clock::time_point /*completionTime*/> currentFirstKills;
 };
 
-#define sAzthFirstKills  AzthFirstKills::instance()
+#define sAzthFirstKills AzthFirstKills::instance()
 
 #endif
