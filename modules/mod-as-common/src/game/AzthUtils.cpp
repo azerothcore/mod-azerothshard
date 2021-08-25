@@ -974,7 +974,7 @@ uint32 AzthUtils::getPositionLevel(bool includeSpecialLvl, Map *map, uint32 zone
 
 uint32 AzthUtils::getPositionLevel(bool includeSpecialLvl, Map *map, WorldLocation const& posInfo) const {
     uint32 zoneid,areaid;
-    map->GetZoneAndAreaId(zoneid, areaid, posInfo.GetPositionX(), posInfo.GetPositionY(), posInfo.GetPositionY());
+    map->GetZoneAndAreaId(PHASEMASK_NORMAL, zoneid, areaid, posInfo.GetPositionX(), posInfo.GetPositionY(), posInfo.GetPositionY());
     return getPositionLevel(includeSpecialLvl, map, zoneid, areaid);
 }
 
