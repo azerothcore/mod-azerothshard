@@ -24,7 +24,7 @@
 #include "Battleground.h"
 #include "WorldSession.h"
 #include "PetitionMgr.h"
-#include "MapManager.h"
+#include "MapMgr.h"
 #include "ExtraDatabase.h"
 
 enum AZTHLanguage

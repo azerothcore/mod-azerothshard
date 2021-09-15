@@ -13,7 +13,7 @@
 #include "Player.h"
 #include "SpellAuras.h"
 #include "AccountMgr.h"
-#include "MapManager.h"
+#include "MapMgr.h"
 #include "MapInstanced.h"
 #include "InstanceScript.h"
 #include "ArenaSeason.h"

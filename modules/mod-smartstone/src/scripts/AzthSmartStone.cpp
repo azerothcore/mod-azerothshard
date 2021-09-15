@@ -13,7 +13,7 @@
 #include "Spell.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
-#include "MapManager.h"
+#include "MapMgr.h"
 #include "Map.h"
 #include "Group.h"
 #include "AZTH.h"

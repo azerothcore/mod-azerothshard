@@ -1,5 +1,5 @@
 #include "Apps.h"
-#include "MapManager.h"
+#include "MapMgr.h"
 #include "AzthSharedDefines.h"
 #include "GameGraveyard.h"
 #include "AZTH.h"

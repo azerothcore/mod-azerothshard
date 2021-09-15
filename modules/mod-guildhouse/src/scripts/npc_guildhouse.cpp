@@ -32,7 +32,7 @@
 
 #include "GuildHouse.h"
 #include "ObjectAccessor.h"
-#include "MapManager.h"
+#include "MapMgr.h"
 #include "ObjectMgr.h"
 #include "GuildMgr.h"
 #include "ScriptMgr.h"

@@ -33,7 +33,7 @@
 #include "GuildMgr.h"
 #include "Guild.h"
 #include "ObjectAccessor.h"
-#include "MapManager.h"
+#include "MapMgr.h"
 
 GuildHouseObject GHobj;
 
