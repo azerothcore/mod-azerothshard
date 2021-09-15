@@ -4,7 +4,7 @@
 #include "azth_custom_hearthstone_mode.h"
 #include "AzthUtils.h"
 #include "AzthPlayer.h"
-#include "MapManager.h"
+#include "MapMgr.h"
 #include "AZTH.h"
 
 class PvPMode : public GlobalScript

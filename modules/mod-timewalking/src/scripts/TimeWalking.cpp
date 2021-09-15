@@ -15,7 +15,7 @@
 #include "LFG.h"
 #include "LFGMgr.h"
 #include "AutoBalance.h"
-#include "MapManager.h"
+#include "MapMgr.h"
 #include "ReputationMgr.h"
 #include "AZTH.h"
 
