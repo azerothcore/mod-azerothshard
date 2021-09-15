@@ -290,7 +290,7 @@ public:
             if (sAZTH->GetAZTHPlayer(player)->getCurrentDimensionByAura() == DIMENSION_RPG) {
                 Player *owner=getHomeOwner(player);
 
-                if (MapManager::IsValidMapCoord(sAZTH->GetAZTHPlayer(owner)->getLastPositionInfo(AZTH_SMRTST_POSITION_HOUSE_INDEX))) {
+                if (MapMgr::IsValidMapCoord(sAZTH->GetAZTHPlayer(owner)->getLastPositionInfo(AZTH_SMRTST_POSITION_HOUSE_INDEX))) {
                     // home teleport for RPG world
                     SmartStoneCommand homeTeleport = sSmartStone->getCommandById(SMRTST_TELEPORT_HOUSE);
                     std::string str=homeTeleport.getText(player) + " (" +owner->GetName()+")";

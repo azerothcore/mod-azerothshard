@@ -16,7 +16,7 @@ void SmartStoneApps::blackMarketTeleport(Player *player) {
     }
     else {
         WorldLocation const& pos = sAZTH->GetAZTHPlayer(player)->getLastPositionInfo(sAZTH->GetAZTHPlayer(player)->getCurrentDimensionByAura());
-        if (!MapManager::IsValidMapCoord(pos))
+        if (!MapMgr::IsValidMapCoord(pos))
             return;
 
         Map *m = sMapMgr->FindBaseMap(pos.GetMapId());
@@ -38,7 +38,7 @@ void SmartStoneApps::teleportHouse(Player *owner, Player *guest) {
         return;
 
     WorldLocation const& pos = sAZTH->GetAZTHPlayer(owner)->getLastPositionInfo(AZTH_SMRTST_POSITION_HOUSE_INDEX);
-    if (!MapManager::IsValidMapCoord(pos))
+    if (!MapMgr::IsValidMapCoord(pos))
         return;
 
     guest->TeleportTo(pos);

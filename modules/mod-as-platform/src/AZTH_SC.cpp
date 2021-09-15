@@ -1612,7 +1612,7 @@ public:
         else // save only in non-flight case
             player->SaveRecallPosition();
 
-        if (!MapManager::IsValidMapCoord(map, x, y, z))
+        if (!MapMgr::IsValidMapCoord(map, x, y, z))
         {
             handler->PSendSysMessage(LANG_INVALID_TARGET_COORD, x, y, map);
             handler->SetSentErrorMessage(true);
