@@ -305,7 +305,7 @@ public:
             return true;
 
         if (!action) {
-            creature->MonsterWhisper(sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_REACHED, player), player);
+            creature->Whisper(sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_REACHED, player), LANG_UNIVERSAL, player);
             return true;
         }
 

@@ -122,7 +122,7 @@ class npc_guild_master : public CreatureScript
             {
                 char msg[200];
                 sprintf(msg, MSG_ALREADYHAVEGHADD);
-				_creature->MonsterWhisper(MSG_ALREADYHAVEGHADD, player, true);
+				_creature->Whisper(MSG_ALREADYHAVEGHADD, LANG_UNIVERSAL, player, true);
             }
             return true;
         }
@@ -143,7 +143,7 @@ class npc_guild_master : public CreatureScript
                 //whisper to player "already have etc..."
                 char msg[200];
                 sprintf(msg, MSG_ALREADYHAVEGH);
-                _creature->MonsterWhisper(msg, player);
+                _creature->Whisper(msg, LANG_UNIVERSAL, player);
             }
             return true;
         }
@@ -156,14 +156,14 @@ class npc_guild_master : public CreatureScript
         if (player->GetGuildId() == 0)
         {
             //if player has no guild
-            _creature->MonsterWhisper(MSG_NOTINGUILD, player);
+            _creature->Whisper(MSG_NOTINGUILD, LANG_UNIVERSAL, player);
             return;
         }
 
         if (!player->getAttackers().empty())
         {
             //if player in combat
-            _creature->MonsterSay(MSG_INCOMBAT, LANG_UNIVERSAL, 0);
+            _creature->Say(MSG_INCOMBAT, LANG_UNIVERSAL, 0);
             return;
         }
 
@@ -176,7 +176,7 @@ class npc_guild_master : public CreatureScript
             player->TeleportTo(map, x, y, z, o);
         }
         else
-            _creature->MonsterWhisper(MSG_NOGUILDHOUSE, player);
+            _creature->Whisper(MSG_NOGUILDHOUSE, LANG_UNIVERSAL, player);
     };
 
     bool showBuyList(Player *player, Creature *_creature, uint32 showFromId = 0)
@@ -246,7 +246,7 @@ class npc_guild_master : public CreatureScript
             if (showFromId == 0)
             {
                 //all guildhouses are occupied
-                _creature->MonsterWhisper(MSG_NOFREEGH, player);
+                _creature->Whisper(MSG_NOFREEGH, LANG_UNIVERSAL, player);
                 CloseGossipMenuFor(player);
             }
             else
@@ -328,7 +328,7 @@ class npc_guild_master : public CreatureScript
             if (showFromId == 0)
             {
                 //all no GhAdd to Show
-                _creature->MonsterWhisper(MSG_NOADDGH, player);
+                _creature->Whisper(MSG_NOADDGH, LANG_UNIVERSAL, player);
                 CloseGossipMenuFor(player);
             }
             else
@@ -378,7 +378,7 @@ class npc_guild_master : public CreatureScript
 
         if (!result)
         {
-            _creature->MonsterWhisper(MSG_GHOCCUPIED, player);
+            _creature->Whisper(MSG_GHOCCUPIED, LANG_UNIVERSAL, player);
             return;
         }
 
@@ -390,14 +390,14 @@ class npc_guild_master : public CreatureScript
             //show how much money player need to buy GH (in gold)
             char msg[200];
             sprintf(msg, MSG_NOTENOUGHMONEY, price);
-            _creature->MonsterWhisper(msg, player);
+            _creature->Whisper(msg, LANG_UNIVERSAL, player);
             return;
         }
 
         GHobj.ChangeGuildHouse(player->GetGuildId(), guildhouseId);
 
         player->ModifyMoney(-(price*10000));
-        _creature->MonsterSay(MSG_CONGRATULATIONS, LANG_UNIVERSAL, 0);
+        _creature->Say(MSG_CONGRATULATIONS, LANG_UNIVERSAL);
     };
 
     bool confirmBuyAdd(Player *player, Creature *_creature, uint32 gh_Add)
@@ -438,7 +438,7 @@ class npc_guild_master : public CreatureScript
             //show how much money player need to buy GH (in gold)
             char msg[200];
             sprintf(msg, MSG_NOTENOUGHMONEY, price);
-            _creature->MonsterWhisper(msg, player);
+            _creature->Whisper(msg, LANG_UNIVERSAL, player);
             return;
         }
 
@@ -471,7 +471,7 @@ class npc_guild_master : public CreatureScript
             //display message e.g. "here your money etc."
             char msg[200];
             sprintf(msg, MSG_SOLD, price * 3 / 4);
-            _creature->MonsterWhisper(msg, player);
+            _creature->Whisper(msg, LANG_UNIVERSAL, player);
         }
     };
 
@@ -628,18 +628,18 @@ class guild_guard : public CreatureScript
 		char msg[500];
 		if (AccountMgr::IsGMAccount(player->GetSession()->GetSecurity()))
 		{
-			_Creature->MonsterWhisper("Ciao gm!", player); //solo gm traduzione non necessaria
+			_Creature->Whisper("Ciao gm!", LANG_UNIVERSAL, player); //solo gm traduzione non necessaria
 			if (guardguild)
 			{
 				sprintf(msg, "Il mio id di gilda: %u", guardguild);
-				_Creature->MonsterWhisper(msg, player);
+				_Creature->Whisper(msg, LANG_UNIVERSAL, player);
 				if (_Creature->GetEntry() == NPC_GUARD_1)
-					_Creature->MonsterWhisper("Il mio raggio d'azione: 100y", player);
+					_Creature->Whisper("Il mio raggio d'azione: 100y", LANG_UNIVERSAL, player);
 				else
-					_Creature->MonsterWhisper("Il mio raggio d'azione: 50y", player);
+					_Creature->Whisper("Il mio raggio d'azione: 50y", LANG_UNIVERSAL, player);
 			}
 			else
-				_Creature->MonsterWhisper("Sono una Guardia Bugga!", player);
+				_Creature->Whisper("Sono una Guardia Bugga!", LANG_UNIVERSAL, player);
 		}
 
 		/////////////////////////////////
@@ -671,7 +671,7 @@ class guild_guard : public CreatureScript
                 if (_Creature->GetAI())
                 {
                     _Creature->GetAI()->SetData(0,1);
-                    _Creature->MonsterYell("Protezione Attivata", LANG_UNIVERSAL, 0);
+                    _Creature->Yell("Protezione Attivata", LANG_UNIVERSAL);
                 }
 
             }
@@ -680,7 +680,7 @@ class guild_guard : public CreatureScript
                  if (_Creature->GetAI())
                  {
                     _Creature->GetAI()->SetData(0,0);
-                    _Creature->MonsterYell("Protezione Disattivata", LANG_UNIVERSAL, 0);
+                    _Creature->Yell("Protezione Disattivata", LANG_UNIVERSAL);
                  }
             }
         }
@@ -770,7 +770,7 @@ class guild_guard : public CreatureScript
                             uint32 guild = plr->GetGuildId();
                             if (guardguild && guild != guardguild)
                             {
-                                me->MonsterYell(SAY_AGGRO, LANG_UNIVERSAL, 0);
+                                me->Yell(SAY_AGGRO, LANG_UNIVERSAL);
                                 me->Kill(me,plr);
                             }
                         }
@@ -779,7 +779,7 @@ class guild_guard : public CreatureScript
                             uint32 guild = plr->GetGuildId();
                             if (guardguild && guild != guardguild)
                             {
-								me->MonsterWhisper(SAY_WARNING, plr);
+								me->Whisper(SAY_WARNING, LANG_UNIVERSAL, plr);
                             }
                         }
                     }
@@ -867,7 +867,7 @@ class npc_buffnpc : public CreatureScript
         if(!player->getAttackers().empty())
         {
             CloseGossipMenuFor(player);
-            _Creature->MonsterSay(MSG_INCOMBAT, LANG_UNIVERSAL, 0);
+            _Creature->Say(MSG_INCOMBAT, LANG_UNIVERSAL);
             return;
         }
 
@@ -1023,7 +1023,7 @@ class npc_portal : public CreatureScript
         if(!player->getAttackers().empty())
         {
             CloseGossipMenuFor(player);
-            _Creature->MonsterSay(MSG_INCOMBAT, LANG_UNIVERSAL, 0);
+            _Creature->Say(MSG_INCOMBAT, LANG_UNIVERSAL);
             return;
         }
 
@@ -1175,14 +1175,14 @@ namespace
         if (player->getLevel() < dest.m_level && !player->IsGameMaster())
         {
             std::string msg ("You do not have the required level. This destination requires level " + ConvertStr(dest.m_level) + ".");
-            creature->MonsterWhisper(msg.c_str(), player);
+            creature->Whisper(msg.c_str(), LANG_UNIVERSAL, player);
             return;
         }
 
         if (player->GetMoney() < dest.m_cost && !player->IsGameMaster())
         {
             std::string msg ("You do not have enough money. The price for teleportation is " + ConvertMoney(dest.m_cost) + ".");
-            creature->MonsterWhisper(msg.c_str(), player);
+            creature->Whisper(msg.c_str(), LANG_UNIVERSAL, player);
             return;
         }
 
@@ -1205,7 +1205,7 @@ class npc_teleport : public CreatureScript
         if(player->IsInCombat())
         {
             CloseGossipMenuFor(player);
-            creature->MonsterWhisper("You are in combat. Come back later", player);
+            creature->Whisper("You are in combat. Come back later", LANG_UNIVERSAL, player);
             return true;
         }
         AffichCat(player, creature);
