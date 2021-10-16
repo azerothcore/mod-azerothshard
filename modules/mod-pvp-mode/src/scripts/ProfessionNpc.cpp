@@ -14,7 +14,7 @@ class Professions_NPC : public CreatureScript
                 void CreatureWhisperBasedOnBool(const char *text, Creature *_creature, Player *pPlayer, bool value)
                 {
                     if (value)
-                        _creature->MonsterWhisper(text, pPlayer);
+                        _creature->Whisper(text, LANG_UNIVERSAL, pPlayer);
                 }
 
                 uint32 PlayerMaxLevel() const
@@ -32,7 +32,7 @@ class Professions_NPC : public CreatureScript
                         if (!pPlayer->IsGameMaster()
                             && !sAZTH->GetAZTHPlayer(pPlayer)->isPvP() && pPlayer->GetMaxPersonalArenaRatingRequirement(2) < MIN_RATING) {
                             std::string msg  = "You need to be a Full PvP player and least "+std::to_string(MIN_RATING)+" 2v2 Rating to talk with me!";
-                            _creature->MonsterWhisper(msg.c_str(), pPlayer);
+                            _creature->Whisper(msg.c_str(), LANG_UNIVERSAL, pPlayer);
                             return true;
                         }
 
@@ -144,17 +144,17 @@ class Professions_NPC : public CreatureScript
                 void CompleteLearnProfession(Player *pPlayer, Creature *pCreature, SkillType skill)
                 {
                         if (PlayerAlreadyHasTwoProfessions(pPlayer) && !IsSecondarySkill(skill)) {
-                            pCreature->MonsterWhisper("You already know two professions!", pPlayer);
+                            pCreature->Whisper("You already know two professions!", LANG_UNIVERSAL, pPlayer);
                             return;
                         }
 
                         if (pPlayer->GetArenaPoints() < AP_REQ) {
-                            pCreature->MonsterWhisper("You don't have enough Arena Points to buy this profession!", pPlayer);
+                            pCreature->Whisper("You don't have enough Arena Points to buy this profession!", LANG_UNIVERSAL, pPlayer);
                             return;
                         }
 
                         if (!LearnAllRecipesInProfession(pPlayer, skill))
-                            pCreature->MonsterWhisper("Internal error occured!", pPlayer);
+                            pCreature->Whisper("Internal error occured!", LANG_UNIVERSAL, pPlayer);
                 }
 
                 bool OnGossipSelect(Player* pPlayer, Creature* _creature, uint32 uiSender, uint32 uiAction)
