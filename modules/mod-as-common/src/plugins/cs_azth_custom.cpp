@@ -33,10 +33,16 @@
 #include "AzthUtils.h"
 #include "AZTH.h"
 
- class azth_commandscript : public CommandScript {
- public:
+#if AC_COMPILER == AC_COMPILER_GNU
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
-     azth_commandscript() : CommandScript("azth_commandscript") {}
+using namespace Acore::ChatCommands;
+
+class azth_commandscript : public CommandScript
+{
+public:
+    azth_commandscript() : CommandScript("azth_commandscript") { }
 
      std::vector<ChatCommand> GetCommands() const override {
          // name , level, allowConsole, function
