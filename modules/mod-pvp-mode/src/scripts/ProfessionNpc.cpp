@@ -81,15 +81,14 @@ class Professions_NPC : public CreatureScript
                 bool LearnAllRecipesInProfession(Player *pPlayer, SkillType skill)
                 {
                         ChatHandler handler(pPlayer->GetSession());
-                        char* skill_name;
 
                         SkillLineEntry const *SkillInfo = sSkillLineStore.LookupEntry(skill);
-                        skill_name = SkillInfo->name[handler.GetSessionDbcLocale()];
+                        auto skill_name = SkillInfo->name[handler.GetSessionDbcLocale()];
 
                         if (!SkillInfo)
                         {
-                                sLog->outError("Profession NPC: received non-valid skill ID (LearnAllRecipesInProfession)");
-                                return false;
+                            sLog->outError("Profession NPC: received non-valid skill ID (LearnAllRecipesInProfession)");
+                            return false;
                         }
 
                         LearnSkillRecipesHelper(pPlayer, SkillInfo->id);
