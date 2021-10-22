@@ -27,6 +27,12 @@
 #include "MapMgr.h"
 #include "ExtraDatabase.h"
 
+#if AC_COMPILER == AC_COMPILER_GNU
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
+using namespace Acore::ChatCommands;
+
 enum AZTHLanguage
 {
     LANG_AZTH_NO_INFO_ARENA_JOINED = 7000, //[AZTH]
