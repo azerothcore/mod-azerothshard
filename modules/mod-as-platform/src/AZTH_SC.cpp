@@ -1240,7 +1240,7 @@ public:
                 if (index == UNIT_FIELD_BYTES_2) // Allow targetting opposite faction in party when enabled in config
                     fieldBuffer << (unit->GetUInt32Value(UNIT_FIELD_BYTES_2) & ((UNIT_BYTE2_FLAG_SANCTUARY) << 8)); // this flag is at uint8 offset 1 !!
                 else // pretend that all other HOSTILE players have own faction, to allow follow, heal, rezz (trade wont work)
-                    fieldBuffer << uint32(target->getFaction());
+                    fieldBuffer << uint32(target->GetFaction());
 
                 return true;
             }
