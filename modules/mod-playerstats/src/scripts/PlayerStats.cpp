@@ -25,10 +25,10 @@ uint32 AzthPlayer::normalizeLvl(uint32 level)
         {
             for (Group::member_citerator mitr = group->GetMemberSlots().begin(); mitr != group->GetMemberSlots().end(); ++mitr)
             {
-                if (const GlobalPlayerData* gpd = sWorld->GetGlobalPlayerData(mitr->guid.GetCounter()))
+                if (CharacterCacheEntry const* gpd = sCharacterCache->GetCharacterCacheByGuid(mitr->guid))
                 {
-                    if (groupLevel < gpd->level)
-                        rLevel = gpd->level;
+                    if (groupLevel < gpd->Level)
+                        rLevel = gpd->Level;
                 }
             }
         }
