@@ -65,7 +65,7 @@ public:
     //     if (!player)
     //         return;
 
-    //     if (oldLevel == 9 && !sAZTH->GetAZTHPlayer(player)->isTimeWalking() && sConfigMgr->GetBoolDefault("Azth.LevelBonus.10.Enable", false))
+    //     if (oldLevel == 9 && !sAZTH->GetAZTHPlayer(player)->isTimeWalking() && sConfigMgr->GetOption<bool>("Azth.LevelBonus.10.Enable", false))
     //         sAZTH->SendGameMail(player, "Well done!", "You reached level 10, a small present for you by AzerothShard!", 10 * GOLD);
     // }
 

@@ -176,7 +176,7 @@ void Solo3v3::CheckStartSolo3v3Arena(Battleground* bg)
 
             if (plr->GetInstanceId() != bg->GetInstanceID())
             {
-                if (sConfigMgr->GetBoolDefault("Solo.3v3.CastDeserterOnAfk", true))
+                if (sConfigMgr->GetOption<bool>("Solo.3v3.CastDeserterOnAfk", true))
                     plr->CastSpell(plr, 26013, true); // Deserter
 
                 someoneNotInArena = true;
@@ -184,7 +184,7 @@ void Solo3v3::CheckStartSolo3v3Arena(Battleground* bg)
         }
     }
 
-    if (someoneNotInArena && sConfigMgr->GetBoolDefault("Solo.3v3.StopGameIncomplete", true))
+    if (someoneNotInArena && sConfigMgr->GetOption<bool>("Solo.3v3.StopGameIncomplete", true))
     {
         bg->SetRated(false);
         bg->EndBattleground(TEAM_NEUTRAL);
@@ -204,7 +204,7 @@ bool Solo3v3::CheckSolo3v3Arena(BattlegroundQueue* queue, BattlegroundBracketId 
 
     uint32 MinPlayersPerTeam = sBattlegroundMgr->isArenaTesting() ? 1 : 3;
 
-    bool filterTalents = sConfigMgr->GetBoolDefault("Solo.3v3.FilterTalents", false);
+    bool filterTalents = sConfigMgr->GetOption<bool>("Solo.3v3.FilterTalents", false);
 
     for (int teamId = 0; teamId < 2; teamId++) // BG_QUEUE_PREMADE_ALLIANCE and BG_QUEUE_PREMADE_HORDE
     {
@@ -313,7 +313,7 @@ bool Solo3v3::Arena1v1CheckTalents(Player* player)
     if (!player)
         return false;
 
-    if (sConfigMgr->GetBoolDefault("Arena.1v1.BlockForbiddenTalents", false) == false)
+    if (sConfigMgr->GetOption<bool>("Arena.1v1.BlockForbiddenTalents", false) == false)
         return true;
 
     uint32 count = 0;
@@ -349,7 +349,7 @@ bool Solo3v3::Arena1v1CheckTalents(Player* player)
 
 Solo3v3TalentCat Solo3v3::GetTalentCatForSolo3v3(Player* player)
 {
-    if (!player || !sConfigMgr->GetBoolDefault("Solo.3v3.FilterTalents", false))
+    if (!player || !sConfigMgr->GetOption<bool>("Solo.3v3.FilterTalents", false))
         return MELEE;
 
     uint32 count[MAX_TALENT_CAT];

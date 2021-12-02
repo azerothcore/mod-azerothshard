@@ -28,7 +28,7 @@ public:
 
     void OnAfterLootTemplateProcess(Loot* /* loot */, LootTemplate const* /* tab */, LootStore const& /* store */, Player* /* lootOwner */, bool /* personal */, bool /* noEmptyError */, uint16 /* lootMode */) override
     {
-        // if (!sConfigMgr->GetBoolDefault("Azth.Multiplies.Drop.Enable", false))
+        // if (!sConfigMgr->GetOption<bool>("Azth.Multiplies.Drop.Enable", false))
         //     return;
 
         //Dangerous since it can drops multiple quest items

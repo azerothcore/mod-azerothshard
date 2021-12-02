@@ -10,10 +10,10 @@ ChallengeModeMgr* ChallengeModeMgr::instance()
 
 void ChallengeModeMgr::LoadConfig(bool /* reload */)
 {
-    this->deltaLevelHigher = sConfigMgr->GetIntDefault("ChallengeMode.noReward.deltaLevelHigher", 0);
-    this->deltaLevelLower = sConfigMgr->GetIntDefault("ChallengeMode.noReward.deltaLevelLower", 0);
-    this->startLevelHigher = sConfigMgr->GetIntDefault("ChallengeMode.noReward.startLevelHigher", 0);
-    this->startLevelLower = sConfigMgr->GetIntDefault("ChallengeMode.noReward.startLevelLower", 0);
+    this->deltaLevelHigher = sConfigMgr->GetOption<uint32>("ChallengeMode.noReward.deltaLevelHigher", 0);
+    this->deltaLevelLower = sConfigMgr->GetOption<uint32>("ChallengeMode.noReward.deltaLevelLower", 0);
+    this->startLevelHigher = sConfigMgr->GetOption<uint32>("ChallengeMode.noReward.startLevelHigher", 0);
+    this->startLevelLower = sConfigMgr->GetOption<uint32>("ChallengeMode.noReward.startLevelLower", 0);
 }
 
 bool ChallengeModeMgr::isEligibleForReward(Player const *player) {

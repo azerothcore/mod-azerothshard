@@ -21,20 +21,20 @@ AZTH* AZTH::instance()
 void AZTH::LoadConfig(bool reload)
 {
     // PvP Ranks
-    Tokenizer PvPRankList(sConfigMgr->GetStringDefault("PvPRank.HKPerRank", "10,50,100,200,450,750,1300,2000,3500,6000,9500,15000,21000,30000"), ',');
+    Tokenizer PvPRankList(sConfigMgr->GetOption<std::string>("PvPRank.HKPerRank", "10,50,100,200,450,750,1300,2000,3500,6000,9500,15000,21000,30000"), ',');
     for (uint8 i = 0; i < PvPRankList.size(); i++)
         _PvP_Ranks[i] = atoi(PvPRankList[i]);
 
-    _RatePvPRankExtraHonor = sConfigMgr->GetFloatDefault("PvPRank.Rate.ExtraHonor", 1);
+    _RatePvPRankExtraHonor = sConfigMgr->GetOption<float>("PvPRank.Rate.ExtraHonor", 1);
 
     // External Mail
-    _IsExternalMailEnable = sConfigMgr->GetBoolDefault("ExternalMail", 0);
-    _ExternalMailInterval = sConfigMgr->GetIntDefault("ExternalMailInterval", 1) * MINUTE * IN_MILLISECONDS;
+    _IsExternalMailEnable = sConfigMgr->GetOption<bool>("ExternalMail", 0);
+    _ExternalMailInterval = sConfigMgr->GetOption<uint32>("ExternalMailInterval", 1) * MINUTE * IN_MILLISECONDS;
 
     // Custom XP
-    _CustomXPSecurity = sConfigMgr->GetIntDefault("Player.customXP.security", 0);
-    _CustomXPMax = sConfigMgr->GetFloatDefault("Player.customXP.maxValue", 1);
-    _CustomXPShowOnLogin = sConfigMgr->GetBoolDefault("Player.customXP.showOnLogin", false);
+    _CustomXPSecurity = sConfigMgr->GetOption<uint32>("Player.customXP.security", 0);
+    _CustomXPMax = sConfigMgr->GetOption<float>("Player.customXP.maxValue", 1);
+    _CustomXPShowOnLogin = sConfigMgr->GetOption<bool>("Player.customXP.showOnLogin", false);
 
     if (!reload)
         LoadContainers();

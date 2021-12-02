@@ -67,10 +67,10 @@ public:
             return;
 
         if (team->GetType() == ARENA_TEAM_1v1)
-            points *= sConfigMgr->GetFloatDefault("Azth.Rate.Arena1v1", 0.40f);
+            points *= sConfigMgr->GetOption<float>("Azth.Rate.Arena1v1", 0.40f);
 
         if (team->GetType() == ARENA_TEAM_SOLO_3v3)
-            points *= sConfigMgr->GetFloatDefault("Solo.3v3.ArenaPointsMulti", 0.88f);
+            points *= sConfigMgr->GetOption<float>("Solo.3v3.ArenaPointsMulti", 0.88f);
     }
 
     bool CanSaveToDB(ArenaTeam* team) override
@@ -1002,7 +1002,7 @@ public:
 
     void OnAfterLootTemplateProcess(Loot* loot, LootTemplate const* tab, LootStore const& store, Player* lootOwner, bool /* personal */, bool /* noEmptyError */, uint16 lootMode) override
     {
-        if (!sConfigMgr->GetBoolDefault("Azth.Multiplies.Drop.Enable", false))
+        if (!sConfigMgr->GetOption<bool>("Azth.Multiplies.Drop.Enable", false))
             return;
 
         //Dangerous since it can drops multiple quest items
