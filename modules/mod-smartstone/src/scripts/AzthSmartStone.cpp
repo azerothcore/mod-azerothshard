@@ -240,7 +240,7 @@ public:
             // black market teleport id 1
             SmartStoneCommand teleport = sSmartStone->getCommandById(SMRTST_BLACK_MARKET);
 
-            if (sConfigMgr->GetBoolDefault("Azth.Smartstone.Teleport.Enable", false))
+            if (sConfigMgr->GetOption<bool>("Azth.Smartstone.Teleport.Enable", false))
             {
                 if (!sAZTH->GetAZTHPlayer(player)->isInBlackMarket())
                 {

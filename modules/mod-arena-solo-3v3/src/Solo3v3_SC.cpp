@@ -31,7 +31,7 @@ public:
         if (!player || !me)
             return true;
 
-        if (sConfigMgr->GetBoolDefault("Solo.3v3.Enable", true) == false)
+        if (sConfigMgr->GetOption<bool>("Solo.3v3.Enable", true) == false)
         {
             ChatHandler(player->GetSession()).SendSysMessage("Arena disabled!");
             return true;
@@ -42,7 +42,7 @@ public:
         infoQueue << "Solo 3vs3 Arena\n";
         infoQueue << "Queued Players: " << (cache3v3Queue[MELEE] + cache3v3Queue[RANGE] + cache3v3Queue[HEALER]);
 
-        if (sConfigMgr->GetBoolDefault("Solo.3v3.FilterTalents", false))
+        if (sConfigMgr->GetOption<bool>("Solo.3v3.FilterTalents", false))
         {
             infoQueue << "\n\n";
             infoQueue << "Queued Melees: " << cache3v3Queue[MELEE] << " (Longer Queues!)" << "\n";
@@ -55,7 +55,7 @@ public:
 
         if (!player->GetArenaTeamId(ArenaTeam::GetSlotByType(ARENA_TEAM_SOLO_3v3)))
         {
-            uint32 cost = sConfigMgr->GetIntDefault("Solo.3v3.Cost", 1);
+            uint32 cost = sConfigMgr->GetOption<uint32>("Solo.3v3.Cost", 1);
 
             if (sAZTH->GetAZTHPlayer(player)->isPvP())
                 cost = 0;
@@ -94,19 +94,19 @@ public:
         {
         case 1: // Create new Arenateam
         {
-            if (sConfigMgr->GetIntDefault("Solo.3v3.MinLevel", 80) <= player->getLevel())
+            if (sConfigMgr->GetOption<uint32>("Solo.3v3.MinLevel", 80) <= player->getLevel())
             {
-                int cost = sConfigMgr->GetIntDefault("Solo.3v3.Cost", 1);
+                int cost = sConfigMgr->GetOption<uint32>("Solo.3v3.Cost", 1);
 
                 if (sAZTH->GetAZTHPlayer(player)->isPvP())
                     cost = 0;
 
                 if (cost >= 0 && player->GetMoney() >= uint32(cost) && CreateArenateam(player, me))
-                    player->ModifyMoney(sConfigMgr->GetIntDefault("Solo.3v3.Cost", 1) * -1);
+                    player->ModifyMoney(sConfigMgr->GetOption<uint32>("Solo.3v3.Cost", 1) * -1);
             }
             else
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("You need level %u+ to create an arena team.", sConfigMgr->GetIntDefault("Solo.3v3.MinLevel", 80));
+                ChatHandler(player->GetSession()).PSendSysMessage("You need level %u+ to create an arena team.", sConfigMgr->GetOption<uint32>("Solo.3v3.MinLevel", 80));
             }
 
             CloseGossipMenuFor(player);
@@ -117,7 +117,7 @@ public:
         case 2: // 3v3 Join Queue Arena (rated)
         {
             // check Deserter debuff
-            if (player->HasAura(26013) && (sConfigMgr->GetBoolDefault("Solo.3v3.CastDeserterOnAfk", true) || sConfigMgr->GetBoolDefault("Solo.3v3.CastDeserterOnLeave", true)))
+            if (player->HasAura(26013) && (sConfigMgr->GetOption<bool>("Solo.3v3.CastDeserterOnAfk", true) || sConfigMgr->GetOption<bool>("Solo.3v3.CastDeserterOnLeave", true)))
             {
                 WorldPacket data;
                 sBattlegroundMgr->BuildGroupJoinedBattlegroundPacket(&data, ERR_GROUP_JOIN_BATTLEGROUND_DESERTERS);
@@ -199,7 +199,7 @@ private:
         if (!player)
             return false;
 
-        if (!sConfigMgr->GetBoolDefault("Arena.CheckEquipAndTalents", true))
+        if (!sConfigMgr->GetOption<bool>("Arena.CheckEquipAndTalents", true))
             return true;
 
         std::stringstream err;
@@ -234,7 +234,7 @@ private:
         if (!player || !me)
             return false;
 
-        if (sConfigMgr->GetIntDefault("Solo.3v3.MinLevel", 80) > player->getLevel())
+        if (sConfigMgr->GetOption<uint32>("Solo.3v3.MinLevel", 80) > player->getLevel())
             return false;
 
         uint8 arenaslot = ArenaTeam::GetSlotByType(ARENA_TEAM_SOLO_3v3);
