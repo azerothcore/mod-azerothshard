@@ -680,17 +680,17 @@ public:
         return true;
     }
 
-    void OnGetArenaPersonalRating(Player* player, uint8 slot, uint32& result) override
-    {
-        if (!player)
-            return;
+    // void OnGetArenaPersonalRating(Player* player, uint8 /* slot */, uint32& /* result */) override
+    // {
+    //     if (!player)
+    //         return;
 
-        // if (slot == ArenaTeam::GetSlotByType(ARENA_TEAM_1v1))
-        //     result = sAZTH->GetAZTHPlayer(player)->getArena1v1Info(ARENA_TEAM_PERSONAL_RATING);
+    //     if (slot == ArenaTeam::GetSlotByType(ARENA_TEAM_1v1))
+    //         result = sAZTH->GetAZTHPlayer(player)->getArena1v1Info(ARENA_TEAM_PERSONAL_RATING);
 
-        // if (slot == ArenaTeam::GetSlotByType(ARENA_TEAM_SOLO_3v3))
-        //     result = sAZTH->GetAZTHPlayer(player)->getArena3v3Info(ARENA_TEAM_PERSONAL_RATING);
-    }
+    //     if (slot == ArenaTeam::GetSlotByType(ARENA_TEAM_SOLO_3v3))
+    //         result = sAZTH->GetAZTHPlayer(player)->getArena3v3Info(ARENA_TEAM_PERSONAL_RATING);
+    // }
 
     void OnGetArenaTeamId(Player* player, uint8 slot, uint32& result) override
     {
