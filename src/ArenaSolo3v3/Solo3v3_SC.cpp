@@ -407,7 +407,7 @@ class Solo3v3_BG : public BGScript
 public:
     Solo3v3_BG() : BGScript("Solo3v3_BG") { }
 
-    void OnQueueUpdate(BattlegroundQueue* queue, BattlegroundBracketId bracket_id, bool isRated, uint32 arenaRatedTeamId) override
+    void OnQueueUpdate(BattlegroundQueue* queue, BattlegroundBracketId bracket_id, bool isRated, uint32 /* arenaRatedTeamId */) override
     {
         if (queue->GetArenaType() != (ArenaType)ARENA_TYPE_3v3_SOLO)
             return;
