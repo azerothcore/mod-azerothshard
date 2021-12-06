@@ -485,7 +485,7 @@ public:
         return true;
     }
 
-    bool CanUnequipItem(Player* player, uint16 pos, bool /* swap */) override
+    bool CanUnequipItem(Player* player, uint16 /* pos */, bool /* swap */) override
     {
         if (!player)
             return false;
