@@ -1,4 +1,5 @@
-CREATE TABLE `guildhouses` (
+DROP TABLE IF EXISTS `guildhouses`;
+CREATE TABLE IF NOT EXISTS `guildhouses` (
   `id` int(16) unsigned NOT NULL AUTO_INCREMENT,
   `guildId` bigint(20) NOT NULL DEFAULT '0',
   `x` double NOT NULL,

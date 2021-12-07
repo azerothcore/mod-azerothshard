@@ -1,1 +1,1 @@
-INSERT INTO worldstates VALUES (100000, 0, 0);
+-- INSERT INTO worldstates VALUES (100000, 0, 0);
