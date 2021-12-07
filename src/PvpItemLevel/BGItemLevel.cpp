@@ -196,29 +196,29 @@ public:
     }
 };
 
+using namespace Acore::ChatCommands;
+
 class setMaxItemLevel : public CommandScript
 {
 public:
     setMaxItemLevel() : CommandScript("setMaxItemLevel") {}
 
-    std::vector<ChatCommand> GetCommands() const override
+    ChatCommandTable GetCommands() const override
     {
-        static std::vector<ChatCommand> commandTable =
+        static ChatCommandTable commandTable =
         {
-            { "itemLevel",      SEC_GAMEMASTER,     true,  &HandleSetMaxItemLevelCommand,       "" }
+            { "itemlevel",  HandleSetMaxItemLevelCommand, SEC_GAMEMASTER, Console::No }
         };
 
         return commandTable;
     }
 
-    static bool HandleSetMaxItemLevelCommand(ChatHandler* handler, char const* args)
+    static bool HandleSetMaxItemLevelCommand(ChatHandler* handler, int32 itemLevel)
     {
-        int itemLevel = atoi(args);
-
         if (!handler->GetSession() || handler->GetSession()->GetPlayer())
             return true;
 
-        if (itemLevel < -1 || args == nullptr || strcmp(args, "") == 0)
+        if (itemLevel < -1)
         {
             handler->SendSysMessage(sAzthLang->get(AZTH_LANG_COMMON_NOTVALIDPARAMTER, handler->GetSession()->GetPlayer()));
             return true;
