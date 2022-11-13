@@ -32,6 +32,9 @@ public:
     AzthObject* GetAZTHObject(Object* object);
     AzthGroupMgr* GetAZTHGroup(Group* group);
     AzthInstanceMgr* GetAZTHInstanceSave(InstanceSave* instanceSave);
+    //instance save
+   // AzthInstanceMgr* saveToDb(bool create, CharacterDatabaseTransaction trans);
+    //END
     bool GetAZTHLoot(Loot* loot);
 
     // Delete in store
@@ -70,6 +73,9 @@ private:
     AZTHGroupsContainer _groupStore;
     AZTHInstanceSaveContainer _instanceSaveStore;
     AZTHLootContainer _lootStore;
+
+    //instance
+   // uint32 levelMax;
 
     // PVP Rank Patch
     uint32 _PvP_Ranks[HKRANKMAX];

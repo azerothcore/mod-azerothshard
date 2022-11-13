@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS `hearthstone_quests`;
 CREATE TABLE `hearthstone_quests`(  
   `id` BIGINT(10) NOT NULL,
   `flag` INT(10) DEFAULT 0, -- 1 pve, 2 pvp
+  `specialLevel` INT(10) DEFAULT 0, 
+
   PRIMARY KEY (`id`)
 );
 

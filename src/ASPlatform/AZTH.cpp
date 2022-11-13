@@ -10,6 +10,7 @@
 #include "ObjectMgr.h"
 #include "Config.h"
 #include "Solo3v3.h"
+#include <mod-azerothshard/src/ASCommon/AzthUtils.h>
 //#include "ExtraDatabase.h"
 
 AZTH* AZTH::instance()
@@ -20,10 +21,10 @@ AZTH* AZTH::instance()
 
 void AZTH::LoadConfig(bool reload)
 {
-    // PvP Ranks
-    Tokenizer PvPRankList(sConfigMgr->GetOption<std::string>("PvPRank.HKPerRank", "10,50,100,200,450,750,1300,2000,3500,6000,9500,15000,21000,30000"), ',');
-    for (uint8 i = 0; i < PvPRankList.size(); i++)
-        _PvP_Ranks[i] = atoi(PvPRankList[i]);
+    // PvP Ranks //FIX LATER
+   // Tokenizer PvPRankList(sConfigMgr->GetOption<std::string>("PvPRank.HKPerRank", "10,50,100,200,450,750,1300,2000,3500,6000,9500,15000,21000,30000"), ',');
+   /* for (uint8 i = 0; i < PvPRankList.size(); i++)
+        _PvP_Ranks[i] = atoi(PvPRankList[i]);*/
 
     _RatePvPRankExtraHonor = sConfigMgr->GetOption<float>("PvPRank.Rate.ExtraHonor", 1);
 
@@ -83,7 +84,7 @@ void AZTH::AddAZTHPlayer(Player* player)
 {
     if (_playersStore.count(player))
     {
-        sLog->outError("AZTH::AddAZTHPlayer - _playersStore.count(player)");
+        LOG_INFO("Module","AZTH::AddAZTHPlayer - _playersStore.count(player)");
         return;
     }
 
@@ -94,7 +95,7 @@ void AZTH::AddAZTHObject(Object* object)
 {
     if (_objectsStore.count(object))
     {
-        sLog->outError("AZTH::AddAZTHObject - _objectsStore.count(object)");
+        LOG_INFO("Module","AZTH::AddAZTHObject - _objectsStore.count(object)");
         return;
     }
 
@@ -105,7 +106,7 @@ void AZTH::AddAZTHGroup(Group* group)
 {
     if (_groupStore.count(group))
     {
-        sLog->outError("AZTH::AddAZTHGroup - _groupStore.count(group)");
+        LOG_INFO("Module","AZTH::AddAZTHGroup - _groupStore.count(group)");
         return;
     }
 
@@ -116,18 +117,18 @@ void AZTH::AddAZTHInstanceSave(InstanceSave* instanceSave)
 {
     if (_instanceSaveStore.count(instanceSave))
     {
-        sLog->outError("AZTH::AddAZTHInstanceSave - _instanceSaveStore.count(instanceSave)");
+        LOG_INFO("Module","AZTH::AddAZTHInstanceSave - _instanceSaveStore.count(instanceSave)");
         return;
     }
 
-    _instanceSaveStore.insert(std::make_pair(instanceSave, new AzthInstanceMgr(instanceSave)));
+    _instanceSaveStore.insert(std::make_pair(instanceSave, new AzthInstanceMgr(/*instanceSave*/)));
 }
 
 void AZTH::AddAZTHLoot(Loot* loot)
 {
     if (_lootStore.count(loot))
     {
-        sLog->outError("AZTH::AddAZTHLoot - _lootStore.count(instanceSave)");
+        LOG_INFO("Module","AZTH::AddAZTHLoot - _lootStore.count(instanceSave)");
         return;
     }
 
@@ -139,7 +140,7 @@ AzthPlayer* AZTH::GetAZTHPlayer(Player* player)
 {
     if (!_playersStore.count(player))
     {
-        sLog->outError("AZTH::GetAZTHPlayer - !_playersStore.count(player)");
+        LOG_INFO("Module","AZTH::GetAZTHPlayer - !_playersStore.count(player)");
         return nullptr;
     }
 
@@ -150,7 +151,7 @@ AzthObject* AZTH::GetAZTHObject(Object* object)
 {
     if (!_objectsStore.count(object))
     {
-        sLog->outError("AZTH::GetAZTHObject - !_objectsStore.count(object)");
+        LOG_INFO("Module", "AZTH::GetAZTHObject - !_objectsStore.count(object)");
         return nullptr;
     }
 
@@ -166,7 +167,7 @@ AzthGroupMgr* AZTH::GetAZTHGroup(Group* group)
 
     if (!_groupStore.count(group))
     {
-        sLog->outError("AZTH::GetAZTHGroup - !_groupStore.count(group)");
+        LOG_INFO("Module","AZTH::GetAZTHGroup - !_groupStore.count(group)");
         return nullptr;
     }
 
@@ -177,13 +178,25 @@ AzthInstanceMgr* AZTH::GetAZTHInstanceSave(InstanceSave* instanceSave)
 {
     if (!_instanceSaveStore.count(instanceSave))
     {
-        sLog->outError("AZTH::GetAZTHInstanceSave - !_instanceSaveStore.count(instanceSave)");
+        LOG_INFO("Module","AZTH::GetAZTHInstanceSave - !_instanceSaveStore.count(instanceSave)");
         return nullptr;
     }
 
     return _instanceSaveStore[instanceSave];
 }
+/*
+AzthInstanceMgr* AZTH::saveToDb(bool create, CharacterDatabaseTransaction trans)
+{
+    CharacterDatabasePreparedStatement* stmt = nullptr;
 
+        //! Insert query
+        stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_INSTANCE_SAVE);
+        stmt->SetData(6, getLevel());
+
+        trans->Append(stmt);
+  //  CharacterDatabase.CommitTransaction(trans);
+
+}*/
 bool AZTH::GetAZTHLoot(Loot* loot)
 {
     if (!_lootStore.count(loot))
@@ -197,7 +210,7 @@ void AZTH::DeleteAZTHPlayer(Player* player)
 {
     if (!_playersStore.count(player))
     {
-        sLog->outError("AZTH::DeleteAZTHPlayer - !_playersStore.count(player)");
+        LOG_INFO("Module","AZTH::DeleteAZTHPlayer - !_playersStore.count(player)");
         return;
     }
 
@@ -208,7 +221,7 @@ void AZTH::DeleteAZTHObject(Object* object)
 {
     if (!_objectsStore.count(object))
     {
-        sLog->outError("AZTH::DeleteAZTHObject - !_objectsStore.count(object)");
+        LOG_INFO("Module","AZTH::DeleteAZTHObject - !_objectsStore.count(object)");
         return;
     }
 
@@ -219,7 +232,7 @@ void AZTH::DeleteAZTHGroup(Group* group)
 {
     if (!_groupStore.count(group))
     {
-        sLog->outError("AZTH::DeleteAZTHGroup - !_groupStore.count(group)");
+        LOG_INFO("Module","AZTH::DeleteAZTHGroup - !_groupStore.count(group)");
         return;
     }
 
@@ -230,7 +243,7 @@ void AZTH::DeleteAZTHInstanceSave(InstanceSave* instanceSave)
 {
     if (!_instanceSaveStore.count(instanceSave))
     {
-        sLog->outError("AZTH::DeleteAZTHInstanceSave - !_instanceSaveStore.count(instanceSave)");
+        LOG_INFO("Module","AZTH::DeleteAZTHInstanceSave - !_instanceSaveStore.count(instanceSave)");
         return;
     }
 
@@ -241,7 +254,7 @@ void AZTH::DeleteAZTHLoot(Loot* loot)
 {
     if (!_lootStore.count(loot))
     {
-        sLog->outError("AZTH::DeleteAZTHLoot - !_instanceSaveStore.count(loot)");
+        LOG_INFO("Module","AZTH::DeleteAZTHLoot - !_instanceSaveStore.count(loot)");
         return;
     }
 
@@ -310,7 +323,7 @@ void AZTH::SendExternalMails()
     // PreparedQueryResult result = ExtraDatabase.Query(stmt);
     // if (!result)
     // {
-    //     sLog->outError("EXTERNAL MAIL> No mails in queue...");
+    //     LOG_INFO("Module","EXTERNAL MAIL> No mails in queue...");
     //     return;
     // }
 
@@ -350,7 +363,7 @@ void AZTH::SendExternalMails()
     //             }
     //         }
     //         else
-    //             sLog->outError("non-existing item");
+    //             LOG_INFO("Module","non-existing item");
     //     }
 
     //     mail->SendMailTo(trans, receiver ? receiver : MailReceiver(receiver_guid), MailSender(MAIL_NORMAL, 0, MAIL_STATIONERY_GM), MAIL_CHECK_MASK_RETURNED);
@@ -364,7 +377,7 @@ void AZTH::SendExternalMails()
 
     // CharacterDatabase.CommitTransaction(trans);
     // ExtraDatabase.CommitTransaction(trans2);
-    // sLog->outError("EXTERNAL MAIL> ALL MAILS SENT!");
+    // LOG_INFO("Module","EXTERNAL MAIL> ALL MAILS SENT!");
 }
 
 // Custom XP

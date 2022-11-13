@@ -2,7 +2,7 @@
 /*
  *  Copyright (С) since 2019 Andrei Guluaev (Winfidonarleyan/Kargatum) https://github.com/Winfidonarleyan
  */
-
+/*
 #include "Solo3v3.h"
 #include "ScriptMgr.h"
 #include "ArenaTeamMgr.h"
@@ -83,7 +83,7 @@ public:
 
 
 
-    bool OnGossipSelect(Player* player, Creature* me, uint32 /*uiSender*/, uint32 uiAction)
+    bool OnGossipSelect(Player* player, Creature* me, uint32 /*uiSender*//*, uint32 uiAction)
     {
         if (!player || !me)
             return true;
@@ -254,7 +254,7 @@ private:
         Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(BATTLEGROUND_AA);
         if (!bg)
         {
-            sLog->outError("Battleground: template bg (all arenas) not found");
+            LOG_INFO("Module", "Battleground: template bg (all arenas) not found");
             return false;
         }
 
@@ -402,12 +402,12 @@ private:
     }
 };
 
-class Solo3v3_BG : public BGScript
+/*class Solo3v3_BG : public BGScript
 {
 public:
     Solo3v3_BG() : BGScript("Solo3v3_BG") { }
 
-    void OnQueueUpdate(BattlegroundQueue* queue, BattlegroundBracketId bracket_id, bool isRated, uint32 /* arenaRatedTeamId */) override
+    void OnQueueUpdate(BattlegroundQueue* queue, BattlegroundBracketId bracket_id, bool isRated, uint32 /* arenaRatedTeamId *//*) override
     {
         if (queue->GetArenaType() != (ArenaType)ARENA_TYPE_3v3_SOLO)
             return;
@@ -454,8 +454,8 @@ public:
             arena->StartBattleground();
         }
     }
-
-    void OnBattlegroundUpdate(Battleground* bg, uint32 /*diff*/) override
+  
+    void OnBattlegroundUpdate(Battleground* bg, uint32 /*diff*//*) override
     {
         if (bg->GetStatus() != STATUS_IN_PROGRESS || !bg->isArena())
             return;
@@ -468,4 +468,4 @@ void AddSC_Solo_3v3_Arena()
 {
     new npc_solo3v3();
     new Solo3v3_BG();
-}
+}*/

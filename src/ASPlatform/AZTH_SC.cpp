@@ -76,7 +76,7 @@ public:
     {
         if (team->GetId() >= MAX_ARENA_TEAM_ID)
         {
-            sSolo->SaveSoloDB(team);
+          //  sSolo->SaveSoloDB(team); //MOD-Solo3v3 Disabled for now. HolyDeew
             return false;
         }
 
@@ -127,7 +127,7 @@ public:
     }
 };
 
-class Command_SC : public CommandSC
+/*class Command_SC : public CommandSC
 {
 public:
     Command_SC() : CommandSC("Command_SC") { }
@@ -148,7 +148,7 @@ public:
             player->SetGameMaster(false);
         }
     }
-};
+};*/
 
 class Player_SC : public PlayerScript
 {
@@ -189,8 +189,8 @@ public:
         if (!guid)
             return;
 
-        trans->PAppend("DELETE FROM armory_character_stats WHERE guid = '%u'", guid);
-        trans->PAppend("DELETE FROM character_feed_log WHERE guid = '%u'", guid);
+        trans->Append("DELETE FROM armory_character_stats WHERE guid = '{}'", guid);
+        trans->Append("DELETE FROM character_feed_log WHERE guid = '{}'", guid);
     }
 
     bool CanRepopAtGraveyard(Player* player) override
@@ -652,7 +652,7 @@ public:
             azthPlayer->InitWowarmoryFeeds();
         }
 
-        wowArmoryTrans->PAppend("DELETE FROM armory_character_stats WHERE guid = %u", player->GetGUID().GetCounter());
+        wowArmoryTrans->Append("DELETE FROM armory_character_stats WHERE guid = {}", player->GetGUID().GetCounter());
 
         // Character stats
         std::ostringstream ps;
@@ -783,8 +783,8 @@ public:
         if (bgQueueTypeId == BATTLEGROUND_QUEUE_NONE)
             return false;
 
-        if ((bgQueueTypeId == (BattlegroundQueueTypeId)BATTLEGROUND_QUEUE_1v1 || bgQueueTypeId == (BattlegroundQueueTypeId)BATTLEGROUND_QUEUE_3v3_SOLO) && (action == 1 /*accept join*/ && !sSolo->Arena1v1CheckTalents(player)))
-            return false;
+      /*  if ((bgQueueTypeId == (BattlegroundQueueTypeId)BATTLEGROUND_QUEUE_1v1 || bgQueueTypeId == (BattlegroundQueueTypeId)BATTLEGROUND_QUEUE_3v3_SOLO) && (action == 1 /*accept join*//* && !sSolo->Arena1v1CheckTalents(player)))
+            return false;*/ //FIX later Holydeew
 
         return true;
     }
@@ -1073,15 +1073,15 @@ public:
             return;
 
         //[AZTH] Timewalking: we must send a spell cast result on prev spell
-        // to avoid bad visual effect in spell bar
-        if (oldSpellId != spellId)
-            spell->SetSpellInfo(sSpellMgr->GetSpellInfo(oldSpellId));
+        // to avoid bad visual effect in spell bar //FIX later
+       /* if (oldSpellId != spellId)
+            spell->SetSpellInfo(sSpellMgr->GetSpellInfo(oldSpellId));*/
     }
 
-    void OnInstanceSave(InstanceSave* instanceSave) override
+    /*void OnInstanceSave(InstanceSave* instanceSave) override
     {
         sAZTH->GetAZTHInstanceSave(instanceSave)->saveToDb();
-    }
+    }*/
 
     bool CanApplySoulboundFlag(Item* item, ItemTemplate const* /*proto*/) override
     {
@@ -1276,7 +1276,7 @@ public:
         if (!group || !leader)
             return;
 
-        CharacterDatabase.PExecute("INSERT INTO azth_groups (guid, MaxLevelGroup) VALUES (%u, %u)", group->GetGUID().GetCounter(), leader->getLevel());
+        CharacterDatabase.Execute("INSERT INTO azth_groups (guid, MaxLevelGroup) VALUES ({}, {})", group->GetGUID().GetCounter(), leader->getLevel());
     }
 
     void OnDisband(Group* group) override
@@ -1284,7 +1284,7 @@ public:
         if (!group)
             return;
 
-        CharacterDatabase.PExecute("DELETE FROM `azth_groups` WHERE `guid` = '%u'", group->GetGUID().GetCounter());
+        CharacterDatabase.Execute("DELETE FROM `azth_groups` WHERE `guid` = '{}'", group->GetGUID().GetCounter());
     }
 };
 
@@ -1713,7 +1713,7 @@ public:
         std::string new_str(pGameObj->GetName());
         WorldDatabase.EscapeString(new_str);
 
-        WorldDatabase.PQuery("INSERT INTO `guildhouses_add` (guid, type, id, add_type, comment) VALUES (%u, 1, %u, %u, '%s')",
+        WorldDatabase.Query("INSERT INTO `guildhouses_add` (guid, type, id, add_type, comment) VALUES ({}, 1, {}, {}, '{}')",
             pGameObj->GetGUID().GetCounter(), guildhouseid, guildhouseaddid, new_str.c_str());
 
         // TODO: is it really necessary to add both the real and DB table guid here ?
@@ -1772,7 +1772,7 @@ public:
         std::string new_str(creature->GetName());
         WorldDatabase.EscapeString(new_str);
 
-        WorldDatabase.PQuery("INSERT INTO `guildhouses_add` (guid, type, id, add_type, comment) VALUES (%u, 0, %u, %u, '%s')",
+        WorldDatabase.Query("INSERT INTO `guildhouses_add` (guid, type, id, add_type, comment) VALUES ({}, 0, {}, {}, '{}')",
             creature->GetGUID().GetCounter(), guildhouseid, guildhouseaddid, new_str.c_str());
 
         map->AddToMap(creature);
@@ -1780,9 +1780,9 @@ public:
 
         if (guildhouseaddid == 2)
         {
-            QueryResult guildResult = CharacterDatabase.PQuery("SELECT guildid FROM `guildhouses` WHERE id = %u", guildhouseid);
+            QueryResult guildResult = CharacterDatabase.Query("SELECT guildid FROM `guildhouses` WHERE id = {}", guildhouseid);
             if (guildResult)
-                GHobj.UpdateGuardMap(creature->GetGUID().GetCounter(), guildResult->Fetch()->GetInt32());
+                GHobj.UpdateGuardMap(creature->GetGUID().GetCounter(), guildResult->Fetch()->Get<int32>());
         }
 
         return true;
@@ -1793,7 +1793,7 @@ void AddSC_AZTH()
 {
     new Arena_SC();
     new Battleground_SC();
-    new Command_SC();
+  //  new Command_SC();
     new Player_SC();
     new Achievement_SC();
     new Misc_SC();

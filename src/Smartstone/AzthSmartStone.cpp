@@ -190,7 +190,7 @@ public:
                 case 99999:
                     break;
                 default:
-                    sLog->outError("Smartstone: unhandled command! ID: %u, player GUID: %lu",
+                    LOG_ERROR("Module", "Smartstone: unhandled command! ID: %u, player GUID: %lu",
                             action, player->GetGUID().GetRawValue());
                     break;
             }
@@ -226,7 +226,7 @@ public:
                 case 99999:
                     break;
                 default:
-                    sLog->outError("Smartstone: unhandled command with code! ID: %u, player GUID: %lu", action, player->GetGUID().GetRawValue());
+                    LOG_ERROR("Module", "Smartstone: unhandled command with code! ID: %u, player GUID: %lu", action, player->GetGUID().GetRawValue());
                     break;
             }
             if (selectedCommand.charges > 0) {
@@ -261,7 +261,7 @@ public:
             }
 
             if (!sAZTH->GetAZTHPlayer(player)->isPvP())
-                player->PlayerTalkClass->GetGossipMenu().AddMenuItem(SMRTST_README, 0, GOSSIP_SENDER_MAIN, SMRTST_README_CHILD);
+                player->PlayerTalkClass->GetGossipMenu().AddMenuItem(SMRTST_README, 0, GOSSIP_SENDER_MAIN, SMRTST_README_CHILD, 0);
 
             // menu character (rename, change faction, etc) id 4
             SmartStoneCommand characterMenu = sSmartStone->getCommandById(SMRTST_CHAR_MENU);
@@ -399,7 +399,7 @@ void SmartStone::loadCommands() {
     //     } while (ssCommandsResult->NextRow());
     // }
 
-    sLog->outString("Smartstone: loaded %u commands", count);
+    LOG_ERROR("Module","Smartstone: loaded %u commands", count);
 }
 
 SmartStoneCommand SmartStone::getCommandById(uint32 id) {
@@ -456,16 +456,16 @@ public:
     }
 
     void OnLogin(Player *player) override {
-        QueryResult ssCommandsResult = CharacterDatabase.PQuery(
+        QueryResult ssCommandsResult = CharacterDatabase.Query(
                 "SELECT command, dateExpired, charges FROM "
-                "character_smartstone_commands WHERE playerGuid = %d ;",
+                "character_smartstone_commands WHERE playerGuid = {} ;",
                 player->GetGUID().GetCounter());
 
         if (ssCommandsResult) {
             do {
-                uint32 id = (*ssCommandsResult)[0].GetUInt32();
-                uint64 date = (*ssCommandsResult)[1].GetUInt64();
-                int32 charges = (*ssCommandsResult)[2].GetInt32();
+                uint32 id = (*ssCommandsResult)[0].Get<uint32>();
+                uint64 date = (*ssCommandsResult)[1].Get<uint64>();
+                int32 charges = (*ssCommandsResult)[2].Get<int32>();
                 sAZTH->GetAZTHPlayer(player)->addSmartStoneCommand(id, false, date, charges);
             } while (ssCommandsResult->NextRow());
         }

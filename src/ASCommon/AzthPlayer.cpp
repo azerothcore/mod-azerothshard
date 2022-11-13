@@ -22,6 +22,7 @@
 #include "LFGMgr.h"
 #include "AzthFirstKills.h"
 #include "AZTH.h"
+#include <Entities/Player/PlayerStorage.cpp>
 
 class Aura;
 
@@ -641,19 +642,19 @@ void AzthPlayer::CreateWowarmoryFeed(uint32 type, uint32 data, uint32 item_guid,
 
     if (!player->GetGUID().IsEmpty())
     {
-        sLog->outError("[Wowarmory]: player is not initialized, unable to create log entry!");
+       LOG_INFO("Module", "[Wowarmory]: player is not initialized, unable to create log entry!");
         return;
     }
 
     if (type <= 0 || type > 3)
     {
-        sLog->outError("[Wowarmory]: unknown feed type: %d, ignore.", type);
+        LOG_INFO("Module", "[Wowarmory]: unknown feed type: %d, ignore.", type);
         return;
     }
 
     if (data == 0)
     {
-        sLog->outError("[Wowarmory]: empty data (GUID: %u), ignore.", player->GetGUID().GetCounter());
+        LOG_INFO("Module", "[Wowarmory]: empty data (GUID: %u), ignore.", player->GetGUID().GetCounter());
         return;
     }
 
@@ -667,8 +668,7 @@ void AzthPlayer::CreateWowarmoryFeed(uint32 type, uint32 data, uint32 item_guid,
     feed.counter = 0;
     feed.date = time(nullptr);
 
-    sLog->outDebug(LOG_FILTER_NONE, "[Wowarmory]: create wowarmory feed (GUID: %u, type: %d, data: %u).", feed.guid, feed.type, feed.data);
-
+    LOG_DEBUG("Module", "[Wowarmory]: create wowarmory feed (GUID: %u, type: %d, data: %u).", feed.guid, feed.type, feed.data);
     m_wowarmory_feeds.push_back(feed);
 }
 

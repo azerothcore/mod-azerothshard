@@ -105,8 +105,6 @@ public:
 
 };
 
-
-
 void AddSC_azth_player_plg() {
     new AzthPlayerPlg();
 }
