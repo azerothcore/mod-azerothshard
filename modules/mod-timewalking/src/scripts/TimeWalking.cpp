@@ -703,7 +703,7 @@ public:
         sAzthUtils->updateTwLevel(player, player->GetGroup());
     }
 
-    void OnBeforeInitTalentForLevel(Player* player, uint8&  /*level*/, uint32& talentPointsForLevel) override
+    void OnBeforeInitTalentForLevel(Player* player, uint32& talentPointsForLevel) override
     {
         if (!sAzthUtils->isMythicLevel(sAZTH->GetAZTHPlayer(player)->GetTimeWalkingLevel()) // redundant (?)
             && (sAZTH->GetAZTHPlayer(player)->isTimeWalking(true) || sAZTH->GetAZTHPlayer(player)->GetTimeWalkingLevel() == TIMEWALKING_LVL_AUTO) )
