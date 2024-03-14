@@ -27,6 +27,7 @@ public:
     }
 };
 
+/*
 class PlayerStats : public PlayerScript
 {
 public:
@@ -34,9 +35,9 @@ public:
     PlayerStats() : PlayerScript("PlayerStats") {
     }
 
-    void OnUpdateZone(Player* /*player*/, uint32  /*newZone*/, uint32  /*newArea*/) override {
+   // void OnUpdateZone(Player* /*player*///, uint32  /*newZone*/, uint32  /*newArea*/) override {
         // sAzthUtils->updateTwLevel(player, player->GetGroup()); <-- we will do it in TimeWalking.cpp script, having correct order with autoscaling
-    }
+    /*}
 
 
     // Following 2 functions store levels in a temporary map
@@ -63,11 +64,11 @@ public:
 
     // Following 2 functions save our temporary maps inside the db
 
-    void OnAchiSave(CharacterDatabaseTransaction /* trans */, Player *player, uint16 achId, CompletedAchievementData achiData) override {
-        if (sAZTH->GetAZTHPlayer(player)->m_completed_achievement_map.find(achId) != sAZTH->GetAZTHPlayer(player)->m_completed_achievement_map.end()) {
+   // void OnAchiSave(CharacterDatabaseTransaction /* trans *///, Player *player, uint16 achId, CompletedAchievementData achiData) override {
+   /*    if (sAZTH->GetAZTHPlayer(player)->m_completed_achievement_map.find(achId) != sAZTH->GetAZTHPlayer(player)->m_completed_achievement_map.end()) {
             AzthPlayer::AzthAchiData it = sAZTH->GetAZTHPlayer(player)->m_completed_achievement_map[achId];
 
-            CharacterDatabase.AsyncQuery(Acore::StringFormat("INSERT INTO azth_achievement_stats (playerGuid, achievement, type, level, levelParty, specialLevel, date) VALUES (%u, %u, %u, %u, %u, %u, %u)",
+            CharacterDatabase.AsyncQuery(Acore::StringFormat("INSERT INTO azth_achievement_stats (playerGuid, achievement, type, level, levelParty, specialLevel, date) VALUES ({}, {}, {}, {}, {}, {}, {})",
                 player->GetGUID().GetCounter(),
                 achId,
                 ACHIEVEMENT_TYPE,
@@ -81,11 +82,11 @@ public:
         }
     }
 
-    void OnCriteriaSave(CharacterDatabaseTransaction /* trans */, Player* player, uint16 critId, CriteriaProgress criteriaData) override {
-        if (sAZTH->GetAZTHPlayer(player)->m_completed_criteria_map.find(critId) != sAZTH->GetAZTHPlayer(player)->m_completed_criteria_map.end()) {
+    void OnCriteriaSave(CharacterDatabaseTransaction /* trans *///, Player* player, uint16 critId, CriteriaProgress criteriaData) override {
+      /*  if (sAZTH->GetAZTHPlayer(player)->m_completed_criteria_map.find(critId) != sAZTH->GetAZTHPlayer(player)->m_completed_criteria_map.end()) {
             AzthPlayer::AzthAchiData it = sAZTH->GetAZTHPlayer(player)->m_completed_criteria_map[critId];
 
-            CharacterDatabase.AsyncQuery(Acore::StringFormat("INSERT INTO azth_achievement_stats (playerGuid, achievement, type, level, levelParty, specialLevel, date) VALUES (%u, %u, %u, %u, %u, %u, %u)",
+            CharacterDatabase.AsyncQuery(Acore::StringFormat("INSERT INTO azth_achievement_stats (playerGuid, achievement, type, level, levelParty, specialLevel, date) VALUES ({}, {}, {}, {}, {}, {}, {})",
                 player->GetGUID().GetCounter(),
                 critId,
                 CRITERIA_TYPE,
@@ -99,9 +100,9 @@ public:
         }
     }
 
-};
+};*/
 
 void AddSC_playerstats() {
     new AzthGroupPlg();
-    new PlayerStats();
+   // new PlayerStats();
 }

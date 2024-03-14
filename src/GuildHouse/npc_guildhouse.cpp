@@ -197,7 +197,7 @@ class npc_guild_master : public CreatureScript
         if (player->IsGameMaster())
             guildsize = 20000;
 
-        result = CharacterDatabase.PQuery("SELECT `id`, `comment`, `price` FROM `guildhouses` WHERE `guildId` = 0 AND (`faction` = 3 OR `faction` = %u) AND `id` > %u AND `minguildsize` <= %u ORDER BY `id` ASC LIMIT %u",
+        result = CharacterDatabase.Query("SELECT `id`, `comment`, `price` FROM `guildhouses` WHERE `guildId` = 0 AND (`faction` = 3 OR `faction` = %u) AND `id` > %u AND `minguildsize` <= %u ORDER BY `id` ASC LIMIT %u",
             (player->GetTeamId(true) == TEAM_HORDE)?1:0, showFromId, guildsize, GOSSIP_COUNT_MAX);
 
         if (result)
@@ -211,9 +211,9 @@ class npc_guild_master : public CreatureScript
                 if (!fields)
                     break;
 
-                guildhouseId = fields[0].GetInt32();
-                comment = fields[1].GetString();
-                price = fields[2].GetUInt32();
+                guildhouseId = fields[0].Get<int32>();
+                comment = fields[1].Get<std::string>();
+                price = fields[2].Get<uint32>();
 
                 std::stringstream complete_comment;
                 complete_comment << "price " << price << " - " << comment;
@@ -277,7 +277,7 @@ class npc_guild_master : public CreatureScript
         if (player->IsGameMaster())
             guildsize = 20000;
 
-        result = WorldDatabase.PQuery("SELECT `add_type`, `comment`, `price` FROM `guildhouses_addtype` WHERE `minguildsize` <= %u AND `add_type` > %u ORDER BY `add_type` ASC LIMIT %u",
+        result = WorldDatabase.Query("SELECT `add_type`, `comment`, `price` FROM `guildhouses_addtype` WHERE `minguildsize` <= %u AND `add_type` > %u ORDER BY `add_type` ASC LIMIT %u",
             guildsize, showFromId, GOSSIP_COUNT_MAX);
 
         if (result)
@@ -289,9 +289,9 @@ class npc_guild_master : public CreatureScript
             {
                 Field *fields = result->Fetch();
 
-                add_typeId = fields[0].GetInt32();
-                comment = fields[1].GetString();
-                price = fields[2].GetUInt32();
+                add_typeId = fields[0].Get<int32>();
+                comment = fields[1].Get<std::string>();
+                price = fields[2].Get<uint32>();
 
                 uint32 comprato = ((uint32(1) << (add_typeId - 1)) & guild_add);
 
@@ -374,7 +374,7 @@ class npc_guild_master : public CreatureScript
 
         QueryResult result;
 
-        result = CharacterDatabase.PQuery("SELECT `price` FROM `guildhouses` WHERE `id` = %u AND `guildId` = 0" , guildhouseId);
+        result = CharacterDatabase.Query("SELECT `price` FROM `guildhouses` WHERE `id` = %u AND `guildId` = 0" , guildhouseId);
 
         if (!result)
         {
@@ -383,7 +383,7 @@ class npc_guild_master : public CreatureScript
         }
 
         Field *fields = result->Fetch();
-        int32 price = fields[0].GetInt32();
+        int32 price = fields[0].Get<int32>();
 
         if (player->GetMoney() < uint32(price) * 10000)
         {
@@ -426,12 +426,12 @@ class npc_guild_master : public CreatureScript
             return;
         }
 
-        QueryResult result = WorldDatabase.PQuery("SELECT `price` FROM `guildhouses_addtype` WHERE `add_type` = %u ", gh_Add);
+        QueryResult result = WorldDatabase.Query("SELECT `price` FROM `guildhouses_addtype` WHERE `add_type` = %u ", gh_Add);
         if (!result)
             return;
 
         Field *fields = result->Fetch();
-        int32 price = fields[0].GetInt32();
+        int32 price = fields[0].Get<int32>();
 
         if (player->GetMoney() < uint32(price) * 10000)
         {
@@ -456,13 +456,13 @@ class npc_guild_master : public CreatureScript
         {
             QueryResult result;
 
-            result = CharacterDatabase.PQuery("SELECT `price` FROM `guildhouses` WHERE `guildId` = %u", player->GetGuildId());
+            result = CharacterDatabase.Query("SELECT `price` FROM `guildhouses` WHERE `guildId` = %u", player->GetGuildId());
 
             if (!result)
                 return;
 
             Field *fields = result->Fetch();
-            uint32 price = fields[0].GetUInt32();
+            uint32 price = fields[0].Get<uint32>();
 
             // GHobj.ChangeGuildHouse(player->GetGuildId(),0);
 
@@ -749,7 +749,7 @@ class guild_guard : public CreatureScript
             {
 
                 Map::PlayerList const &PlayerList = me->GetMap()->GetPlayers();
-                if (!PlayerList.isEmpty())
+                if (!PlayerList.IsEmpty())
                     for (Map::PlayerList::const_iterator i = PlayerList.begin(); i != PlayerList.end(); ++i)
                     {
                         Player* plr = i->GetSource();

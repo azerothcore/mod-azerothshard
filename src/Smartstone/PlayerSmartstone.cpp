@@ -25,9 +25,9 @@ void AzthPlayer::addSmartStoneCommand(SmartStonePlayerCommand command, bool quer
 
     if (query)
     {
-        CharacterDatabase.PExecute(
+        CharacterDatabase.Execute(
                 "REPLACE INTO `character_smartstone_commands` (playerGuid, command, "
-                "dateExpired, charges) VALUES (%u, %u, %u, %i);",
+                "dateExpired, charges) VALUES ({}, {}, {}, {});",
                 player->GetGUID().GetCounter(), command.id, sec, command.charges);
     }
 }
@@ -69,7 +69,7 @@ void AzthPlayer::removeSmartStoneCommand(SmartStonePlayerCommand command,
             smartStoneCommands.end());
 
     if (query) {
-        CharacterDatabase.PExecute("DELETE FROM `character_smartstone_commands` "
+        CharacterDatabase.Execute("DELETE FROM `character_smartstone_commands` "
                 "WHERE playerGuid = %u AND command = %u;",
                 player->GetGUID().GetCounter(), command.id);
     }
@@ -83,7 +83,7 @@ void AzthPlayer::decreaseSmartStoneCommandCharges(uint32 id) {
                     smartStoneCommands[i].charges < -1)
                 removeSmartStoneCommand(smartStoneCommands[i], true);
             else
-                CharacterDatabase.PExecute(
+                CharacterDatabase.Execute(
                     "UPDATE character_smartstone_commands SET charges = %i WHERE "
                     "playerGuid = %u AND command = %u ;",
                     smartStoneCommands[i].charges, player->GetGUID().GetCounter(), id);
@@ -202,7 +202,7 @@ bool AzthPlayer::BuySmartStoneCommand(ObjectGuid vendorguid, uint32 vendorslot,
         ItemExtendedCostEntry const *iece =
                 sItemExtendedCostStore.LookupEntry(crItem->ExtendedCost);
         if (!iece) {
-            sLog->outError("Item %u have wrong ExtendedCost field value %u",
+            LOG_INFO("Module", "Item %u have wrong ExtendedCost field value %u",
                     pProto->ItemId, crItem->ExtendedCost);
             return false;
         }
@@ -245,7 +245,7 @@ bool AzthPlayer::BuySmartStoneCommand(ObjectGuid vendorguid, uint32 vendorslot,
     {
         uint32 maxCount = MAX_MONEY_AMOUNT / pProto->BuyPrice;
         if ((uint32) count > maxCount) {
-            sLog->outError("Player %s tried to buy %u item id %u, causing overflow",
+           LOG_INFO("Player %s tried to buy %u item id %u, causing overflow",
                     player->GetName().c_str(), (uint32) count, pProto->ItemId);
             count = (uint8) maxCount;
         }
@@ -343,8 +343,8 @@ void AzthPlayer::setLastPositionInfo(uint32 dimension, WorldLocation posInfo) {
 std::map<uint32,WorldLocation> AzthPlayer::getLastPositionInfoFromDB() {
     std::map<uint32,WorldLocation> lastPos;
 
-    QueryResult savedPosResult = CharacterDatabase.PQuery(
-            "SELECT type, mapId, posX, posY, posZ FROM character_saved_position WHERE charGuid = %u;", player->GetGUID().GetCounter());
+    QueryResult savedPosResult = CharacterDatabase.Query(
+            "SELECT type, mapId, posX, posY, posZ FROM character_saved_position WHERE charGuid = {};", player->GetGUID().GetCounter());
 
     if (!savedPosResult)
         return lastPos;
@@ -353,8 +353,8 @@ std::map<uint32,WorldLocation> AzthPlayer::getLastPositionInfoFromDB() {
     {
         Field* posFields = savedPosResult->Fetch();
 
-        uint32 type = posFields[0].GetUInt32();
-        lastPos[type] = WorldLocation(posFields[1].GetFloat(),posFields[2].GetFloat(),posFields[3].GetFloat(), posFields[4].GetFloat(), player->GetOrientation());
+        uint32 type = posFields[0].Get<uint32>();
+        lastPos[type] = WorldLocation(posFields[1].Get<float>(),posFields[2].Get<float>(),posFields[3].Get<float>(), posFields[4].Get<float>(), player->GetOrientation());
 
         sAZTH->GetAZTHPlayer(player)->setLastPositionInfo(type, lastPos[type]);
     } while (savedPosResult->NextRow());
@@ -370,7 +370,7 @@ void AzthPlayer::saveLastPositionInfoToDB(Player *pl)
     for ( it = lastPositionInfo.begin(); it != lastPositionInfo.end(); it++ )
     {
         WorldLocation _loc= it->second;
-        trans->PAppend("REPLACE INTO character_saved_position(charGuid,type,posX,posY,posZ,mapId) VALUES (%u, %u, %f, %f, %f, %u);", pl->GetGUID().GetCounter(), it->first, _loc.GetPositionX(), _loc.GetPositionY(), _loc.GetPositionZ(), _loc.GetMapId());
+        trans->Append("REPLACE INTO character_saved_position(charGuid,type,posX,posY,posZ,mapId) VALUES ({}, {}, {}, {}, {}, {});", pl->GetGUID().GetCounter(), it->first, _loc.GetPositionX(), _loc.GetPositionY(), _loc.GetPositionZ(), _loc.GetMapId());
     }
 
     CharacterDatabase.CommitTransaction(trans);

@@ -22,12 +22,12 @@ public:
 
     void OnStartup() override
     {
-        QueryResult result = WorldDatabase.PQuery("SELECT * FROM season ORDER BY startingFrom;");
-        QueryResult getLastDate = CharacterDatabase.PQuery("SELECT * FROM worldstates WHERE entry = 100000;");
+        QueryResult result = WorldDatabase.Query("SELECT * FROM season ORDER BY startingFrom;");
+        QueryResult getLastDate = CharacterDatabase.Query("SELECT * FROM worldstates WHERE entry = 100000;");
 
         if (!result)
         {
-            sLog->outString(">> Loaded 0 season. DB table `season` is empty.");
+            LOG_ERROR("Module", ">> Loaded 0 season. DB table `season` is empty.");
             LOG_INFO("server.loading", " ");
             return;
         }
@@ -37,7 +37,7 @@ public:
         bool enable;
 
         //get status of the system: enabled or disabled
-        std::istringstream(arena_timestamp_table[2].GetString()) >> enable;
+        std::istringstream(arena_timestamp_table[2].Get<std::string>()) >> enable;
 
         sASeasonMgr->SetEnabled(enable);
 
@@ -63,8 +63,8 @@ public:
                 break;
 
             //retrieve timestamp from db
-            startingDate = time_t(season_table[1].GetUInt32());
-            endDate = time_t(season_table[2].GetUInt32());
+            startingDate = time_t(season_table[1].Get<uint32>());
+            endDate = time_t(season_table[2].Get<uint32>());
 
             //convert start timestamp to something that can be read
             struct tm* startingDateConverted = localtime(&startingDate);
@@ -88,9 +88,9 @@ public:
 
             if (date > dbStartDate && date < dbEndDate)
             {
-                sASeasonMgr->SetItemLevel(season_table[0].GetUInt32());
-                sASeasonMgr->SetStartingDate(time_t(season_table[1].GetUInt32()));
-                sASeasonMgr->SetEndDate(time_t((season_table[2].GetUInt32())));
+                sASeasonMgr->SetItemLevel(season_table[0].Get<uint32>());
+                sASeasonMgr->SetStartingDate(time_t(season_table[1].Get<uint32>()));
+                sASeasonMgr->SetEndDate(time_t((season_table[2].Get<uint32>())));
                 actualSeasonFound = true;
             }
 
@@ -99,7 +99,7 @@ public:
         // Prevent crashes if any season found
         if (sASeasonMgr->GetItemLevel() == 0)
         {
-            sLog->outString(">> No correspondent season found. Check DB table `season`.\n");
+            LOG_ERROR("Module", ">> No correspondent season found. Check DB table `season`.\n");
             LOG_INFO("server.loading", " ");
             sASeasonMgr->SetEnabled(false);
             return;
@@ -107,7 +107,7 @@ public:
 
         defaultMaxItemLevel = sASeasonMgr->GetItemLevel();
 
-        sLog->outString(">> Season script for PVP loaded, actual item level: %u\n", sASeasonMgr->GetItemLevel());
+        LOG_ERROR("Module", ">> Season script for PVP loaded, actual item level: %u\n", sASeasonMgr->GetItemLevel());
         LOG_INFO("server.loading", " ");
     }
 };

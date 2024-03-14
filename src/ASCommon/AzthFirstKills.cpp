@@ -164,7 +164,7 @@ bool AzthFirstKills::isRealmCompleted(AchievementEntry const* achievement, bool 
 void AzthFirstKills::loadCurrentFirstkills() {
     uint32 t= static_cast<uint32>(sAzthUtils->getStartsOfYear());
 
-    QueryResult fkAchievements = CharacterDatabase.PQuery("SELECT DISTINCT(achievement) FROM character_achievement WHERE achievement IN (%u,%u,%u,%u,%u,%u,%u) AND date >= %u",
+   /* QueryResult fkAchievements = CharacterDatabase.Query("SELECT DISTINCT(achievement) FROM character_achievement WHERE achievement IN (%u,%u,%u,%u,%u,%u,%u) AND date >= %u",
         ACHI_NAXXRAMAS,
         ACHI_OBSIDIAN,
         ACHI_MAGIC_SEEKER,
@@ -183,11 +183,11 @@ void AzthFirstKills::loadCurrentFirstkills() {
             if (!fkAchievementsFields)
                 break;
 
-            uint32 achievement = fkAchievementsFields[0].GetUInt32();
+            uint32 achievement = fkAchievementsFields[0].Get<uint32>();
             // initialize all completed first kill with the timestamp of beginning of the year ( > 1 minute )
             this->currentFirstKills[achievement]=std::chrono::system_clock::from_time_t(t);
         } while (fkAchievements->NextRow());
 
-    }
+    }*/
 
 }

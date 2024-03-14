@@ -1,19 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 INSERT INTO `guildhouses_add` (`guid`, `type`, `id`, `add_type`, `comment`) VALUES (1485554,1,9,1,'Guild Vault');
 INSERT INTO `guildhouses_add` (`guid`, `type`, `id`, `add_type`, `comment`) VALUES (1485804,1,9,4,'Duel Flag');
 INSERT INTO `guildhouses_add` (`guid`, `type`, `id`, `add_type`, `comment`) VALUES (4236402,0,67,6,'Kylene');

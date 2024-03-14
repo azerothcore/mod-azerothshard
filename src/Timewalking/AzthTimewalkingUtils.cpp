@@ -4,6 +4,7 @@
 #include "Spell.h"
 #include "AZTH.h"
 #include "AzthGroupMgr.h"
+#include "AzthInstanceMgr.h"
 
 class Spell;
 
@@ -229,55 +230,58 @@ bool AzthUtils::updateTwLevel(Player *player,Group *group)
 
     if (map->IsDungeon() || map->IsRaid())
     {
-        bool updated = false;
-        InstanceSave* is = sInstanceSaveMgr->PlayerGetInstanceSave(player->GetGUID(), map->GetId(), player->GetDifficulty(map->IsRaid()));
-        if (is) // negative condition shouldn't happen (maybe only on login?)
-        {
-            if (sAZTH->GetAZTHInstanceSave(is)->levelMax == 0)
+        for (SessionMap::const_iterator itr = sWorld->GetAllSessions().begin(); itr != sWorld->GetAllSessions().end(); ++itr)
+            if (Player* plr = itr->second->GetPlayer())
             {
-                sAZTH->GetAZTHPlayer(player)->instanceID = map->GetInstanceId();
 
-                QueryResult queryRes = CharacterDatabase.PQuery("SELECT levelPg,groupSize,startTime FROM instance WHERE id = %u", sAZTH->GetAZTHPlayer(player)->instanceID);
-                if (!queryRes)
-                    return result;
+                bool updated = false;
+                InstanceSave* is = sInstanceSaveMgr->PlayerGetInstanceSave(player->GetGUID(), map->GetId(), player->GetDifficulty(map->IsRaid()));
+               /* if (is) // negative condition shouldn't happen (maybe only on login?)
+                {*/
+                  /*  if (is->levelMax == 0)
+                    {*/
+                        sAZTH->GetAZTHPlayer(player)->instanceID = map->GetInstanceId();
 
-                Field* fields = queryRes->Fetch();
-                sAZTH->GetAZTHInstanceSave(is)->levelMax = fields[0].GetUInt32();
-                sAZTH->GetAZTHInstanceSave(is)->groupSize = fields[1].GetUInt32();
-                uint32 startTime = fields[2].GetUInt32();
+                        QueryResult queryRes = CharacterDatabase.Query("SELECT levelPg,groupSize,startTime FROM instance WHERE id = {}", sAZTH->GetAZTHPlayer(player)->instanceID);
+                        if (!queryRes)
+                            return result;
 
-                if (startTime)
-                    sAZTH->GetAZTHInstanceSave(is)->startTime = startTime;
+                        Field* fields = queryRes->Fetch();
+                        uint32 levelMax = plr->getLevel();
+                        uint32 groupSize = sWorld->GetPlayerCount();
+                     
 
-                updated = true;
+                        updated = true;
+
+
+                        uint32 maxLevel = sAzthUtils->maxTwLevel(levelPlayer, levelMax);
+                        if (maxLevel != levelMax)
+                        {
+                            levelMax = maxLevel;
+                            updated = true;
+                        }
+
+                        uint32 cnt = map->GetPlayersCountExceptGMs();
+                        if (cnt > groupSize)
+                        {
+                            groupSize = cnt;
+                            updated = true;
+                        }
+
+                        if (updated)
+                        {
+
+                            // sAZTH->saveToDb(); // Save Player-LvL in 'Instance' table. 
+                            std::string _slvl = sAzthUtils->getLevelInfo(levelMax);
+                            std::string msg = sAzthLang->getf(AZTH_LANG_INSTANCE_LEVEL_REG, player, player->GetName().c_str(), _slvl.c_str(), groupSize);
+
+                            sAzthUtils->sendMessageToGroup(player, player->GetGroup(), msg.c_str());
+                            result = true;
+                        }
+                   // }
+                //}
             }
-
-            uint32 maxLevel = sAzthUtils->maxTwLevel(levelPlayer, sAZTH->GetAZTHInstanceSave(is)->levelMax);
-            if (maxLevel != sAZTH->GetAZTHInstanceSave(is)->levelMax)
-            {
-                sAZTH->GetAZTHInstanceSave(is)->levelMax = maxLevel;
-                updated = true;
-            }
-
-            uint32 cnt = map->GetPlayersCountExceptGMs();
-            if (cnt > sAZTH->GetAZTHInstanceSave(is)->groupSize)
-            {
-                sAZTH->GetAZTHInstanceSave(is)->groupSize = cnt;
-                updated = true;
-            }
-
-            if (updated)
-            {
-                is->InsertToDB();
-                std::string _slvl = sAzthUtils->getLevelInfo(sAZTH->GetAZTHInstanceSave(is)->levelMax);
-                std::string msg = sAzthLang->getf(AZTH_LANG_INSTANCE_LEVEL_REG, player, player->GetName().c_str(), _slvl.c_str(), sAZTH->GetAZTHInstanceSave(is)->groupSize);
-
-                sAzthUtils->sendMessageToGroup(player, player->GetGroup(), msg.c_str());
-                result = true;
-            }
-        }
     }
-
     return result;
 }
 

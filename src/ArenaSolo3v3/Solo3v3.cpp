@@ -1,7 +1,7 @@
 /*
  *  Copyright (С) since 2019 Andrei Guluaev (Winfidonarleyan/Kargatum) https://github.com/Winfidonarleyan 
  */
-
+/*
 #include "Solo3v3.h"
 #include "ArenaTeamMgr.h"
 #include "BattlegroundMgr.h"
@@ -400,3 +400,4 @@ Solo3v3TalentCat Solo3v3::GetTalentCatForSolo3v3(Player* player)
 
     return talCat;
 }
+*/

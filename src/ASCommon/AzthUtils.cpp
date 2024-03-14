@@ -123,7 +123,7 @@ void AzthUtils::sendMessageToGroup(Player *pl, Group *group, const char* msg) {
 }
 
 void AzthUtils::loadClassSpells() {
-    QueryResult res = WorldDatabase.PQuery("SELECT racemask, classmask, Spell FROM playercreateinfo_spell_custom;");
+    QueryResult res = WorldDatabase.Query("SELECT racemask, classmask, Spell FROM playercreateinfo_spell_custom;");
 
     if (!res)
     {
@@ -134,19 +134,19 @@ void AzthUtils::loadClassSpells() {
     do
     {
         Field* fields = res->Fetch();
-        uint32 raceMask = fields[0].GetUInt32();
-        uint32 classMask = fields[1].GetUInt32();
-        uint32 spellId = fields[2].GetUInt32();
+        uint32 raceMask = fields[0].Get<uint32>();
+        uint32 classMask = fields[1].Get<uint32>();
+        uint32 spellId = fields[2].Get<uint32>();
 
         if (raceMask != 0 && !(raceMask & RACEMASK_ALL_PLAYABLE))
         {
-            sLog->outErrorDb("Wrong race mask %u in `playercreateinfo_spell_custom` table, ignoring.", raceMask);
+            LOG_ERROR("Module", "Wrong race mask %u in `playercreateinfo_spell_custom` table, ignoring.", raceMask);
             continue;
         }
 
         if (classMask != 0 && !(classMask & CLASSMASK_ALL_PLAYABLE))
         {
-            sLog->outErrorDb("Wrong class mask %u in `playercreateinfo_spell_custom` table, ignoring.", classMask);
+            LOG_ERROR("Module", "Wrong class mask %u in `playercreateinfo_spell_custom` table, ignoring.", classMask);
             continue;
         }
 

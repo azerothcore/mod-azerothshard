@@ -16,7 +16,6 @@
  */
 
 // From SC
-void AddSC_Solo_3v3_Arena();
 void AddSC_azth_misc_plg();
 void AddSC_azth_player_plg();
 void AddSC_AzthWorldScript();
@@ -37,7 +36,6 @@ void AddSC_Custom_Rates();
 // Add all
 void Addmod_azerothshardScripts()
 {
-    AddSC_Solo_3v3_Arena();
     AddSC_azth_misc_plg();
     AddSC_azth_player_plg();
     AddSC_AzthWorldScript();
