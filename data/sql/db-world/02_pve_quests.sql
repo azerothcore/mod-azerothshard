@@ -1,4 +1,4 @@
-DELETE FROM quest_template WHERE id >= 100000 AND id <= 100100;
+DELETE FROM `quest_template` WHERE `id` >= 100000 AND `id` <= 100100;
 INSERT INTO `quest_template` (`id`, `QuestInfoID`, `QuestSortID`, `Flags`, `LogTitle`, `LogDescription`, `QuestDescription`, `RequiredNpcOrGo1`, `RequiredNpcOrGoCount1`) VALUES
 ('100000', '2', '3840', '4290', 'Uccidi Illidan', 'Han\'al vuole che tu uccida Illidan ancora una volta.', 'Uccidi Illidan', '22917', '1'),
 ('100001', '2', '3845', '4290', 'Uccidi Kael\'Thas', 'Han\'al vuole che tu uccida Kael\'Thas ancora una volta.', 'Uccidi Kael\'Thas', '19622', '1'),
@@ -82,7 +82,7 @@ INSERT INTO `quest_template` (`id`, `QuestInfoID`, `QuestSortID`, `Flags`, `LogT
 ('100079', '2', '4494', '4290', 'Uccidi Volazj', 'Han\'al vuole che tu uccida Volazj ancora una volta.', 'Uccidi Volazj', '29311', '1'),
 ('100080', '2', '2159', '4290', 'Uccidi Onyxia', 'Han\'al vuole che tu uccida Onyxia ancora una volta.', 'Uccidi Onyxia', '10184', '1');
 
-DELETE FROM quest_offer_reward WHERE ID >= 100000 AND ID <= 100100;
+DELETE FROM `quest_offer_reward` WHERE `ID` >= 100000 AND `ID` <= 100100;
 INSERT INTO `quest_offer_reward` (`ID`, `RewardText`) VALUES
 ('100000', 'Bravo, $N'),
 ('100001', 'Bravo, $N'),
@@ -166,4 +166,4 @@ INSERT INTO `quest_offer_reward` (`ID`, `RewardText`) VALUES
 ('100079', 'Bravo, $N'),
 ('100080', 'Bravo, $N');
 
-UPDATE quest_template SET `QuestLevel` = 80, minlevel = 80 WHERE id >= 100000 AND id <= 100100;
+UPDATE `quest_template` SET `QuestLevel`=80, `minlevel`=80 WHERE `id` >= 100000 AND `id` <= 100100;

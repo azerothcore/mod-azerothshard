@@ -1,8 +1,7 @@
-UPDATE `item_template` SET `name` = "Smartstone", `Flags` = 64, `ScriptName` = 'azth_smart_stone', stackable = 1, `spellid_1` = 36177, maxcount = 1 WHERE (entry = 32547);
+UPDATE `item_template` SET `name`="Smartstone", `Flags`=`Flags`|64, `ScriptName`='azth_smart_stone', `stackable`=1, `spellid_1`=36177, `maxcount`=1 WHERE `entry`=32547;
 
-
-DELETE FROM item_template WHERE entry IN (987890, 987891, 987892, 987893, 987894, 987895);
-INSERT INTO item_template (entry, class, subclass, NAME, displayid, quality, description, scriptname, flags, stackable, `spellid_1`, buyprice) VALUES
+DELETE FROM `item_template` WHERE `entry` IN (987890, 987891, 987892, 987893, 987894, 987895);
+INSERT INTO `item_template` (`entry`, `class`, `subclass`, `name`, `displayid`, `quality`, `description`, `scriptname`, `flags`, `stackable`, `spellid_1`, `buyprice`) VALUES
 (987890, 0, 8, "Change Faction!", 1542, 5, "Aggiungi alla smartstone il cambio fazione! (1 carica), ATTENZIONE: COL CAMBIO FAZIONE SI PERDE ARENA RATING. NON È POSSIBILE EFFETTUARLO SE SI HANNO ITEM IN ASTA O IN MAIL", "smart_stone_command", 64, 1, 36177, 1000),
 (987891, 0, 8, "Rename!", 7629, 5, "Aggiungi alla smartstone il rename! (1 carica)", "smart_stone_command", 64, 1, 36177, 100000),
 (987892, 0, 8, "Change Race!", 472, 5, "Aggiungi alla smartstone il cambio razza! (1 carica)", "smart_stone_command", 64, 1, 36177, 10000),
@@ -10,22 +9,23 @@ INSERT INTO item_template (entry, class, subclass, NAME, displayid, quality, des
 (987894, 0, 8, "Herbalism Bonus Loot!", 7396, 5, "Aumenta la chance di trovare materiali usando Herbalism! (passivo)", "smart_stone_command", 64, 1, 36177, 10000),
 (987895, 0, 8, "Mining Bonus Loot!", 6568, 5, "Aumenta la chance di trovare materiali usando Mining! (passivo)", "smart_stone_command", 64, 1, 36177, 10000);
 
-DELETE FROM creature_template WHERE entry = 170000;
-INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `DamageModifier`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
-('170000', '0', '0', '0', '0', '0', '1060', '0', '0', '0', 'Smartstore', 'AzerothShard', NULL, '0', '82', '83', '0', '31', '1', '1', '1.14286', '1', '0', '0', '1', '2000', '2000', '1', '512', '2048', '0', '0', '0', '0', '0', '0', '7', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '1', '1', '1', '0', '0', '1', '0', '2', 'smartstone_vendor', '12340');
+DELETE FROM `creature_template` WHERE `entry`=170000;
+INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `scale`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `spell_school_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
+(170000, 0, 0, 0, 0, 0, 1060, 0, 0, 0, 'Smartstore', 'AzerothShard', '', 0, 82, 83, 0, 31, 1, 1, 1.14286, 1, 1, 20, 1, 0, 0, 1, 1, 1, 1, 1, 1, 512, 2048, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 2, 'smartstone_vendor', 12340);
 
-UPDATE creature_template SET npcflag = 129 WHERE entry = 170000;
+UPDATE `creature_template` SET `npcflag`=`npcflag`|129 WHERE `entry`=170000;
 
-DELETE FROM npc_vendor WHERE entry = 170000;
-INSERT INTO `npc_vendor` (`entry`, `slot`, `item`, `maxcount`, `incrtime`, `ExtendedCost`) VALUES('170000','0','987890','0','0','0');
-INSERT INTO `npc_vendor` (`entry`, `slot`, `item`, `maxcount`, `incrtime`, `ExtendedCost`) VALUES('170000','0','987891','0','0','0');
-INSERT INTO `npc_vendor` (`entry`, `slot`, `item`, `maxcount`, `incrtime`, `ExtendedCost`) VALUES('170000','0','987892','0','0','0');
-INSERT INTO `npc_vendor` (`entry`, `slot`, `item`, `maxcount`, `incrtime`, `ExtendedCost`) VALUES('170000','0','987893','0','0','0');
-INSERT INTO `npc_vendor` (`entry`, `slot`, `item`, `maxcount`, `incrtime`, `ExtendedCost`) VALUES('170000','0','987894','0','0','0');
-INSERT INTO `npc_vendor` (`entry`, `slot`, `item`, `maxcount`, `incrtime`, `ExtendedCost`) VALUES('170000','0','987895','0','0','0');
+DELETE FROM `npc_vendor` WHERE `entry`=170000;
+INSERT INTO `npc_vendor` (`entry`, `slot`, `item`, `maxcount`, `incrtime`, `ExtendedCost`) VALUES
+(170000, 0, 987890, 0, 0, 0),
+(170000, 0, 987891, 0, 0, 0),
+(170000, 0, 987892, 0, 0, 0),
+(170000, 0, 987893, 0, 0, 0),
+(170000, 0, 987894, 0, 0, 0),
+(170000, 0, 987895, 0, 0, 0);
 
-DELETE FROM playercreateinfo_item WHERE itemid = 32547;
-INSERT INTO playercreateinfo_item (race, class, itemid, amount) VALUES
+DELETE FROM `playercreateinfo_item` WHERE `itemid`=32547;
+INSERT INTO `playercreateinfo_item` (`race`, `class`, `itemid`, `amount`) VALUES
 (0,0,32547,1),
 (0,1,32547,1),
 (0,2,32547,1),

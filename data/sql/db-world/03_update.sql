@@ -1,18 +1,13 @@
--- update quests with rep
-UPDATE `quest_template` SET `Flags` = 4226, `RewardFactionID1` = 948, `RewardFactionValue1` = 0, RewardFactionOverride1 = 10 WHERE ID BETWEEN 100000 AND 100080;
+UPDATE `quest_template` SET `Flags`=`Flags`|4226, `RewardFactionID1`=948, `RewardFactionValue1`=0, `RewardFactionOverride1`=10 WHERE `ID` BETWEEN 100000 AND 100080;
 
--- mark of azeroth
+UPDATE `item_template` SET `name`="Mark of Azeroth", `stackable`=2147483647, `description`="Il bottino di ogni avventuriero!", `maxcount`=0, `spellid_1`=0, `spellcharges_1`=0, `flags`=0 WHERE `entry`=37711;
 
-UPDATE item_template SET NAME = "Mark of Azeroth", stackable = 2147483647, description = "Il bottino di ogni avventuriero!", maxcount = 0, spellid_1 = 0, spellcharges_1 = 0, flags = 0 WHERE entry = 37711;
+UPDATE `quest_template` SET `RewardItem1`=37711, `RewardAmount1`=2 WHERE `ID` BETWEEN 100000 AND 100080;
 
--- quest rewards
-UPDATE `quest_template` SET RewardItem1 = 37711, RewardAmount1 = 2 WHERE ID BETWEEN 100000 AND 100080;
+UPDATE `item_template` SET `name`="Garga's Magic Box", `description`="Non sono così egocentrico da chiamare un NPC come me." WHERE `entry`=32558;
 
--- hearthstone trasmog sack
-UPDATE item_template SET NAME = "Garga's Magic Box", description = "Non sono così egocentrico da chiamare un NPC come me." WHERE entry = 32558;
-
-DELETE FROM creature_questender WHERE id = 100001 AND quest <= 100080 AND quest >= 100000;
-INSERT INTO creature_questender (id, quest) VALUES 
+DELETE FROM `creature_questender` WHERE `id`=100001 AND `quest` <= 100080 AND `quest` >= 100000;
+INSERT INTO `creature_questender` (`id`, `quest`) VALUES
 (100001, 100000),
 (100001, 100001),
 (100001, 100002),
@@ -95,24 +90,19 @@ INSERT INTO creature_questender (id, quest) VALUES
 (100001, 100079),
 (100001, 100080);
 
-DELETE FROM `creature_template` WHERE (entry = 100001);
-INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
-(100001, 0, 0, 0, 0, 0, 10215, 0, 0, 0, 'Manaben', 'Han\'al Apprentice', NULL, 0, 80, 80, 0, 2007, 3, 1.1, 1.5, 1.2, 1, 0, 0, 0, 8, 33536, 2048, 0, 0, 0, 0, 0, 0, 7, 32, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 0, 10, 10, 1, 0, 0, 1, 0, 2, '', 12341);
+UPDATE `creature_template` SET `gossip_menu_id`=60000 WHERE `entry`=100001;
 
-UPDATE creature_template SET gossip_menu_id = 60000 WHERE entry = 100001;
+DELETE FROM `gossip_menu` WHERE `MenuID`=60000;
+INSERT INTO `gossip_menu` (`MenuID`, `TextID`) VALUES
+(60000, 100010);
 
-DELETE FROM gossip_menu WHERE MenuID = 60000;
-INSERT INTO gossip_menu (MenuID, TextID) VALUES (60000, 100010);
-
-DELETE FROM npc_text WHERE ID = 100010;
-INSERT INTO npc_text (ID, text0_0, text0_1, lang0, em0_0) VALUES 
+DELETE FROM `npc_text` WHERE `ID` = 100010;
+INSERT INTO `npc_text` (`ID`, `text0_0`, `text0_1`, `lang0`, `em0_0`) VALUES
 (100010, "Il Maestro è una persona molto stimata e famosa... aiutalo, e sarà generoso con te, $n!", 0, 0, 0);
 
--- UPDATE quest_template SET method = 0, TYPE = 0, flags = 4098, rewardfactionid1 = 69, rewardfactionvalueid1 = 6, RewardFactionValueIdOverride1 = 0, unknown0 = 1 WHERE id = 100000;
-UPDATE quest_template SET QuestInfoID = 0, flags = 4098, RewardFactionID1 = 948, RewardFactionValue1 = 1, RewardFactionOverride1 = 0, unknown0 = 1 WHERE ID BETWEEN 100000 AND 100080;
+UPDATE `quest_template` SET `QuestInfoID`=0, `flags`=`flags`|4098, `RewardFactionID1`=948, `RewardFactionValue1`=1, `RewardFactionOverride1`=0, `unknown0`=1 WHERE `ID` BETWEEN 100000 AND 100080;
 
-DELETE FROM item_template WHERE entry >= 100017 AND entry <= 154806 AND subclass IN (0, 5, 7,8,9,10); 
+DELETE FROM `item_template` WHERE `entry` >= 100017 AND `entry` <= 154806 AND `subclass` IN (0, 5, 7, 8, 9, 10);
 
--- flag raid to raid quests
-UPDATE `quest_template` SET `Flags` = 4290, QuestInfoID = 62 WHERE ID BETWEEN 100000 AND 100046;
-UPDATE `quest_template` SET `Flags` = 4290, QuestInfoID = 62 WHERE ID = 100080;
+UPDATE `quest_template` SET `Flags`=`Flags`|4290, `QuestInfoID`=62 WHERE `ID` BETWEEN 100000 AND 100046;
+UPDATE `quest_template` SET `Flags`=`Flags`|4290, `QuestInfoID`=62 WHERE `ID`=100080;
