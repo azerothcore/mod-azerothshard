@@ -127,17 +127,17 @@ public:
     }
 };
 
-class Command_SC : public CommandSC
+class Command_SC : public AllCommandScript
 {
 public:
-    Command_SC() : CommandSC("Command_SC") { }
+    Command_SC() : AllCommandScript("Command_SC") { }
 
-    void OnHandleDevCommand(Player* player, std::string& argstr) override
+    void OnHandleDevCommand(Player* player, bool& enable) override
     {
         if (!player)
             return;
 
-        if (argstr == "on")
+        if (enable)
         {
             player->SetPhaseMask(uint32(PHASEMASK_ANYWHERE), false);
             player->SetGameMaster(true);
@@ -163,7 +163,7 @@ public:
         sAZTH->GetAZTHPlayer(player)->CreateWowarmoryFeed(1, achievement->ID, 0, 0);
     }
 
-    void OnRewardKillRewarder(Player* player, bool isDungeon, float& rate) override
+    void OnRewardKillRewarder(Player* player, KillRewarder* /*rewarder*/, bool isDungeon, float& rate) override
     {
         if (!player)
             return;
@@ -189,8 +189,8 @@ public:
         if (!guid)
             return;
 
-        trans->PAppend("DELETE FROM armory_character_stats WHERE guid = '%u'", guid);
-        trans->PAppend("DELETE FROM character_feed_log WHERE guid = '%u'", guid);
+        trans->Append("DELETE FROM armory_character_stats WHERE guid = '%u'", guid);
+        trans->Append("DELETE FROM character_feed_log WHERE guid = '%u'", guid);
     }
 
     bool CanRepopAtGraveyard(Player* player) override
@@ -652,7 +652,7 @@ public:
             azthPlayer->InitWowarmoryFeeds();
         }
 
-        wowArmoryTrans->PAppend("DELETE FROM armory_character_stats WHERE guid = %u", player->GetGUID().GetCounter());
+        wowArmoryTrans->Append("DELETE FROM `armory_character_stats` WHERE `guid`={}", player->GetGUID().GetCounter());
 
         // Character stats
         std::ostringstream ps;
@@ -1072,10 +1072,9 @@ public:
         if (!player)
             return;
 
-        //[AZTH] Timewalking: we must send a spell cast result on prev spell
-        // to avoid bad visual effect in spell bar
-        if (oldSpellId != spellId)
-            spell->SetSpellInfo(sSpellMgr->GetSpellInfo(oldSpellId));
+        // [AZTH] Timewalking: we must send a spell cast result on prev spell to avoid bad visual effect in spell bar
+        // if (oldSpellId != spellId)
+            //spell->SetSpellInfo(sSpellMgr->GetSpellInfo(oldSpellId));
     }
 
     void OnInstanceSave(InstanceSave* instanceSave) override
@@ -1276,7 +1275,7 @@ public:
         if (!group || !leader)
             return;
 
-        CharacterDatabase.PExecute("INSERT INTO azth_groups (guid, MaxLevelGroup) VALUES (%u, %u)", group->GetGUID().GetCounter(), leader->getLevel());
+        CharacterDatabase.Execute("INSERT INTO `azth_groups` (`guid`, `MaxLevelGroup`) VALUES ({}, {})", group->GetGUID().GetCounter(), leader->getLevel());
     }
 
     void OnDisband(Group* group) override
@@ -1284,7 +1283,7 @@ public:
         if (!group)
             return;
 
-        CharacterDatabase.PExecute("DELETE FROM `azth_groups` WHERE `guid` = '%u'", group->GetGUID().GetCounter());
+        CharacterDatabase.Execute("DELETE FROM `azth_groups` WHERE `guid`='{}'", group->GetGUID().GetCounter());
     }
 };
 
@@ -1713,11 +1712,10 @@ public:
         std::string new_str(pGameObj->GetName());
         WorldDatabase.EscapeString(new_str);
 
-        WorldDatabase.PQuery("INSERT INTO `guildhouses_add` (guid, type, id, add_type, comment) VALUES (%u, 1, %u, %u, '%s')",
-            pGameObj->GetGUID().GetCounter(), guildhouseid, guildhouseaddid, new_str.c_str());
+        WorldDatabase.Query("INSERT INTO `guildhouses_add` (`guid`, `type`, `id`, `add_type`, `comment`) VALUES ({}, 1, {}, {}, '{}')", pGameObj->GetGUID().GetCounter(), guildhouseid, guildhouseaddid, new_str.c_str());
 
         // TODO: is it really necessary to add both the real and DB table guid here ?
-        sObjectMgr->AddGameobjectToGrid(db_lowGUID, sObjectMgr->GetGOData(db_lowGUID));
+        sObjectMgr->AddGameobjectToGrid(db_lowGUID, sObjectMgr->GetGameObjectData(db_lowGUID));
 
         handler->PSendSysMessage(LANG_GAMEOBJECT_ADD, id, gInfo->name.c_str(), db_lowGUID, x, y, z);
         return true;
@@ -1772,17 +1770,16 @@ public:
         std::string new_str(creature->GetName());
         WorldDatabase.EscapeString(new_str);
 
-        WorldDatabase.PQuery("INSERT INTO `guildhouses_add` (guid, type, id, add_type, comment) VALUES (%u, 0, %u, %u, '%s')",
-            creature->GetGUID().GetCounter(), guildhouseid, guildhouseaddid, new_str.c_str());
+        WorldDatabase.Query("INSERT INTO `guildhouses_add` (`guid`, `type`, `id`, `add_type`, `comment`) VALUES ({}, 0, {}, {}, '{}')", creature->GetGUID().GetCounter(), guildhouseid, guildhouseaddid, new_str.c_str());
 
         map->AddToMap(creature);
         sObjectMgr->AddCreatureToGrid(db_guid, sObjectMgr->GetCreatureData(db_guid));
 
         if (guildhouseaddid == 2)
         {
-            QueryResult guildResult = CharacterDatabase.PQuery("SELECT guildid FROM `guildhouses` WHERE id = %u", guildhouseid);
+            QueryResult guildResult = CharacterDatabase.Query("SELECT `guildid` FROM `guildhouses` WHERE id={}", guildhouseid);
             if (guildResult)
-                GHobj.UpdateGuardMap(creature->GetGUID().GetCounter(), guildResult->Fetch()->GetInt32());
+                GHobj.UpdateGuardMap(creature->GetGUID().GetCounter(), guildResult->Fetch()->Get<int32>());
         }
 
         return true;

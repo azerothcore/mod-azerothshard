@@ -641,19 +641,19 @@ void AzthPlayer::CreateWowarmoryFeed(uint32 type, uint32 data, uint32 item_guid,
 
     if (!player->GetGUID().IsEmpty())
     {
-        sLog->outError("[Wowarmory]: player is not initialized, unable to create log entry!");
+        LOG_ERROR("server", "[Wowarmory]: player is not initialized, unable to create log entry!");
         return;
     }
 
     if (type <= 0 || type > 3)
     {
-        sLog->outError("[Wowarmory]: unknown feed type: %d, ignore.", type);
+        LOG_ERROR("server", "[Wowarmory]: unknown feed type: %d, ignore.", type);
         return;
     }
 
     if (data == 0)
     {
-        sLog->outError("[Wowarmory]: empty data (GUID: %u), ignore.", player->GetGUID().GetCounter());
+        LOG_ERROR("server", "[Wowarmory]: empty data (GUID: %u), ignore.", player->GetGUID().GetCounter());
         return;
     }
 
@@ -667,7 +667,7 @@ void AzthPlayer::CreateWowarmoryFeed(uint32 type, uint32 data, uint32 item_guid,
     feed.counter = 0;
     feed.date = time(nullptr);
 
-    sLog->outDebug(LOG_FILTER_NONE, "[Wowarmory]: create wowarmory feed (GUID: %u, type: %d, data: %u).", feed.guid, feed.type, feed.data);
+    LOG_DEBUG("server", "[Wowarmory]: create wowarmory feed (GUID: %u, type: %d, data: %u).", feed.guid, feed.type, feed.data);
 
     m_wowarmory_feeds.push_back(feed);
 }

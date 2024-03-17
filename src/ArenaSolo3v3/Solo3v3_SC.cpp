@@ -13,6 +13,8 @@
 #include "ScriptedGossip.h"
 #include "Config.h"
 #include "AZTH.h"
+#include "Battleground.h"
+#include "BattleGround.h"
 
 // SC
 class npc_solo3v3 : public CreatureScript
@@ -254,7 +256,7 @@ private:
         Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(BATTLEGROUND_AA);
         if (!bg)
         {
-            sLog->outError("Battleground: template bg (all arenas) not found");
+            LOG_ERROR("server", "Battleground: template bg (all arenas) not found");
             return false;
         }
 
@@ -302,7 +304,7 @@ private:
         BattlegroundQueue& bgQueue = sBattlegroundMgr->GetBattlegroundQueue(bgQueueTypeId);
         bg->SetRated(isRated);
 
-        GroupQueueInfo* ginfo = bgQueue.AddGroup(player, nullptr, bracketEntry, isRated, false, arenaRating, matchmakerRating, ateamId);
+        GroupQueueInfo* ginfo = bgQueue.AddGroup(player, nullptr, bgTypeId, bracketEntry, isRated, false, arenaRating, matchmakerRating, ateamId);
         uint32 avgTime = bgQueue.GetAverageQueueWaitTime(ginfo);
         uint32 queueSlot = player->AddBattlegroundQueueId(bgQueueTypeId);
 
@@ -311,7 +313,7 @@ private:
         sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, queueSlot, STATUS_WAIT_QUEUE, avgTime, 0, arenatype, player->GetTeamId()); //??
         player->GetSession()->SendPacket(&data);
 
-        sBattlegroundMgr->ScheduleArenaQueueUpdate(arenatype, bgQueueTypeId, bracketEntry->GetBracketId());
+        sBattlegroundMgr->ScheduleQueueUpdate(matchmakerRating, arenatype, bgQueueTypeId, bgTypeId, bracketEntry->GetBracketId());
 
         sScriptMgr->OnPlayerJoinArena(player);
 
@@ -402,17 +404,18 @@ private:
     }
 };
 
-class Solo3v3_BG : public BGScript
+class Solo3v3_BG : public AllBattlegroundScript
 {
 public:
-    Solo3v3_BG() : BGScript("Solo3v3_BG") { }
+    Solo3v3_BG() : AllBattlegroundScript("Solo3v3_BG") { }
 
-    void OnQueueUpdate(BattlegroundQueue* queue, BattlegroundBracketId bracket_id, bool isRated, uint32 /* arenaRatedTeamId */) override
+    void OnQueueUpdate(BattlegroundQueue* queue, uint32 /*diff*/, BattlegroundTypeId bgTypeId, BattlegroundBracketId bracket_id, uint8 arenaType, bool isRated, uint32 /*arenaRatedTeamId*/)
     {
-        if (queue->GetArenaType() != (ArenaType)ARENA_TYPE_3v3_SOLO)
+        if (arenaType != (ArenaType)ARENA_TYPE_3v3_SOLO)
             return;
 
-        Battleground* bg_template = sBattlegroundMgr->GetBattlegroundTemplate(queue->GetBGTypeID());
+        Battleground* bg_template = sBattlegroundMgr->GetBattlegroundTemplate(bgTypeId);
+
         if (!bg_template)
             return;
 
@@ -426,7 +429,7 @@ public:
             uint32 minLvl = bracketEntry->minLevel;
             uint32 maxLvl = bracketEntry->maxLevel;
 
-            Battleground* arena = sBattlegroundMgr->CreateNewBattleground(queue->GetBGTypeID(), minLvl, maxLvl, queue->GetArenaType(), isRated);
+            Battleground* arena = sBattlegroundMgr->CreateNewBattleground(bgTypeId, bracketEntry, arenaType, isRated);
             if (!arena)
                 return;
 
@@ -439,7 +442,7 @@ public:
                 for (auto const& citr : queue->m_SelectionPools[TEAM_ALLIANCE + i].SelectedGroups)
                 {
                     citr->ArenaTeamId = arenaTeams[i]->GetId();
-                    BattlegroundMgr::InviteGroupToBG(citr, arena, citr->teamId);
+                    queue->InviteGroupToBG(citr, arena, citr->teamId);
                 }
 
             // Override ArenaTeamId to temp arena team (was first set in InviteGroupToBG)

@@ -107,6 +107,8 @@ enum Solo3v3TalentCat
     MAX_TALENT_CAT
 };
 
+#define BG_TEAMS_COUNT 2
+
 class Solo3v3
 {
 public:

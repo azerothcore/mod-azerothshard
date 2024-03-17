@@ -10,7 +10,7 @@
 #include "ObjectMgr.h"
 #include "Config.h"
 #include "Solo3v3.h"
-//#include "ExtraDatabase.h"
+#include "Tokenize.h"
 
 AZTH* AZTH::instance()
 {
@@ -21,9 +21,10 @@ AZTH* AZTH::instance()
 void AZTH::LoadConfig(bool reload)
 {
     // PvP Ranks
-    Tokenizer PvPRankList(sConfigMgr->GetOption<std::string>("PvPRank.HKPerRank", "10,50,100,200,450,750,1300,2000,3500,6000,9500,15000,21000,30000"), ',');
+    std::string HKPerRank = sConfigMgr->GetOption<std::string>("PvPRank.HKPerRank", "10, 50, 100, 200, 450, 750, 1300, 2000, 3500, 6000, 9500, 15000, 21000, 30000");
+    std::vector<std::string_view> PvPRankList = Acore::Tokenize(HKPerRank, ' ', false);
     for (uint8 i = 0; i < PvPRankList.size(); i++)
-        _PvP_Ranks[i] = atoi(PvPRankList[i]);
+        _PvP_Ranks[i] = atoi(PvPRankList[i].data());
 
     _RatePvPRankExtraHonor = sConfigMgr->GetOption<float>("PvPRank.Rate.ExtraHonor", 1);
 
@@ -83,7 +84,7 @@ void AZTH::AddAZTHPlayer(Player* player)
 {
     if (_playersStore.count(player))
     {
-        sLog->outError("AZTH::AddAZTHPlayer - _playersStore.count(player)");
+        LOG_ERROR("server", "AZTH::AddAZTHPlayer - _playersStore.count(player)");
         return;
     }
 
@@ -94,7 +95,7 @@ void AZTH::AddAZTHObject(Object* object)
 {
     if (_objectsStore.count(object))
     {
-        sLog->outError("AZTH::AddAZTHObject - _objectsStore.count(object)");
+        LOG_ERROR("server", "AZTH::AddAZTHObject - _objectsStore.count(object)");
         return;
     }
 
@@ -105,7 +106,7 @@ void AZTH::AddAZTHGroup(Group* group)
 {
     if (_groupStore.count(group))
     {
-        sLog->outError("AZTH::AddAZTHGroup - _groupStore.count(group)");
+        LOG_ERROR("server", "AZTH::AddAZTHGroup - _groupStore.count(group)");
         return;
     }
 
@@ -116,7 +117,7 @@ void AZTH::AddAZTHInstanceSave(InstanceSave* instanceSave)
 {
     if (_instanceSaveStore.count(instanceSave))
     {
-        sLog->outError("AZTH::AddAZTHInstanceSave - _instanceSaveStore.count(instanceSave)");
+        LOG_ERROR("server", "AZTH::AddAZTHInstanceSave - _instanceSaveStore.count(instanceSave)");
         return;
     }
 
@@ -127,7 +128,7 @@ void AZTH::AddAZTHLoot(Loot* loot)
 {
     if (_lootStore.count(loot))
     {
-        sLog->outError("AZTH::AddAZTHLoot - _lootStore.count(instanceSave)");
+        LOG_ERROR("server", "AZTH::AddAZTHLoot - _lootStore.count(instanceSave)");
         return;
     }
 
@@ -139,7 +140,7 @@ AzthPlayer* AZTH::GetAZTHPlayer(Player* player)
 {
     if (!_playersStore.count(player))
     {
-        sLog->outError("AZTH::GetAZTHPlayer - !_playersStore.count(player)");
+        LOG_ERROR("server", "AZTH::GetAZTHPlayer - !_playersStore.count(player)");
         return nullptr;
     }
 
@@ -150,7 +151,7 @@ AzthObject* AZTH::GetAZTHObject(Object* object)
 {
     if (!_objectsStore.count(object))
     {
-        sLog->outError("AZTH::GetAZTHObject - !_objectsStore.count(object)");
+        LOG_ERROR("server", "AZTH::GetAZTHObject - !_objectsStore.count(object)");
         return nullptr;
     }
 
@@ -166,7 +167,7 @@ AzthGroupMgr* AZTH::GetAZTHGroup(Group* group)
 
     if (!_groupStore.count(group))
     {
-        sLog->outError("AZTH::GetAZTHGroup - !_groupStore.count(group)");
+        LOG_ERROR("server", "AZTH::GetAZTHGroup - !_groupStore.count(group)");
         return nullptr;
     }
 
@@ -177,7 +178,7 @@ AzthInstanceMgr* AZTH::GetAZTHInstanceSave(InstanceSave* instanceSave)
 {
     if (!_instanceSaveStore.count(instanceSave))
     {
-        sLog->outError("AZTH::GetAZTHInstanceSave - !_instanceSaveStore.count(instanceSave)");
+        LOG_ERROR("server", "AZTH::GetAZTHInstanceSave - !_instanceSaveStore.count(instanceSave)");
         return nullptr;
     }
 
@@ -197,7 +198,7 @@ void AZTH::DeleteAZTHPlayer(Player* player)
 {
     if (!_playersStore.count(player))
     {
-        sLog->outError("AZTH::DeleteAZTHPlayer - !_playersStore.count(player)");
+        LOG_ERROR("server", "AZTH::DeleteAZTHPlayer - !_playersStore.count(player)");
         return;
     }
 
@@ -208,7 +209,7 @@ void AZTH::DeleteAZTHObject(Object* object)
 {
     if (!_objectsStore.count(object))
     {
-        sLog->outError("AZTH::DeleteAZTHObject - !_objectsStore.count(object)");
+        LOG_ERROR("server", "AZTH::DeleteAZTHObject - !_objectsStore.count(object)");
         return;
     }
 
@@ -219,7 +220,7 @@ void AZTH::DeleteAZTHGroup(Group* group)
 {
     if (!_groupStore.count(group))
     {
-        sLog->outError("AZTH::DeleteAZTHGroup - !_groupStore.count(group)");
+        LOG_ERROR("server", "AZTH::DeleteAZTHGroup - !_groupStore.count(group)");
         return;
     }
 
@@ -230,7 +231,7 @@ void AZTH::DeleteAZTHInstanceSave(InstanceSave* instanceSave)
 {
     if (!_instanceSaveStore.count(instanceSave))
     {
-        sLog->outError("AZTH::DeleteAZTHInstanceSave - !_instanceSaveStore.count(instanceSave)");
+        LOG_ERROR("server", "AZTH::DeleteAZTHInstanceSave - !_instanceSaveStore.count(instanceSave)");
         return;
     }
 
@@ -241,7 +242,7 @@ void AZTH::DeleteAZTHLoot(Loot* loot)
 {
     if (!_lootStore.count(loot))
     {
-        sLog->outError("AZTH::DeleteAZTHLoot - !_instanceSaveStore.count(loot)");
+        LOG_ERROR("server", "AZTH::DeleteAZTHLoot - !_instanceSaveStore.count(loot)");
         return;
     }
 
