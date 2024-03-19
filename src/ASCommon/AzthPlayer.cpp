@@ -601,7 +601,7 @@ bool AzthPlayer::checkItems(uint32 iLvlMax, uint8 type /*=0*/)
 
         if (avg > iLvlMax)
         {
-            ChatHandler(player->GetSession()).PSendSysMessage(sAzthLang->getf(AZTH_LANG_PVPITEMS_MLEVEL_CHECK, player), avg);
+            ChatHandler(player->GetSession()).PSendSysMessage((sAzthLang->getf(AZTH_LANG_PVPITEMS_MLEVEL_CHECK, player)).c_str(), avg);
             return false;
         }
         else
