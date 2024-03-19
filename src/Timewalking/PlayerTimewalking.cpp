@@ -42,6 +42,7 @@ uint32 AzthPlayer::getTwItemLevel(uint32 twLevel) {
 void AzthPlayer::SetTimeWalkingLevel(uint32 itsTimeWalkingLevel, bool clearAuras/*=true*/, bool save /*=true*/, bool login/*=false*/)
 {
     std::string lvlName=sAzthUtils->getLevelInfo(itsTimeWalkingLevel);
+    char* ret = nullptr;
 
     if (!login) {
         // hacking attempt?
@@ -49,8 +50,9 @@ void AzthPlayer::SetTimeWalkingLevel(uint32 itsTimeWalkingLevel, bool clearAuras
             return;
 
         uint32 iLvl=sAZTH->GetAZTHPlayer(player)->getTwItemLevel(itsTimeWalkingLevel);
-        if (iLvl && !sAZTH->GetAZTHPlayer(player)->checkItems(iLvl)) {
-            ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_LEVEL_MAX, player, iLvl));
+        if (iLvl && !sAZTH->GetAZTHPlayer(player)->checkItems(iLvl))
+        {
+            ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_LEVEL_MAX, player, ret, iLvl));
             return;
         }
 
@@ -126,7 +128,7 @@ void AzthPlayer::SetTimeWalkingLevel(uint32 itsTimeWalkingLevel, bool clearAuras
         if (save)
             QueryResult timewalkingCharactersActive_table = CharacterDatabase.Query(("INSERT IGNORE INTO `azth_timewalking_characters_active` (`id`, `level`) VALUES ('{}', '{}');"), player->GetGUID().GetCounter(), sAZTH->GetAZTHPlayer(player)->GetTimeWalkingLevel());
 
-        ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_MODE_ON, player, lvlName.c_str()));
+        ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_MODE_ON, player, ret, lvlName.c_str()));
     }
     else
     {

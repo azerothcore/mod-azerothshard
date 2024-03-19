@@ -73,6 +73,8 @@ bool Season::checkItem(ItemTemplate const* proto, Player const* player)
     if (!IsEnabled())
         return true; //SYSTEM DISABLED
 
+    char* ret = nullptr;
+
     if (/*player->InBattleground() ||*/ player->InArena() || /*player->InBattlegroundQueue()*/
         player->InBattlegroundQueueForBattlegroundQueueType(BATTLEGROUND_QUEUE_2v2) ||
                  player->InBattlegroundQueueForBattlegroundQueueType(BATTLEGROUND_QUEUE_3v3) ||
@@ -83,7 +85,7 @@ bool Season::checkItem(ItemTemplate const* proto, Player const* player)
     {
         if (!sAzthUtils->checkItemLvL(proto, GetItemLevel()))
         {
-            ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TOURNAMENT_LEVEL_TOOHIGH, player, proto->ItemId, proto->Name1.c_str()));
+            ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TOURNAMENT_LEVEL_TOOHIGH, player, ret, proto->ItemId, proto->Name1.c_str()));
             return false;
         }
     }
@@ -96,9 +98,11 @@ bool Season::canJoinArenaOrBg(Player *pl)
     if (!IsEnabled())
         return true; // SYSTEM DISABLED
 
+    char* ret = nullptr;
+
     if (sAZTH->GetAZTHPlayer(pl)->checkItems(GetItemLevel()))
         return true;
 
-    ChatHandler(pl->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TOURNAMENT_LEVEL_ACTUAL, pl, sASeasonMgr->GetItemLevel()));
+    ChatHandler(pl->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TOURNAMENT_LEVEL_ACTUAL, pl, ret, sASeasonMgr->GetItemLevel()));
     return false;
 }

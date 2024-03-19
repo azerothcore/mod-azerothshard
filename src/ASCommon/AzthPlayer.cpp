@@ -547,9 +547,11 @@ bool AzthPlayer::canEquipItem(ItemTemplate const* proto)
 bool AzthPlayer::checkItem(ItemTemplate const* proto)
 {
     uint32 _ilvl = getMaxItemLevelByStatus();
+
     if (_ilvl && !sAzthUtils->checkItemLvL(proto, _ilvl))
     {
-        ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_PVPITEMS_LEVEL_CHECK, player, proto->ItemId, proto->Name1.c_str()));
+        char* ret = nullptr;
+        ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_PVPITEMS_LEVEL_CHECK, player, ret, proto->ItemId, proto->Name1.c_str()));
         return false;
     }
 
@@ -560,6 +562,8 @@ bool AzthPlayer::checkItems(uint32 iLvlMax, uint8 type /*=0*/)
 {
     if (player->IsGameMaster())
         return true;
+
+    char* ret = nullptr;
 
     if (type == 0)
     {
@@ -578,7 +582,7 @@ bool AzthPlayer::checkItems(uint32 iLvlMax, uint8 type /*=0*/)
             {
                 if (!sAzthUtils->checkItemLvL(itemToCheck->GetTemplate(), iLvlMax))
                 {
-                    ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_PVPITEMS_LEVEL_CHECK, player, itemToCheck->GetTemplate()->ItemId, itemToCheck->GetTemplate()->Name1.c_str()));
+                    ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_PVPITEMS_LEVEL_CHECK, player, ret, itemToCheck->GetTemplate()->ItemId, itemToCheck->GetTemplate()->Name1.c_str()));
                     counter++;
                 }
             }
@@ -601,7 +605,7 @@ bool AzthPlayer::checkItems(uint32 iLvlMax, uint8 type /*=0*/)
 
         if (avg > iLvlMax)
         {
-            ChatHandler(player->GetSession()).PSendSysMessage(sAzthLang->getf(AZTH_LANG_PVPITEMS_MLEVEL_CHECK, player), avg);
+            ChatHandler(player->GetSession()).PSendSysMessage(sAzthLang->getf(AZTH_LANG_PVPITEMS_MLEVEL_CHECK, player, ret), avg);
             return false;
         }
         else

@@ -387,8 +387,10 @@ public:
         if (!player || !player->IsInWorld())
             return;
 
-		if (sAzthAchievementMgr->achievementList.find(criteria->ID) == sAzthAchievementMgr->achievementList.end())
-			return;
+        char* ret = nullptr;
+
+        if (sAzthAchievementMgr->achievementList.find(criteria->ID) == sAzthAchievementMgr->achievementList.end())
+            return;
 
         AzthAchievement achi = sAzthAchievementMgr->achievementList[criteria->ID];
 
@@ -496,7 +498,7 @@ public:
                     }
                 }
 
-                ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_NEW_ITEM_OBTAINED, player, _proto->ItemId, _proto->Name1.c_str(), count));
+                ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_NEW_ITEM_OBTAINED, player, ret, _proto->ItemId, _proto->Name1.c_str(), count));
                 if (mailItems > 0)
                     ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->get(AZTH_LANG_BAG_FULL_SENT_TO_MAIL, player));
             }
@@ -591,6 +593,8 @@ public:
         sAZTH->GetAZTHPlayer(player)->prepareTwSpells(player->getLevel());
         sAzthUtils->setTwDefense(player, sAZTH->GetAZTHPlayer(player)->isTimeWalking(true));
 
+        char* ret = nullptr;
+
         int32 rep=player->GetReputationMgr().GetReputation(AZTH_AS_REP);
         // reduce only if positive reputation
         if (rep > 0)
@@ -617,7 +621,7 @@ public:
                         // Gompertz formula for rep reduction growt
                         uint32 repRed=43000*std::exp(-4*std::exp(-float(daysLogout)/100))-810;
                         repRed = repRed > (uint32)rep ? rep : repRed; // never go below 0
-                        ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_REP_REMOVED_LOGOUT, player, daysActivity ));
+                        ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_REP_REMOVED_LOGOUT, player, ret, daysActivity ));
                         player->GetReputationMgr().ModifyReputation(sFactionStore.LookupEntry(AZTH_AS_REP), -repRed);
                     }
                 }
@@ -671,6 +675,7 @@ public:
             return;
 
         std::vector<Player*> list;
+        char* ret = nullptr;
 
         for (auto const& itr : map->GetPlayers())
             if (!itr.GetSource()->IsGameMaster())
@@ -732,7 +737,7 @@ public:
                 (sLevel > 80 && sLevel == posLevel)) // TIMEWALKING SPECIAL LEVELS
             {
                 uint32 moaBonus=1 + uint8(difficulty_fixed);
-                ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_MOA_BONUS, player, lvlTxt.c_str(), moaBonus));
+                ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_MOA_BONUS, player, ret, lvlTxt.c_str(), moaBonus));
                 player->AddItem(AZTH_MARK_OF_AZEROTH, moaBonus);
 
                 float mythBonus = sAzthUtils->isMythicLevel(sLevel) ? std::pow(1.1, sLevel-TIMEWALKING_LVL_VAS_LVL1+1) : 1;
@@ -743,11 +748,11 @@ public:
 
                 if (repBonus)
                 {
-                    ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_ASREP_BONUS, player, lvlTxt.c_str(), repBonus));
+                    ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_ASREP_BONUS, player, ret, lvlTxt.c_str(), repBonus));
                     player->GetReputationMgr().ModifyReputation(sFactionStore.LookupEntry(AZTH_AS_REP), repBonus);
                 }
 
-                ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_BOSS_KILLED, player, count, total, uint32(round(float(now-instanceStart)/60))));
+                ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_BOSS_KILLED, player, ret, count, total, uint32(round(float(now-instanceStart)/60))));
 
                 if (count>=total)
                 {
@@ -764,7 +769,7 @@ public:
             }
             else if (posLevel <= 70 && nLevel > posLevel + 10)
             {
-                ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_REP_REMOVED_KILL, player, nLevel-posLevel));
+                ChatHandler(player->GetSession()).SendSysMessage(sAzthLang->getf(AZTH_LANG_TW_REP_REMOVED_KILL, player, ret, nLevel-posLevel));
                 player->GetReputationMgr().ModifyReputation(sFactionStore.LookupEntry(AZTH_AS_REP), -(nLevel-posLevel));
             }
 
