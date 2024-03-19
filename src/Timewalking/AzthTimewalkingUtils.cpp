@@ -192,7 +192,6 @@ AzthLevelStat const* AzthUtils::getTwStats(Player *player, uint32 level) {
 bool AzthUtils::updateTwLevel(Player *player,Group *group)
 {
     bool result = false;
-    char* ret = nullptr;
 
     if (!player || !sAZTH->GetAZTHPlayer(player) || player->IsGameMaster())
         return result;
@@ -219,7 +218,7 @@ bool AzthUtils::updateTwLevel(Player *player,Group *group)
         if (updated)
         {
             std::string _slvl=sAzthUtils->getLevelInfo(azthGroup->levelMaxGroup);
-            std::string msg = sAzthLang->getf(AZTH_LANG_GROUP_LEVEL_REG, player, ret, player->GetName().c_str(),_slvl.c_str(), group->GetMembersCount());
+            std::string msg = sAzthLang->getf(AZTH_LANG_GROUP_LEVEL_REG,player, player->GetName().c_str(),_slvl.c_str(), group->GetMembersCount());
             sAzthUtils->sendMessageToGroup(player, player->GetGroup(), msg.c_str());
             azthGroup->saveToDb();
             result = true;
@@ -271,7 +270,7 @@ bool AzthUtils::updateTwLevel(Player *player,Group *group)
             {
                 is->InsertToDB();
                 std::string _slvl = sAzthUtils->getLevelInfo(sAZTH->GetAZTHInstanceSave(is)->levelMax);
-                std::string msg = sAzthLang->getf(AZTH_LANG_INSTANCE_LEVEL_REG, player, ret, player->GetName().c_str(), _slvl.c_str(), sAZTH->GetAZTHInstanceSave(is)->groupSize);
+                std::string msg = sAzthLang->getf(AZTH_LANG_INSTANCE_LEVEL_REG, player, player->GetName().c_str(), _slvl.c_str(), sAZTH->GetAZTHInstanceSave(is)->groupSize);
 
                 sAzthUtils->sendMessageToGroup(player, player->GetGroup(), msg.c_str());
                 result = true;

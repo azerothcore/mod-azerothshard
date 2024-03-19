@@ -322,9 +322,8 @@ public:
     {
         uint32 bitmask = 0;
         int gossip = 100000;
-        char* ret = nullptr;
 
-        time_t t = time(nullptr);
+        time_t t = time(NULL);
 
         bool isEmpty=true;
         uint32 pveId=0, pvpId=0, weeklyClassicId=0, weeklyTBCId=0, weeklyWotlkId=0, weeklyRandomTwId=0, dailyRandomTwId=0;
@@ -566,33 +565,33 @@ public:
         if ((bitmask & BITMASK_PVP) == BITMASK_PVP)
         {
             if (questPvp)
-                AddGossipItemFor(player,GOSSIP_ICON_BATTLE, sAzthLang->getf(AZTH_LANG_HS_PVP_QUEST, player, ret, (questPvp->GetTitle() + (pvpId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, pvpId);
+                AddGossipItemFor(player,GOSSIP_ICON_BATTLE, sAzthLang->getf(AZTH_LANG_HS_PVP_QUEST, player, (questPvp->GetTitle() + (pvpId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, pvpId);
         }
 
         if (!sAZTH->GetAZTHPlayer(player)->isPvP()) {
             if ((bitmask & BITMASK_DAILY_RANDOM) == BITMASK_DAILY_RANDOM)
             {
                 if (questPve)
-                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_DAILY_QUEST, player, ret, (questPve->GetTitle() + (pveId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, pveId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_DAILY_QUEST, player, (questPve->GetTitle() + (pveId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, pveId);
             }
 
 
             if ((bitmask & BITMASK_WEEKLY_RND1) == BITMASK_WEEKLY_RND1)
             {
                 if (questClassicWeekly)
-                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, ret, (questClassicWeekly->GetTitle() + (weeklyClassicId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyClassicId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, (questClassicWeekly->GetTitle() + (weeklyClassicId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyClassicId);
             }
 
             if ((bitmask & BITMASK_WEEKLY_RND2) == BITMASK_WEEKLY_RND2)
             {
                 if (questTBCWeekly)
-                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, ret, (questTBCWeekly->GetTitle() + (weeklyTBCId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyTBCId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, (questTBCWeekly->GetTitle() + (weeklyTBCId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyTBCId);
             }
 
             if ((bitmask & BITMASK_WEEKLY_RND3) == BITMASK_WEEKLY_RND3)
             {
                 if (questWotlkWeekly)
-                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, ret, (questWotlkWeekly->GetTitle()+ (weeklyWotlkId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player) )).c_str()), GOSSIP_SENDER_MAIN, weeklyWotlkId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_WEEKLY_QUEST, player, (questWotlkWeekly->GetTitle()+ (weeklyWotlkId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player) )).c_str()), GOSSIP_SENDER_MAIN, weeklyWotlkId);
             }
 
             if (bitmask>0)
@@ -617,7 +616,7 @@ public:
                 {
                     if (quest) {
                         isEmpty = false;
-                        AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_WEEKLY_QUEST, player, ret, (quest->GetTitle() + (weeklyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player) )).c_str()), GOSSIP_SENDER_MAIN, weeklyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? *it : 0);
+                        AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_WEEKLY_QUEST, player, (quest->GetTitle() + (weeklyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player) )).c_str()), GOSSIP_SENDER_MAIN, weeklyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? *it : 0);
                     }
                 }
             }
@@ -626,7 +625,7 @@ public:
             if ((bitmask & BITMASK_TW_WEEKLY_RANDOM) == BITMASK_TW_WEEKLY_RANDOM)
             {
                 if (questWeeklyRandomTw)
-                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_WEEKLY_RANDOM_QUEST, player, ret, (questWeeklyRandomTw->GetTitle() + (weeklyRandomTwId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyRandomTwId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_WEEKLY_RANDOM_QUEST, player, (questWeeklyRandomTw->GetTitle() + (weeklyRandomTwId ? "" : sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, weeklyRandomTwId);
             }
 
 //"TW Daily Quest Check & gossip"
@@ -647,7 +646,7 @@ public:
                 {
                     if (quest) {
                         isEmpty = false;
-                        AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_DAILY_QUEST, player, ret, (quest->GetTitle() + (dailyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? "" :  sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, dailyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? *it : 0);
+                        AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_DAILY_QUEST, player, (quest->GetTitle() + (dailyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? "" :  sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, dailyTwMaxCheck <= MAX_PVE_QUEST_NUMBER ? *it : 0);
                     }
                 }
             }
@@ -655,7 +654,7 @@ public:
             if ((bitmask & BITMASK_TW_DAILY_RANDOM) == BITMASK_TW_DAILY_RANDOM)
             {
                 if (questDailyRandomTw)
-                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_DAILY_RANDOM_QUEST, player, ret, (questDailyRandomTw->GetTitle() + (dailyRandomTwId ? "" :  sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, dailyRandomTwId);
+                    AddGossipItemFor(player,GOSSIP_ICON_TABARD, sAzthLang->getf(AZTH_LANG_HS_TW_DAILY_RANDOM_QUEST, player, (questDailyRandomTw->GetTitle() + (dailyRandomTwId ? "" :  sAzthLang->get(AZTH_LANG_HS_QUEST_LIMIT_SUFFIX, player))).c_str()), GOSSIP_SENDER_MAIN, dailyRandomTwId);
             }
         }
 
