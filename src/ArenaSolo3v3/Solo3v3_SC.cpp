@@ -14,7 +14,6 @@
 #include "Config.h"
 #include "AZTH.h"
 #include "Battleground.h"
-#include "BattleGround.h"
 
 // SC
 class npc_solo3v3 : public CreatureScript

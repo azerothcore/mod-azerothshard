@@ -1067,7 +1067,7 @@ public:
         spellId = sAzthUtils->selectSpellForTW(player, spellId);
     }
 
-    void ValidateSpellAtCastSpellResult(Player* player, Unit* /* mover */, Spell* spell, uint32 oldSpellId, uint32 spellId) override
+    void ValidateSpellAtCastSpellResult(Player* player, Unit* /*mover*/, Spell* /*spell*/, uint32 /*oldSpellId*/, uint32 /*spellId*/) override
     {
         if (!player)
             return;
