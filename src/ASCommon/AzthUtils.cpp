@@ -123,30 +123,29 @@ void AzthUtils::sendMessageToGroup(Player *pl, Group *group, const char* msg) {
 }
 
 void AzthUtils::loadClassSpells() {
-    QueryResult res = WorldDatabase.PQuery("SELECT racemask, classmask, Spell FROM playercreateinfo_spell_custom;");
+    QueryResult res = WorldDatabase.Query("SELECT `racemask`, `classmask`, `Spell` FROM `playercreateinfo_spell_custom`");
 
     if (!res)
     {
         return;
     }
 
-
     do
     {
         Field* fields = res->Fetch();
-        uint32 raceMask = fields[0].GetUInt32();
-        uint32 classMask = fields[1].GetUInt32();
-        uint32 spellId = fields[2].GetUInt32();
+        uint32 raceMask = fields[0].Get<uint32>();
+        uint32 classMask = fields[1].Get<uint32>();
+        uint32 spellId = fields[2].Get<uint32>();
 
         if (raceMask != 0 && !(raceMask & RACEMASK_ALL_PLAYABLE))
         {
-            sLog->outErrorDb("Wrong race mask %u in `playercreateinfo_spell_custom` table, ignoring.", raceMask);
+            LOG_ERROR("sql.sql", "Wrong race mask %u in `playercreateinfo_spell_custom` table, ignoring.", raceMask);
             continue;
         }
 
         if (classMask != 0 && !(classMask & CLASSMASK_ALL_PLAYABLE))
         {
-            sLog->outErrorDb("Wrong class mask %u in `playercreateinfo_spell_custom` table, ignoring.", classMask);
+            LOG_ERROR("sql.sql", "Wrong class mask %u in `playercreateinfo_spell_custom` table, ignoring.", classMask);
             continue;
         }
 
@@ -925,8 +924,9 @@ uint32 AzthUtils::getPositionLevel(bool includeSpecialLvl, Map *map, uint32 zone
     // before area table because more accurate in dungeon case
     if (!level) {
         LFGDungeonEntry const* dungeon = GetLFGDungeon(map->GetId(), map->GetDifficulty());
-        if (dungeon && (map->IsDungeon() || map->IsRaid())) {
-            level  = dungeon->recminlevel ? dungeon->recminlevel : ( dungeon->reclevel ?  dungeon->reclevel : dungeon->minlevel);
+        if (dungeon && (map->IsDungeon() || map->IsRaid()))
+        {
+            level  = dungeon->TargetLevelMin ? dungeon->TargetLevelMin : ( dungeon->TargetLevel ?  dungeon->TargetLevel : dungeon->MinLevel);
         }
     }
 
@@ -961,8 +961,8 @@ uint32 AzthUtils::getPositionLevel(bool includeSpecialLvl, Map *map, uint32 zone
                 if (!dungeon)
                     continue;
 
-                if (areaName == dungeon->name[0] || zoneName == dungeon->name[0] || mapName == dungeon->name[0]) {
-                    level  = dungeon->recminlevel ? dungeon->recminlevel : ( dungeon->reclevel ?  dungeon->reclevel : (dungeon->maxlevel+dungeon->minlevel)/2);
+                if (areaName == dungeon->Name[0] || zoneName == dungeon->Name[0] || mapName == dungeon->Name[0]) {
+                    level  = dungeon->TargetLevelMin ? dungeon->TargetLevelMin : ( dungeon->TargetLevel ?  dungeon->TargetLevel : (dungeon->MaxLevel + dungeon->MinLevel)/2);
                     break;
                 }
             }

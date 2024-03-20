@@ -196,7 +196,7 @@ UPDATE quest_template_addon SET AllowableClasses = 1 WHERE id = 9034 OR id BETWE
 DELETE FROM disables WHERE entry = 9034 OR entry BETWEEN 9036 AND 9042;
 DELETE FROM creature_questender WHERE quest = 9034 OR quest BETWEEN 9036 AND 9042;
 DELETE FROM creature_queststarter WHERE quest = 9034 OR quest BETWEEN 9036 AND 9042;
-INSERT INTO creature_questender (id, quest) VALUES 
+INSERT INTO creature_questender (id, quest) VALUES
 (16112, 9034),
 (16112, 9036),
 (16112, 9037),
@@ -205,6 +205,7 @@ INSERT INTO creature_questender (id, quest) VALUES
 (16112, 9040),
 (16112, 9041),
 (16112, 9042);
+
 INSERT INTO creature_queststarter (id, quest) VALUES
 (16112, 9034),
 (16112, 9036),

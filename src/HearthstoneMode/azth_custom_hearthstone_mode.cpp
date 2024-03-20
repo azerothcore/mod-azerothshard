@@ -84,7 +84,7 @@ void HearthstoneMode::AzthSendListInventory(ObjectGuid vendorGuid, WorldSession 
                 ConditionList conditions = sConditionMgr->GetConditionsForNpcVendorEvent(vendor->GetEntry(), item->item);
                 if (!sConditionMgr->IsObjectMeetToConditions(session->GetPlayer(), vendor, conditions))
                 {
-                    sLog->outError("SendListInventory: conditions not met for creature entry %u item %u", vendor->GetEntry(), item->item);
+                    LOG_ERROR("server", "SendListInventory: conditions not met for creature entry %u item %u", vendor->GetEntry(), item->item);
                     continue;
                 }
 
@@ -1079,24 +1079,24 @@ void HearthstoneMode::loadHearthstone()
     uint32 count = 0;
     sHearthstoneMode->hsAchievementTable.clear();
 
-    QueryResult hsAchiResult = CharacterDatabase.PQuery("SELECT data0, data1, creature, type FROM hearthstone_criteria_credits");
+    QueryResult hsAchiResult = CharacterDatabase.Query("SELECT `data0`, `data1`, `creature`, `type` FROM `hearthstone_criteria_credits`");
 
     if (hsAchiResult)
     {
         do
         {
             HearthstoneAchievement ha = {};
-            ha.data0 = (*hsAchiResult)[0].GetUInt32();
-            ha.data1 = (*hsAchiResult)[1].GetUInt32();
-            ha.creature = (*hsAchiResult)[2].GetUInt32();
-            ha.type = (*hsAchiResult)[3].GetUInt32();
+            ha.data0 = (*hsAchiResult)[0].Get<uint32>();
+            ha.data1 = (*hsAchiResult)[1].Get<uint32>();
+            ha.creature = (*hsAchiResult)[2].Get<uint32>();
+            ha.type = (*hsAchiResult)[3].Get<uint32>();
 
             sHearthstoneMode->hsAchievementTable.push_back(ha);
             count++;
         } while (hsAchiResult->NextRow());
     }
 
-    sLog->outString("Hearthstone Mode: loaded %u achievement definitions", count);
+    LOG_INFO("server", "Hearthstone Mode: loaded %u achievement definitions", count);
 
     int itemCount = 0;
 
@@ -1112,40 +1112,40 @@ void HearthstoneMode::loadHearthstone()
     do
     {
         Field* fields = result->Fetch();
-        uint32 entry = fields[0].GetUInt32();
+        uint32 entry = fields[0].Get<uint32>();
         uint32 quality = sObjectMgr->GetItemTemplate(entry)->Quality; //= fields[1].GetUInt32();
 
         sHearthstoneMode->items[quality].push_back(entry);
         itemCount++;
     } while (result->NextRow());
 
-    sLog->outString("Hearthstone Mode: loaded %u transmog items", itemCount);
+    LOG_INFO("server", "Hearthstone Mode: loaded %u transmog items", itemCount);
 
-        uint32 questCount = 0;
-        sHearthstoneMode->hsPveQuests.clear();
-        sHearthstoneMode->hsPvpQuests.clear();
-        sHearthstoneMode->hsWeeklyClassicQuests.clear();
-        sHearthstoneMode->hsWeeklyTBCQuests.clear();
-        sHearthstoneMode->hsWeeklyWotlkQuests.clear();
-        sHearthstoneMode->hsTwWeeklyRandomQuests.clear();
-        sHearthstoneMode->hsTwWeeklyQuests.clear();
-        sHearthstoneMode->hsTwDailyQuests.clear();
-        sHearthstoneMode->hsTwDailyRandomQuests.clear();
+    uint32 questCount = 0;
+    sHearthstoneMode->hsPveQuests.clear();
+    sHearthstoneMode->hsPvpQuests.clear();
+    sHearthstoneMode->hsWeeklyClassicQuests.clear();
+    sHearthstoneMode->hsWeeklyTBCQuests.clear();
+    sHearthstoneMode->hsWeeklyWotlkQuests.clear();
+    sHearthstoneMode->hsTwWeeklyRandomQuests.clear();
+    sHearthstoneMode->hsTwWeeklyQuests.clear();
+    sHearthstoneMode->hsTwDailyQuests.clear();
+    sHearthstoneMode->hsTwDailyRandomQuests.clear();
 
-        QueryResult hsQuestResult = CharacterDatabase.PQuery("SELECT id, flag, specialLevel, reqDimension, groupLimit, startTime, endTime FROM hearthstone_quests");
+        QueryResult hsQuestResult = CharacterDatabase.Query("SELECT `id`, `flag`, `specialLevel`, `reqDimension`, `groupLimit`, `startTime`, `endTime` FROM `hearthstone_quests`");
 
         if (hsQuestResult)
         {
             do
             {
                 HearthstoneQuest hq = {};
-                hq.id = (*hsQuestResult)[0].GetUInt32();
-                hq.flag = (*hsQuestResult)[1].GetUInt32();
-                hq.specialLevel = (*hsQuestResult)[2].GetUInt32();
-                hq.reqDimension = (*hsQuestResult)[3].GetUInt32();
-                hq.groupLimit = (*hsQuestResult)[4].GetInt32();
-                hq.startTime = (*hsQuestResult)[5].GetUInt32();
-                hq.endTime = (*hsQuestResult)[6].GetUInt32();
+                hq.id = (*hsQuestResult)[0].Get<uint32>();
+                hq.flag = (*hsQuestResult)[1].Get<uint32>();
+                hq.specialLevel = (*hsQuestResult)[2].Get<uint32>();
+                hq.reqDimension = (*hsQuestResult)[3].Get<uint32>();
+                hq.groupLimit = (*hsQuestResult)[4].Get<uint32>();
+                hq.startTime = (*hsQuestResult)[5].Get<uint32>();
+                hq.endTime = (*hsQuestResult)[6].Get<uint32>();
                 uint32 bitmask = hq.flag;
 
                 sHearthstoneMode->allQuests[hq.id]=hq;
@@ -1176,25 +1176,25 @@ void HearthstoneMode::loadHearthstone()
             } while (hsQuestResult->NextRow());
         }
 
-    sLog->outString("Hearthstone Mode: loaded %u quests", questCount);
+    LOG_INFO("server", "Hearthstone Mode: loaded %u quests", questCount);
 
 
     uint32 vendorCount = 0;
     sHearthstoneMode->hsVendors.clear();
 
-    QueryResult hsVendorResult = CharacterDatabase.PQuery("SELECT vendorId, reputation, `value`, gossipSatisfied, gossipUnsatisfied, PvPVendor FROM reputation_vendor");
+    QueryResult hsVendorResult = CharacterDatabase.Query("SELECT `vendorId`, `reputation`, `value`, `gossipSatisfied`, `gossipUnsatisfied`, `PvPVendor` FROM `reputation_vendor`");
 
     if (hsVendorResult)
     {
         do
         {
             HearthstoneVendor hv = {};
-            hv.id = (*hsVendorResult)[0].GetUInt32();
-            hv.reputationId = (*hsVendorResult)[1].GetInt32();
-            hv.repValue = (*hsVendorResult)[2].GetInt32();
-            hv.gossipOk = (*hsVendorResult)[3].GetUInt32();
-            hv.gossipNope = (*hsVendorResult)[4].GetUInt32();
-            ((*hsVendorResult)[5].GetUInt32() == 1) ? (hv.pvpVendor = true) : (hv.pvpVendor = false); //if == 1 ->pvp vendor || else-> non pvp vendor
+            hv.id = (*hsVendorResult)[0].Get<uint32>();
+            hv.reputationId = (*hsVendorResult)[1].Get<int32>();
+            hv.repValue = (*hsVendorResult)[2].Get<int32>();
+            hv.gossipOk = (*hsVendorResult)[3].Get<uint32>();
+            hv.gossipNope = (*hsVendorResult)[4].Get<uint32>();
+            ((*hsVendorResult)[5].Get<uint32>() == 1) ? (hv.pvpVendor = true) : (hv.pvpVendor = false); //if == 1 ->pvp vendor || else-> non pvp vendor
 
             sHearthstoneMode->hsVendors.push_back(hv); // push the newly created element in the list
 
@@ -1202,7 +1202,7 @@ void HearthstoneMode::loadHearthstone()
         } while (hsVendorResult->NextRow());
     }
 
-    sLog->outString("Hearthstone Mode: loaded %u vendors", vendorCount);
+    LOG_INFO("server", "Hearthstone Mode: loaded %u vendors", vendorCount);
 }
 
 void AddSC_hearthstone()

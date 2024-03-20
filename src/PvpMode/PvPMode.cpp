@@ -54,7 +54,7 @@ public:
             player->ResetMap();
             player->SetMap(sMapMgr->CreateMap(1, player));
 
-            CharacterDatabase.PQuery("REPLACE INTO azth_pvp_characters (id,isPvP) VALUES(%d, 1)", player->GetGUID().GetCounter());
+            CharacterDatabase.Query("REPLACE INTO `azth_pvp_characters` (`id`, `isPvP`) VALUES({}, 1)", player->GetGUID().GetCounter());
 
             player->SaveToDB(false,false);
         }

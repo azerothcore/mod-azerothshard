@@ -25,10 +25,7 @@ void AzthPlayer::addSmartStoneCommand(SmartStonePlayerCommand command, bool quer
 
     if (query)
     {
-        CharacterDatabase.PExecute(
-                "REPLACE INTO `character_smartstone_commands` (playerGuid, command, "
-                "dateExpired, charges) VALUES (%u, %u, %u, %i);",
-                player->GetGUID().GetCounter(), command.id, sec, command.charges);
+        CharacterDatabase.Execute("REPLACE INTO `character_smartstone_commands` (`playerGuid`, `command`, `dateExpired`, `charges`) VALUES ({}, {}, {}, {})", player->GetGUID().GetCounter(), command.id, sec, command.charges);
     }
 }
 
@@ -61,17 +58,14 @@ bool AzthPlayer::hasSmartStoneCommand(uint32 id)
     return false;
 }
 
-void AzthPlayer::removeSmartStoneCommand(SmartStonePlayerCommand command,
-        bool query) {
+void AzthPlayer::removeSmartStoneCommand(SmartStonePlayerCommand command, bool query)
+{
     // we need to specify the equal operator for struct to be able to run it:
-    smartStoneCommands.erase(std::remove(smartStoneCommands.begin(),
-            smartStoneCommands.end(), command),
-            smartStoneCommands.end());
+    smartStoneCommands.erase(std::remove(smartStoneCommands.begin(), smartStoneCommands.end(), command), smartStoneCommands.end());
 
-    if (query) {
-        CharacterDatabase.PExecute("DELETE FROM `character_smartstone_commands` "
-                "WHERE playerGuid = %u AND command = %u;",
-                player->GetGUID().GetCounter(), command.id);
+    if (query)
+    {
+        CharacterDatabase.Execute("DELETE FROM `character_smartstone_commands` WHERE `playerGuid`={} AND `command`={}", player->GetGUID().GetCounter(), command.id);
     }
 }
 
@@ -83,10 +77,7 @@ void AzthPlayer::decreaseSmartStoneCommandCharges(uint32 id) {
                     smartStoneCommands[i].charges < -1)
                 removeSmartStoneCommand(smartStoneCommands[i], true);
             else
-                CharacterDatabase.PExecute(
-                    "UPDATE character_smartstone_commands SET charges = %i WHERE "
-                    "playerGuid = %u AND command = %u ;",
-                    smartStoneCommands[i].charges, player->GetGUID().GetCounter(), id);
+                CharacterDatabase.Execute("UPDATE `character_smartstone_commands` SET `charges`={} WHERE `playerGuid`={} AND `command`={}", smartStoneCommands[i].charges, player->GetGUID().GetCounter(), id);
 
             return;
         }
@@ -201,9 +192,9 @@ bool AzthPlayer::BuySmartStoneCommand(ObjectGuid vendorguid, uint32 vendorslot,
     if (crItem->ExtendedCost) {
         ItemExtendedCostEntry const *iece =
                 sItemExtendedCostStore.LookupEntry(crItem->ExtendedCost);
-        if (!iece) {
-            sLog->outError("Item %u have wrong ExtendedCost field value %u",
-                    pProto->ItemId, crItem->ExtendedCost);
+        if (!iece)
+        {
+            LOG_ERROR("server", "Item %u have wrong ExtendedCost field value %u", pProto->ItemId, crItem->ExtendedCost);
             return false;
         }
 
@@ -244,9 +235,9 @@ bool AzthPlayer::BuySmartStoneCommand(ObjectGuid vendorguid, uint32 vendorslot,
             0) // Assume price cannot be negative (do not know why it is int32)
     {
         uint32 maxCount = MAX_MONEY_AMOUNT / pProto->BuyPrice;
-        if ((uint32) count > maxCount) {
-            sLog->outError("Player %s tried to buy %u item id %u, causing overflow",
-                    player->GetName().c_str(), (uint32) count, pProto->ItemId);
+        if ((uint32) count > maxCount)
+        {
+            LOG_ERROR("server", "Player %s tried to buy %u item id %u, causing overflow", player->GetName().c_str(), (uint32)count, pProto->ItemId);
             count = (uint8) maxCount;
         }
         price = pProto->BuyPrice * count; // it should not exceed MAX_MONEY_AMOUNT
@@ -343,8 +334,7 @@ void AzthPlayer::setLastPositionInfo(uint32 dimension, WorldLocation posInfo) {
 std::map<uint32,WorldLocation> AzthPlayer::getLastPositionInfoFromDB() {
     std::map<uint32,WorldLocation> lastPos;
 
-    QueryResult savedPosResult = CharacterDatabase.PQuery(
-            "SELECT type, mapId, posX, posY, posZ FROM character_saved_position WHERE charGuid = %u;", player->GetGUID().GetCounter());
+    QueryResult savedPosResult = CharacterDatabase.Query("SELECT `type`, `mapId`, `posX`, `posY`, `posZ` FROM `character_saved_position` WHERE `charGuid`={}", player->GetGUID().GetCounter());
 
     if (!savedPosResult)
         return lastPos;
@@ -353,8 +343,8 @@ std::map<uint32,WorldLocation> AzthPlayer::getLastPositionInfoFromDB() {
     {
         Field* posFields = savedPosResult->Fetch();
 
-        uint32 type = posFields[0].GetUInt32();
-        lastPos[type] = WorldLocation(posFields[1].GetFloat(),posFields[2].GetFloat(),posFields[3].GetFloat(), posFields[4].GetFloat(), player->GetOrientation());
+        uint32 type = posFields[0].Get<uint32>();
+        lastPos[type] = WorldLocation(posFields[1].Get<float>(),posFields[2].Get<float>(),posFields[3].Get<float>(), posFields[4].Get<float>(), player->GetOrientation());
 
         sAZTH->GetAZTHPlayer(player)->setLastPositionInfo(type, lastPos[type]);
     } while (savedPosResult->NextRow());
@@ -370,9 +360,8 @@ void AzthPlayer::saveLastPositionInfoToDB(Player *pl)
     for ( it = lastPositionInfo.begin(); it != lastPositionInfo.end(); it++ )
     {
         WorldLocation _loc= it->second;
-        trans->PAppend("REPLACE INTO character_saved_position(charGuid,type,posX,posY,posZ,mapId) VALUES (%u, %u, %f, %f, %f, %u);", pl->GetGUID().GetCounter(), it->first, _loc.GetPositionX(), _loc.GetPositionY(), _loc.GetPositionZ(), _loc.GetMapId());
+        trans->Append("REPLACE INTO `character_saved_position` (`charGuid`, `type`, `posX`, `posY`, `posZ`, `mapId`) VALUES ({}, {}, {}, {}, {}, {});", pl->GetGUID().GetCounter(), it->first, _loc.GetPositionX(), _loc.GetPositionY(), _loc.GetPositionZ(), _loc.GetMapId());
     }
 
     CharacterDatabase.CommitTransaction(trans);
 };
-

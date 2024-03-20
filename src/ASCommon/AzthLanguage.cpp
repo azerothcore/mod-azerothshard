@@ -63,16 +63,14 @@ const char * AzthLang::get(uint32 strId, Player const* pl) const
     return "Unknown Azth string";
 }
 
-const char * AzthLang::getf(uint32 strId, Player const* pl, ...) const
+std::string AzthLang::getf(uint32 strId, Player const* pl, ...) const
 {
-    const char *format = get(strId, pl);
+    const char* format = get(strId, pl);
     va_list ap;
-    char str [2048];
+    char str[2048];
     va_start(ap, pl);
     vsnprintf(str, 2048, format, ap);
     va_end(ap);
 
-    const char *ret=&str[0];
-
-    return ret;
+    return std::string(str);
 }

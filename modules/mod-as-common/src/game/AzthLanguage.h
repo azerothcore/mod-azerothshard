@@ -29,8 +29,8 @@ public:
     static AzthLang* instance();
 
     void loadStrings();
-    virtual const char * get(uint32 strId, Player const* pl) const;
-    virtual const char * getf(uint32 strId, Player const* pl, ...) const;
+    virtual const char* get(uint32 strId, Player const* pl) const;
+    virtual std::string getf(uint32 strId, Player const* pl, ...) const;
     void add(uint32 strId, std::string const def, std::string const it);
 };
 

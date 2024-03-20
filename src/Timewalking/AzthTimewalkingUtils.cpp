@@ -237,14 +237,14 @@ bool AzthUtils::updateTwLevel(Player *player,Group *group)
             {
                 sAZTH->GetAZTHPlayer(player)->instanceID = map->GetInstanceId();
 
-                QueryResult queryRes = CharacterDatabase.PQuery("SELECT levelPg,groupSize,startTime FROM instance WHERE id = %u", sAZTH->GetAZTHPlayer(player)->instanceID);
+                QueryResult queryRes = CharacterDatabase.Query("SELECT `levelPg`, `groupSize`, `startTime` FROM `instance` WHERE id = {}", sAZTH->GetAZTHPlayer(player)->instanceID);
                 if (!queryRes)
                     return result;
 
                 Field* fields = queryRes->Fetch();
-                sAZTH->GetAZTHInstanceSave(is)->levelMax = fields[0].GetUInt32();
-                sAZTH->GetAZTHInstanceSave(is)->groupSize = fields[1].GetUInt32();
-                uint32 startTime = fields[2].GetUInt32();
+                sAZTH->GetAZTHInstanceSave(is)->levelMax = fields[0].Get<uint32>();
+                sAZTH->GetAZTHInstanceSave(is)->groupSize = fields[1].Get<uint32>();
+                uint32 startTime = fields[2].Get<uint32>();
 
                 if (startTime)
                     sAZTH->GetAZTHInstanceSave(is)->startTime = startTime;
@@ -680,7 +680,6 @@ bool AzthUtils::disableEnchant(Player *player, SpellItemEnchantmentEntry const* 
             return true;
         }
     }
-
 
     return false;
 }

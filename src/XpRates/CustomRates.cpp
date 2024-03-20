@@ -6,11 +6,11 @@
 
  // [TODO] fix and re-enable
 float CustomRates::GetRateFromDB(const Player *player) {
-    QueryResult result = CharacterDatabase.PQuery("SELECT xp_rate FROM character_xp_rate WHERE guid = %d", player->GetGUID().GetCounter());
+    QueryResult result = CharacterDatabase.Query("SELECT `xp_rate` FROM `character_xp_rate` WHERE `guid`={}", player->GetGUID().GetCounter());
 
     if (result) {
         Field *fields = result->Fetch();
-        return fields[0].GetFloat();
+        return fields[0].Get<float>();
     }
 
     return -1;
@@ -20,17 +20,17 @@ void CustomRates::SaveRateToDB(const Player *player, float rate, bool update)
 {
     if (update)
     {
-        CharacterDatabase.PExecute("UPDATE character_xp_rate SET xp_rate = %f WHERE guid = %d", rate, player->GetGUID().GetCounter());
+        CharacterDatabase.Execute("UPDATE `character_xp_rate` SET `xp_rate`={} WHERE `guid`={}", rate, player->GetGUID().GetCounter());
     }
     else
     {
-        CharacterDatabase.PExecute("INSERT INTO character_xp_rate (guid, xp_rate) VALUES (%d, %f)", player->GetGUID().GetCounter(), rate);
+        CharacterDatabase.Execute("INSERT INTO `character_xp_rate` (`guid`, `xp_rate`) VALUES ({}, {})", player->GetGUID().GetCounter(), rate);
     }
 }
 
 void CustomRates::DeleteRateFromDB(ObjectGuid guid)
 {
-    CharacterDatabase.PExecute("DELETE FROM character_xp_rate WHERE guid = %d", guid.GetCounter());
+    CharacterDatabase.Execute("DELETE FROM `character_xp_rate` WHERE `guid`={}", guid.GetCounter());
 }
 
 float CustomRates::GetXpRateFromDB(const Player *player)

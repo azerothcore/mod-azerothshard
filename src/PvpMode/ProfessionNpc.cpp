@@ -87,7 +87,7 @@ class Professions_NPC : public CreatureScript
 
                         if (!SkillInfo)
                         {
-                            sLog->outError("Profession NPC: received non-valid skill ID (LearnAllRecipesInProfession)");
+                            LOG_ERROR("server", "Profession NPC: received non-valid skill ID (LearnAllRecipesInProfession)");
                             return false;
                         }
 
