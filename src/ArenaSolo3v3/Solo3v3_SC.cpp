@@ -408,7 +408,7 @@ class Solo3v3_BG : public AllBattlegroundScript
 public:
     Solo3v3_BG() : AllBattlegroundScript("Solo3v3_BG") { }
 
-    void OnQueueUpdate(BattlegroundQueue* queue, uint32 /*diff*/, BattlegroundTypeId bgTypeId, BattlegroundBracketId bracket_id, uint8 arenaType, bool isRated, uint32 /*arenaRatedTeamId*/)
+    void OnQueueUpdate(BattlegroundQueue* queue, uint32 /*diff*/, BattlegroundTypeId bgTypeId, BattlegroundBracketId bracket_id, uint8 arenaType, bool isRated, uint32 /*arenaRatedTeamId*/) override
     {
         if (arenaType != (ArenaType)ARENA_TYPE_3v3_SOLO)
             return;
@@ -425,9 +425,6 @@ public:
         // Solo 3v3
         if (sSolo->CheckSolo3v3Arena(queue, bracket_id))
         {
-            uint32 minLvl = bracketEntry->minLevel;
-            uint32 maxLvl = bracketEntry->maxLevel;
-
             Battleground* arena = sBattlegroundMgr->CreateNewBattleground(bgTypeId, bracketEntry, arenaType, isRated);
             if (!arena)
                 return;
