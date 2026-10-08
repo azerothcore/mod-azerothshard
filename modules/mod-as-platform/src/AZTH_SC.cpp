@@ -133,12 +133,12 @@ class Command_SC : public CommandSC
 public:
     Command_SC() : CommandSC("Command_SC") { }
 
-    void OnHandleDevCommand(Player* player, std::string& argstr) override
+    void OnHandleDevCommand(Player* player, bool& argstr) override
     {
         if (!player)
             return;
 
-        if (argstr == "on")
+        if (argstr)
         {
             player->SetPhaseMask(uint32(PHASEMASK_ANYWHERE), false);
             player->SetGameMaster(true);
